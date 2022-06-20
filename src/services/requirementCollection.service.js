@@ -7,7 +7,47 @@ const createRequirementCollection = async (requirementCollectionBody) => {
 };
 
 const getAllRequirementCollection = async () => {
-  return requirementCollection.find({ active: true });
+  return requirementCollection.aggregate([
+    {
+      $lookup:{
+          from: "suppliers",  
+          localField:"name",
+          foreignField:"_id", 
+          as: "suppliersData" 
+      }
+  },
+  {   $unwind:"$suppliersData" }, 
+  {   
+    $project:{
+        _id : 1,
+        type:1,
+        name:'$suppliersData.primaryContactName',
+        buyerpname:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        buyerdeliverydate:1,
+        supplierpname:1,
+        stocklocation:1,
+        stockposition:1,
+        stockavailabilitydate:1,
+        packtype:1,
+        expquantity:1,
+        expprice:1,
+        paymentmode:1,
+        supplierid:1,
+        buyerid:1,
+        selectboth:1,
+        advance:1,
+        Date:1,
+        active:1,
+        archive:1
+    } 
+}
+  ])
 };
 
 // const createSupplierBuyerwithType = async (type) => {

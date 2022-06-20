@@ -75,6 +75,31 @@ const requirementCollectionSchema = new mongoose.Schema({
   Date: {
     type: String,
   },
+  status:{
+    type:String,
+  },
+  reasonCallback:{
+    type:String,
+  },
+  dateCallback:{
+    type:String,
+  },
+  feedbackCallback:{
+    type:String,
+  },
+  statusAccept:{
+    type:String,
+  },
+  aliveFeedback:{
+    type:String,
+  },
+  deadFeedback:{
+    type:String,
+  },
+  modificationFeedback:{
+    type:String,
+  },
+  
   active: {
     type: Boolean,
     default: true,
