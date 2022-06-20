@@ -108,6 +108,12 @@ const requirementCollectionSchema = new mongoose.Schema({
   moderateRejectReason:{
     type:String,
   },
+  latitude:{
+    type:Number,
+  },
+  longitude:{
+   type:Number,
+ },
   active: {
     type: Boolean,
     default: true,
