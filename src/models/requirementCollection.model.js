@@ -99,7 +99,15 @@ const requirementCollectionSchema = new mongoose.Schema({
   modificationFeedback:{
     type:String,
   },
-  
+  moderateStatus:{
+    type:String,
+  },
+  editedPrice:{
+    type:String,
+  },
+  moderateRejectReason:{
+    type:String,
+  },
   active: {
     type: Boolean,
     default: true,
