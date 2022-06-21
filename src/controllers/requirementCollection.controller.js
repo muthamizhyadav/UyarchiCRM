@@ -45,6 +45,11 @@ const deleteRequirementCollectionByIdService = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+// thirdpartyApi's
+const getUyarchiApi = catchAsync(async (req, res) => {
+  const getUyarchi = await requirementCollectionService.UyarchiApi();
+  res.send(getUyarchi);
+});
 module.exports = {
   createRequirementCollectionService,
   getAllRequirementCollection,
@@ -52,4 +57,5 @@ module.exports = {
   getRequirementCollectionByIdService,
   updateRequirementCollectionByIdService,
   deleteRequirementCollectionByIdService,
+  getUyarchiApi,
 };

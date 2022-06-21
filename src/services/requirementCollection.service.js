@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { requirementCollection } = require('../models');
+const axios = require('axios');
 
 const createRequirementCollection = async (requirementCollectionBody) => {
   return requirementCollection.create(requirementCollectionBody);
@@ -105,6 +106,13 @@ const deleteRequirementCollectionById = async (requirementId) => {
   return requirementDelete;
 };
 
+
+// thirdpartyApi's
+const UyarchiApi = async () => {
+  let response = await axios.get(`https://kapture.click/v1/category/product/category`)
+ return response.data
+};
+
 module.exports = {
   createRequirementCollection,
   getAllRequirementCollection,
@@ -112,4 +120,5 @@ module.exports = {
   getRequirementCollectionById,
   updateRequirementCollectionById,
   deleteRequirementCollectionById,
+  UyarchiApi,
 };

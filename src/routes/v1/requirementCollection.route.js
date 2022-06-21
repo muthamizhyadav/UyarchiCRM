@@ -9,6 +9,6 @@ router
   .put(requirementCollectionController.updateRequirementCollectionByIdService)
   .delete(requirementCollectionController.deleteRequirementCollectionByIdService);
 
-// router.route('/type/getName/:type').get(supplierController.createSupplierwithType)
+router.route('/thirdPartyApi/category').get(requirementCollectionController.getUyarchiApi)
 
 module.exports = router;
