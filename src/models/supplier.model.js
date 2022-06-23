@@ -13,6 +13,9 @@ const supplierSchema = new mongoose.Schema({
   tradeName: {
     type: String,
   },
+  secretName:{
+    type:String,
+  },
   companytype: {
     type: String,
     enum: ['Proprietorship', 'LLP', 'Partnership', 'Private Limited', 'Public Limited', 'Others'],

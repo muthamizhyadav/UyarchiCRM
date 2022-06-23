@@ -14,5 +14,6 @@ router.route('/thirdPartyApi/category').get(requirementCollectionController.getU
 
 
 router.route('/supplier/productName/').get(requirementCollectionController.getAllmaxmin)
+router.route('/buyer/productAll').get(requirementCollectionController.getproductAll)
 
 module.exports = router;

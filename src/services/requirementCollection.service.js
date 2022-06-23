@@ -4,7 +4,7 @@ const { requirementCollection } = require('../models');
 const axios = require('axios');
 
 const createRequirementCollection = async (requirementCollectionBody) => {
-  return requirementCollection.create(requirementCollectionBody);
+return requirementCollection.create(requirementCollectionBody);
 };
 
 const getAllRequirementCollection = async () => {
@@ -143,9 +143,21 @@ const getmaxmin = async ()=>{
       }
     }
   ])
-  console.log(mat)
+  // console.log(mat)
   return mat
 
+}
+
+
+const productAll = async () => {
+  return requirementCollection.aggregate([
+    {
+      $match:{$or:[
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Buyer" }}]},
+        {$and:[{ type: { $eq: "Buyer" }}]},
+  ]},
+     },
+  ])
 }
 
 const getAllRequirementCollectionDelete = async () => {
@@ -194,4 +206,5 @@ module.exports = {
   deleteRequirementCollectionById,
   UyarchiApi,
   getmaxmin,
+  productAll
 };

@@ -6,6 +6,7 @@ const  {requirementCollectionService} = require('../services');
 
 const createRequirementCollectionService = catchAsync(async (req, res) => {
   const requirementCollection = await requirementCollectionService.createRequirementCollection(req.body);
+
   res.status(httpStatus.CREATED).send(requirementCollection);
 });
 
@@ -19,6 +20,11 @@ const getAllmaxmin = catchAsync(async (req, res) => {
   const min = await requirementCollectionService.getmaxmin(req.params);
   res.send(min);
 });
+
+const getproductAll = catchAsync(async(req,res) =>{
+  const pro = await requirementCollectionService.productAll(req.params)
+  res.send(pro);
+})
 
 const getAllRequirementCollection = catchAsync(async (req, res) => {
   const requirementCollection = await requirementCollectionService.getAllRequirementCollection();
@@ -65,4 +71,5 @@ module.exports = {
   deleteRequirementCollectionByIdService,
   getUyarchiApi,
   getAllmaxmin,
+  getproductAll
 };
