@@ -17,7 +17,7 @@ const getAllRequirementCollection = async () => {
           as: "suppliersData" 
       }
   },
-  {   $unwind:"$suppliersData" }, 
+  { $unwind:"$suppliersData" }, 
   {   
     $project:{
         _id : 1,
@@ -64,17 +64,89 @@ const getAllRequirementCollection = async () => {
   ])
 };
 
-// const createSupplierBuyerwithType = async (type) => {
-//   let values;
-//   if (type == 'Supplier') {
-//     values = await SupplierBuyer.find({ type: 'Supplier' });
-//   } else if (type == 'Buyer') {
-//     values = await SupplierBuyer.find({ type: 'Buyer' });
-//   }else if(type == "Both") {
-//     values = await SupplierBuyer.find({ type: 'Both' });
-//   }
-//   return values;
-// };
+const getmaxmin = async ()=>{
+  
+  const mat = await requirementCollection.aggregate([
+    // {
+    //   $match:{$and:[{ type: { $eq: "Supplier" }}]}
+    // },
+    {
+      $match:{$or:[
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }}]},
+        {$and:[{ type: { $eq: "Supplier" }}]},
+  ]},
+},
+    {
+      $lookup:{
+        from: 'requirementcollections',
+        localField: 'supplierpname',
+        foreignField: 'buyerpname',
+        as: 'buyerdata',
+      }
+    },
+
+    {
+      $match:{$or:[
+        {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    },
+  //   {
+  //     $lookup:{
+  //         from: "suppliers",  
+  //         localField:"name",
+  //         foreignField:"_id", 
+  //         as: "suppliersData" 
+  //     }
+  // },
+  // { $unwind:"$suppliersData" }, 
+ 
+    {
+      $project:{
+        _id : 1,
+        type:1,
+        // name:'$suppliersData.primaryContactName',
+        buyerpname:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        buyerdeliverydate:1,
+        supplierpname:1,
+        stocklocation:1,
+        stockposition:1,
+        stockavailabilitydate:1,
+        packtype:1,
+        expquantity:1,
+        expprice:1,
+        paymentmode:1,
+        supplierid:1,
+        buyerid:1,
+        selectboth:1,
+        advance:1,
+        Date:1,
+        status:1,
+        reasonCallback:1,
+        dateCallback:1,
+        feedbackCallback:1,
+        statusAccept:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        moderateStatus:1,
+        editedPrice:1,
+        moderateRejectReason:1,
+        latitude:1,
+        longitude:1,
+        active:1,
+        archive:1
+      }
+    }
+  ])
+  console.log(mat)
+  return mat
+
+}
 
 const getAllRequirementCollectionDelete = async () => {
   return requirementCollection.find();
@@ -121,4 +193,5 @@ module.exports = {
   updateRequirementCollectionById,
   deleteRequirementCollectionById,
   UyarchiApi,
+  getmaxmin,
 };

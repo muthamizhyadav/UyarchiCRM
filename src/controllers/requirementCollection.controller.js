@@ -14,6 +14,12 @@ const createRequirementCollectionService = catchAsync(async (req, res) => {
 //   res.send(supplier)
 // })
 
+
+const getAllmaxmin = catchAsync(async (req, res) => {
+  const min = await requirementCollectionService.getmaxmin(req.params);
+  res.send(min);
+});
+
 const getAllRequirementCollection = catchAsync(async (req, res) => {
   const requirementCollection = await requirementCollectionService.getAllRequirementCollection();
   res.send(requirementCollection);
@@ -58,4 +64,5 @@ module.exports = {
   updateRequirementCollectionByIdService,
   deleteRequirementCollectionByIdService,
   getUyarchiApi,
+  getAllmaxmin,
 };
