@@ -23,6 +23,7 @@ const getAllRequirementCollection = async () => {
         _id : 1,
         type:1,
         name:'$suppliersData.primaryContactName',
+        secretName:'$suppliersData.secretName',
         buyerpname:1,
         minrange:1,
         maxrange:1,
@@ -105,15 +106,15 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
       $match:{$or:[
         {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
     },
-  //   {
-  //     $lookup:{
-  //         from: "suppliers",  
-  //         localField:"name",
-  //         foreignField:"_id", 
-  //         as: "suppliersData" 
-  //     }
-  // },
-  // { $unwind:"$suppliersData" }, 
+    {
+      $lookup:{
+          from: "suppliers",  
+          localField:"name",
+          foreignField:"_id", 
+          as: "suppliersData" 
+      }
+  },
+  { $unwind:"$suppliersData" }, 
 
    {
       $match: {
@@ -125,7 +126,8 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
       $project:{
         _id : 1,
         type:1,
-        // name:'$suppliersData.primaryContactName',
+        SecretName:'$suppliersData.secretName',
+        name:'$suppliersData.primaryContactName',
         buyerpname:1,
         minrange:1,
         maxrange:1,
