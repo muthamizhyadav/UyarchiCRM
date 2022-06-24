@@ -10,6 +10,7 @@ router
   .delete(requirementCollectionController.deleteRequirementCollectionByIdService);
 
 router.route('/thirdPartyApi/category').get(requirementCollectionController.getUyarchiApi)
+router.route('/thirdPartyApi/product').get(requirementCollectionController.getUyarchiAllProductApi)
 
 
 

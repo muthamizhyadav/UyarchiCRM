@@ -89,8 +89,8 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
     // },
     {
       $match:{$or:[
-        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }}]},
-        {$and:[{ type: { $eq: "Supplier" }}]},
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
+        {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
   ]},
 },
     {
@@ -174,6 +174,8 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
    {
       $limit:10
     },
+
+    // { $sort: { 'buyerdata.editedPrice':{$eq:}, <field2>: sort order } }
   ])
   const count = await requirementCollection.aggregate([
     // {
@@ -270,6 +272,11 @@ const UyarchiApi = async () => {
  return response.data
 };
 
+const UyarchiApiProduct = async () => {
+  let response = await axios.get(`https://kapture.click/v1/product`)
+ return response.data
+};
+
 module.exports = {
   createRequirementCollection,
   getAllRequirementCollection,
@@ -279,5 +286,6 @@ module.exports = {
   deleteRequirementCollectionById,
   UyarchiApi,
   getmaxmin,
-  productAll
+  productAll,
+  UyarchiApiProduct,
 };

@@ -62,6 +62,11 @@ const getUyarchiApi = catchAsync(async (req, res) => {
   const getUyarchi = await requirementCollectionService.UyarchiApi();
   res.send(getUyarchi);
 });
+
+const getUyarchiAllProductApi = catchAsync(async (req, res) => {
+  const getUyarchi = await requirementCollectionService.UyarchiApiProduct();
+  res.send(getUyarchi);
+});
 module.exports = {
   createRequirementCollectionService,
   getAllRequirementCollection,
@@ -71,5 +76,6 @@ module.exports = {
   deleteRequirementCollectionByIdService,
   getUyarchiApi,
   getAllmaxmin,
-  getproductAll
+  getproductAll,
+  getUyarchiAllProductApi,
 };
