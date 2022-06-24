@@ -120,6 +120,9 @@ const requirementCollectionSchema = new mongoose.Schema({
   Slongitude:{
      type:Number,
  },
+ matchesstatus:{
+  type:String,
+ },
   active: {
     type: Boolean,
     default: true,

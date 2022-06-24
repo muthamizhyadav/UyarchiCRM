@@ -60,6 +60,7 @@ const getAllRequirementCollection = async () => {
         Slongitude:1,
         Blatitude:1,
         Blongitude:1,
+        matchesstatus:1,
         active:1,
         archive:1
     } 
@@ -164,6 +165,7 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
         Slongitude:1,
         Blatitude:1,
         Blongitude:1,
+        matchesstatus:1,
         active:1,
         archive:1
       }
@@ -274,6 +276,7 @@ const UyarchiApi = async () => {
 
 const UyarchiApiProduct = async () => {
   let response = await axios.get(`https://kapture.click/v1/product`)
+
  return response.data
 };
 
