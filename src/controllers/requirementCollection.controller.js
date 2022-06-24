@@ -17,7 +17,7 @@ const createRequirementCollectionService = catchAsync(async (req, res) => {
 
 
 const getAllmaxmin = catchAsync(async (req, res) => {
-  const min = await requirementCollectionService.getmaxmin(req.params);
+  const min = await requirementCollectionService.getmaxmin(req.params.product,req.params.fromprice,req.params.toprice,req.params.fromquantity,req.params.toquantity,req.params.destination,req.params.page);
   res.send(min);
 });
 

@@ -103,7 +103,7 @@ const requirementCollectionSchema = new mongoose.Schema({
     type:String,
   },
   editedPrice:{
-    type:String,
+    type:Number,
   },
   moderateRejectReason:{
     type:String,

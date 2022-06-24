@@ -64,8 +64,22 @@ const getAllRequirementCollection = async () => {
   ])
 };
 
-const getmaxmin = async ()=>{
-  
+const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,destination,page)=>{
+
+  let match ;
+  if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity == 'null' && toquantity == 'null' && destination == 'null'){
+     match =[{supplierpname:{$eq:product}},{editedPrice:{$gte:parseInt(fromprice)}},{editedPrice:{$lte:parseInt(toprice)}},{active:{$eq:true}}]
+  }
+  else if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity != 'null' && toquantity != 'null' && destination == 'null'){
+  match =[{supplierpname:{$eq:product}},{editedPrice:{$gte:parseInt(fromprice)}},{editedPrice:{$lte:parseInt(toprice)}},{expquantity:{$gte:parseInt(fromquantity)}},{expquantity:{$lte:parseInt(toquantity)}},{active:{$eq:true}}]
+  }
+  // else if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity != 'null' && toquantity != 'null' && destination != 'null'){
+  //   match =[{supplierpname:{$eq:product}},{editedPrice:{$gte:parseInt(fromprice)}},{editedPrice:{$lte:parseInt(toprice)}},{expquantity:{$gte:parseInt(fromquantity)}},{expquantity:{$lte:parseInt(toquantity)}},{expquantity:{$eq:destination}},{active:{$eq:true}}]
+  //   }
+  else{
+    match=[{ supplierpname: { $ne: null }},{active:{$eq:true}}]
+  }
+  console.log(match)
   const mat = await requirementCollection.aggregate([
     // {
     //   $match:{$and:[{ type: { $eq: "Supplier" }}]}
@@ -98,6 +112,12 @@ const getmaxmin = async ()=>{
   //     }
   // },
   // { $unwind:"$suppliersData" }, 
+
+   {
+      $match: {
+        $and: match,
+      },
+    },
  
     {
       $project:{
@@ -141,10 +161,57 @@ const getmaxmin = async ()=>{
         active:1,
         archive:1
       }
-    }
+    },
+    {
+      $skip:10*parseInt(page)
+    },
+   {
+      $limit:10
+    },
+  ])
+  const count = await requirementCollection.aggregate([
+    // {
+    //   $match:{$and:[{ type: { $eq: "Supplier" }}]}
+    // },
+    {
+      $match:{$or:[
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }}]},
+        {$and:[{ type: { $eq: "Supplier" }}]},
+  ]},
+},
+    {
+      $lookup:{
+        from: 'requirementcollections',
+        localField: 'supplierpname',
+        foreignField: 'buyerpname',
+        as: 'buyerdata',
+      }
+    },
+
+    {
+      $match:{$or:[
+        {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    },
+  //   {
+  //     $lookup:{
+  //         from: "suppliers",  
+  //         localField:"name",
+  //         foreignField:"_id", 
+  //         as: "suppliersData" 
+  //     }
+  // },
+  // { $unwind:"$suppliersData" }, 
+
+   {
+      $match: {
+        $and: match,
+      },
+    },
+ 
+  
   ])
   // console.log(mat)
-  return mat
+  return {data:mat,count:count.length}
 
 }
 
