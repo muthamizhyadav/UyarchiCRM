@@ -55,8 +55,10 @@ const getAllRequirementCollection = async () => {
         moderateStatus:1,
         editedPrice:1,
         moderateRejectReason:1,
-        latitude:1,
-        longitude:1,
+        Slatitude:1,
+        Slongitude:1,
+        Blatitude:1,
+        Blongitude:1,
         active:1,
         archive:1
     } 
@@ -156,8 +158,10 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
         moderateStatus:1,
         editedPrice:1,
         moderateRejectReason:1,
-        latitude:1,
-        longitude:1,
+        Slatitude:1,
+        Slongitude:1,
+        Blatitude:1,
+        Blongitude:1,
         active:1,
         archive:1
       }
