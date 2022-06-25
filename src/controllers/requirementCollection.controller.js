@@ -72,6 +72,11 @@ const getUyarchiAllProductApi = catchAsync(async (req, res) => {
   const getUyarchi = await requirementCollectionService.UyarchiApiProduct();
   res.send(getUyarchi);
 });
+
+const groupMapService = catchAsync(async (req,res)=>{
+  const user = await requirementCollectionService.groupMap(req.params.from, req.params.to, req.params.id)
+  res.send(user)
+})
 module.exports = {
   createRequirementCollectionService,
   getAllRequirementCollection,
@@ -84,4 +89,5 @@ module.exports = {
   getproductAll,
   getUyarchiAllProductApi,
   getAllRequirementCollectionStatus,
+  groupMapService,
 };

@@ -11,6 +11,8 @@ router
 
 router.route('/thirdPartyApi/category').get(requirementCollectionController.getUyarchiApi)
 router.route('/thirdPartyApi/product').get(requirementCollectionController.getUyarchiAllProductApi)
+router.route('/thirdPartyApi/googleMap/:from/:to/:id').get(requirementCollectionController.groupMapService)
+
 
 
 

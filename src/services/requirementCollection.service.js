@@ -349,6 +349,15 @@ const UyarchiApiProduct = async () => {
  return response.data
 };
 
+const groupMap = async (from,to,id) => {
+
+  let response = await axios.get(
+   `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${from}&destinations=${to}&key=${id}`
+ )
+// console.log(response.data)
+return response.data
+}
+
 module.exports = {
   createRequirementCollection,
   getAllRequirementCollection,
@@ -361,4 +370,5 @@ module.exports = {
   productAll,
   UyarchiApiProduct,
   getAllRequirementCollectionStatus,
+  groupMap
 };
