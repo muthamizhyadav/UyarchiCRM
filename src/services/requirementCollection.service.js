@@ -137,7 +137,10 @@ const getAllRequirementCollectionStatus = async () => {
 const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,destination,page)=>{
 
   let match ;
-  if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity == 'null' && toquantity == 'null' && destination == 'null'){
+  if(product != 'null' && fromprice == 'null' && toprice == 'null' && fromquantity == 'null' && toquantity == 'null' && destination == 'null'){
+    match =[{supplierpname:{$eq:product}},{active:{$eq:true}}]
+ }
+  else if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity == 'null' && toquantity == 'null' && destination == 'null'){
      match =[{supplierpname:{$eq:product}},{editedPrice:{$gte:parseInt(fromprice)}},{editedPrice:{$lte:parseInt(toprice)}},{active:{$eq:true}}]
   }
   else if(product != 'null' && fromprice != 'null' && toprice != 'null' && fromquantity != 'null' && toquantity != 'null' && destination == 'null'){
@@ -160,19 +163,19 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
         {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
   ]},
 },
-    {
-      $lookup:{
-        from: 'requirementcollections',
-        localField: 'supplierpname',
-        foreignField: 'buyerpname',
-        as: 'buyerdata',
-      }
-    },
+    // {
+    //   $lookup:{
+    //     from: 'requirementcollections',
+    //     localField: 'supplierpname',
+    //     foreignField: 'buyerpname',
+    //     as: 'buyerdata',
+    //   }
+    // },
 
-    {
-      $match:{$or:[
-        {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
-    },
+    // {
+    //   $match:{$or:[
+    //     {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    // },
     {
       $lookup:{
           from: "suppliers",  
@@ -251,23 +254,23 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
     // },
     {
       $match:{$or:[
-        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }}]},
-        {$and:[{ type: { $eq: "Supplier" }}]},
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
+        {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
   ]},
 },
-    {
-      $lookup:{
-        from: 'requirementcollections',
-        localField: 'supplierpname',
-        foreignField: 'buyerpname',
-        as: 'buyerdata',
-      }
-    },
+    // {
+    //   $lookup:{
+    //     from: 'requirementcollections',
+    //     localField: 'supplierpname',
+    //     foreignField: 'buyerpname',
+    //     as: 'buyerdata',
+    //   }
+    // },
 
-    {
-      $match:{$or:[
-        {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
-    },
+    // {
+    //   $match:{$or:[
+    //     {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    // },
   //   {
   //     $lookup:{
   //         from: "suppliers",  
