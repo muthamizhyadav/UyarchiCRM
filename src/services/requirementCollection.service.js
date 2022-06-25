@@ -72,7 +72,7 @@ const getAllRequirementCollectionStatus = async () => {
   return requirementCollection.aggregate([
     {
       $match:{$or:[
-        {$and:[{ status: { $eq: "Accepted" }}]},
+        {$and:[{ status: { $eq: "Accepted" }},{statusAccept:{$ne:"Requirement dead"}}]},
   ]},
 },
     {
