@@ -26,6 +26,11 @@ const getproductAll = catchAsync(async(req,res) =>{
   res.send(pro);
 })
 
+const getAllRequirementCollectionStatus = catchAsync(async(req,res) =>{
+  const pro = await requirementCollectionService.getAllRequirementCollectionStatus(req.params)
+  res.send(pro);
+})
+
 const getAllRequirementCollection = catchAsync(async (req, res) => {
   const requirementCollection = await requirementCollectionService.getAllRequirementCollection();
   res.send(requirementCollection);
@@ -78,4 +83,5 @@ module.exports = {
   getAllmaxmin,
   getproductAll,
   getUyarchiAllProductApi,
+  getAllRequirementCollectionStatus,
 };
