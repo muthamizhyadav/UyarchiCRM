@@ -6,6 +6,8 @@ const config = require('../../config/config');
 const jobEnquiryRoute = require('./jobEnquiry.route');
 const supplierRoute = require('./supplier.route');
 const requirementCollectionRoute = require('./requirementCollection.route')
+const supplierAppUserRoute = require('./supplierAppUser.route')
+const slotandSlotsubmitRoute = require('./slotandSlotsubmit.route')
 
 const router = express.Router();
 
@@ -29,6 +31,14 @@ const defaultRoutes = [
   {
     path:'/requirementCollection',
     route: requirementCollectionRoute,
+  },
+  {
+     path:'/supplierAppUser',
+    route: supplierAppUserRoute,
+  },
+  {
+    path:'/slotandSlotsubmit',
+    route: slotandSlotsubmitRoute,
   },
 
 ];

@@ -9,19 +9,19 @@ const createSupplierService = catchAsync(async (req, res) => {
   const Buy = await supplier.find({ type: req.body.type });
   let center = '';
   // console.log(Buy.length);
-  if (Buy.length < 10) {
+  if (Buy.length < 9) {
     center = '0000';
   }
-  if (Buy.length < 100 && Buy.length >= 10) {
+  if (Buy.length < 99 && Buy.length >= 9) {
     center = '000';
   }
-  if (Buy.length < 1000 && Buy.length >= 100) {
+  if (Buy.length < 999 && Buy.length >= 99) {
     center = '00';
   }
-  if (Buy.length < 10000 && Buy.length >= 1000) {
+  if (Buy.length < 9999 && Buy.length >= 999) {
     center = '0';
   }
-  console.log(center, 0);
+  // console.log(center, 0);
   let userId = '';
   let totalcount = Buy.length + 1;
   if (req.body.type == 'Buyer') {
@@ -38,7 +38,7 @@ const createSupplierService = catchAsync(async (req, res) => {
     supplierss = await supplierService.createSupplier(req.body);
   }
   supplierss.secretName = userId;
-  console.log(supplierss)
+  // console.log(supplierss)
   res.status(httpStatus.CREATED).send(supplierss);
   await supplierss.save();
 });

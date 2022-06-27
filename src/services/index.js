@@ -4,3 +4,4 @@ module.exports.tokenService = require('./token.service');
 module.exports.userService = require('./user.service');
 module.exports.supplierService = require('./supplier.service');
 module.exports.requirementCollectionService = require('./requirementCollection.service');
+module.exports.supplierAppUser = require('./supplierAppUser.service');
