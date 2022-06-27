@@ -7,7 +7,7 @@ const createSupplierAppUser = async (supplierAppUserBody) => {
   return supplierAppUser.create(supplierAppUserBody);
 };
 const getSupplierAppUserById = async (supplierAppUserId) => {
-    return supplierAppUser.findById(id);
+    return supplierAppUser.findById(supplierAppUserId);
   };
 
 const getAllSupplierAppUser = async () => {
