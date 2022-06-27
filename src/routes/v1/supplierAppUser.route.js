@@ -11,4 +11,6 @@ router
   .put(supplierAppUserController.updateSupplierAppUserService)
   .delete(supplierAppUserController.deleteSupplierAppUserService);
 
+router.route('/responce/:id').get(supplierAppUserController.getsupplierAppUserServiceByIdAll)
+
 module.exports = router;

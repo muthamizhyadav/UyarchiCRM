@@ -50,6 +50,14 @@ const login = catchAsync(async (req, res) => {
   res.send({ interviewerRegistration, tokens });
 });
 
+const getsupplierAppUserServiceByIdAll = catchAsync(async (req, res) => {
+    const pro = await supplierAppUser.getAllSupplierAppUserResponce(req.params.id);
+    if (!pro || pro.active === false) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'supplierAppUser not found');
+    }
+    res.send(pro);
+  });
+
 const getsupplierAppUserServiceById = catchAsync(async (req, res) => {
   const pro = await supplierAppUser.getSupplierAppUserById(req.params.supplierAppUserId);
   if (!pro || pro.active === false) {
@@ -85,4 +93,5 @@ module.exports = {
     getsupplierAppUserServiceAll,
     updateSupplierAppUserService,
     deleteSupplierAppUserService,
+    getsupplierAppUserServiceByIdAll,
 };

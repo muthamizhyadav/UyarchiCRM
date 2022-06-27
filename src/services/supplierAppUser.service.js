@@ -14,6 +14,36 @@ const getAllSupplierAppUser = async () => {
   return supplierAppUser.find({active:'true'});
 }
 
+
+const getAllSupplierAppUserResponce = async (id) => {
+    return supplierAppUser.aggregate([
+        {
+        $match:{
+            $and:[{_id:{$eq:id}}]
+        }
+        },
+        {
+            $lookup:
+              {
+                from:'supplierslots',
+                localField:'_id',
+                foreignField:'supplierAppId',
+                as:'supplierslots.data'
+              }
+         },
+         {
+            $lookup:
+              {
+                from:'supplierslotsubmits',
+                localField:'_id',
+                foreignField:'supplierAppId',
+                as:'supplierslotsubmits.data'
+              }
+         },
+           
+    ])
+  }
+
   const loginSupplierAppUserEmailAndPassword = async (email, dateOfBirth) => {
     const interviewerRegistration = await supplierAppUser.find({ email: email });
     let dob = interviewerRegistration[0].dateOfBirth.replace(/[^0-9\.]+/g, '');
@@ -54,4 +84,5 @@ const getAllSupplierAppUser = async () => {
     loginSupplierAppUserEmailAndPassword,
     updateSupplierAppUserId,
     deleteSupplierAppUserById,
+    getAllSupplierAppUserResponce,
   };
