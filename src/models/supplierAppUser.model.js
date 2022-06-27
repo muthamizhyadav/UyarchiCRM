@@ -70,6 +70,9 @@ const supplierAppUserSchema = mongoose.Schema({
   status:{
     type:String,
   },
+  reason:{
+    type:String,
+  },
   active: {
     type: Boolean,
     default: true,
