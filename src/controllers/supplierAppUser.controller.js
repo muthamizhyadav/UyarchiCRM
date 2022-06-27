@@ -58,6 +58,15 @@ const getsupplierAppUserServiceByIdAll = catchAsync(async (req, res) => {
     res.send(pro);
   });
 
+  
+const getsupplierAppUserServiceByIdAllNotId = catchAsync(async (req, res) => {
+  const pro = await supplierAppUser.getAllSupplierAppUserResponceNotId(req.params);
+  if (!pro || pro.active === false) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'supplierAppUser not found');
+  }
+  res.send(pro);
+});
+
 const getsupplierAppUserServiceById = catchAsync(async (req, res) => {
   const pro = await supplierAppUser.getSupplierAppUserById(req.params.supplierAppUserId);
   if (!pro || pro.active === false) {
@@ -94,4 +103,5 @@ module.exports = {
     updateSupplierAppUserService,
     deleteSupplierAppUserService,
     getsupplierAppUserServiceByIdAll,
+    getsupplierAppUserServiceByIdAllNotId,
 };

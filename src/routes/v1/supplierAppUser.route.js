@@ -12,5 +12,5 @@ router
   .delete(supplierAppUserController.deleteSupplierAppUserService);
 
 router.route('/responce/:id').get(supplierAppUserController.getsupplierAppUserServiceByIdAll)
-
+router.route('/responceAll/all').get(supplierAppUserController.getsupplierAppUserServiceByIdAllNotId)
 module.exports = router;
