@@ -129,6 +129,9 @@ const requirementCollectionSchema = new mongoose.Schema({
  interestedDate:{
   type:String,
  },
+ interestedProduct:{
+  type:String,
+ },
   active: {
     type: Boolean,
     default: true,

@@ -10,10 +10,10 @@ const createRequirementCollectionService = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(requirementCollection);
 });
 
-// const createSupplierwithType = catchAsync (async (req, res)=>{
-//   const supplier = await supplierService.createSupplierwithType(req.params.type)
-//   res.send(supplier)
-// })
+const getDataAllBuyerIntrested = catchAsync (async (req, res)=>{
+  const buyer = await requirementCollectionService.data(req.params)
+  res.send(buyer)
+})
 
 
 const getAllmaxmin = catchAsync(async (req, res) => {
@@ -90,4 +90,5 @@ module.exports = {
   getUyarchiAllProductApi,
   getAllRequirementCollectionStatus,
   groupMapService,
+  getDataAllBuyerIntrested,
 };

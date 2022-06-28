@@ -19,5 +19,6 @@ router.route('/thirdPartyApi/googleMap/:from/:to/:id').get(requirementCollection
 router.route('/supplier/productName/:product/:fromprice/:toprice/:fromquantity/:toquantity/:destination/:page').get(requirementCollectionController.getAllmaxmin)
 router.route('/buyer/productAll').get(requirementCollectionController.getproductAll)
 router.route('/status/all').get(requirementCollectionController.getAllRequirementCollectionStatus)
+router.route('/buyer/interested').get(requirementCollectionController.getDataAllBuyerIntrested)
 
 module.exports = router;

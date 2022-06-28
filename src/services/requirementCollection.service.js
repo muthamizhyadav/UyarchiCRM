@@ -143,31 +143,85 @@ const getAllRequirementCollectionStatus = async () => {
 
 
 const data = async()=>{
-  const mat = await requirementCollection.aggregate([
+   return await requirementCollection.aggregate([
     {
       $match:{$or:[
-        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
-        {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }},{ matchesstatus: { $eq: "Interested" }}]},
+        {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }},{ matchesstatus: { $eq: "Interested" }}]},
   ]},
 },
  {
       $lookup:{
-        from: 'requirementcollections',
+        from: 'suppliers',
         localField: 'interestedBId',
         foreignField: '_id',
-        as: 'buyerdata',
+        as: 'suppliersData',
       }
     },
+    {
+      $unwind:'$suppliersData'
+    },
+   
+  //   {
+  //     $match:{$or:[
+  //       {$and:[{ 'requirementcollectionsData.type': { $eq: "Both" }},{ 'requirementcollectionsData.selectboth': { $eq: "Supplier" }},{ 'requirementcollectionsData.moderateStatus': { $eq: "Moderated" }},{ 'requirementcollectionsData.matchesstatus': { $eq: "Interested" }}]},
+  //       {$and:[{  'requirementcollectionsData.type': { $eq: "Supplier" }},{ 'requirementcollectionsData.moderateStatus': { $eq: "Moderated" }},{ 'requirementcollectionsData.matchesstatus': { $eq: "Interested" }}]},
+  // ]},
+// },
+    {
+      $project:{
+        name:'$suppliersData.primaryContactName',
+        _id:1,
+        date:1,
+        packtype:1,
+        expquantity:1,
+        expprice:1,
+        paymentmode:1,
+        supplierid:1, 
+        buyerpname:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        buyerdeliverydate:1,
+        supplierpname:1,
+        stocklocation:1,
+        stockposition:1,
+        stockavailability:1,
+        buyerid:1,
+        selectboth:1,
+        advance:1,
+        Date:1,
+        status:1,
+        reasonCallback:1,
+        dateCallback:1,
+        feedbackCallback:1,
+        statusAccept:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        moderateStatus:1,
+        editedPrice:1,
+        moderateRejectReason:1,
+        Slatitude:1,
+        Slongitude:1,
+        Blatitude:1,
+        Blongitude:1,
+        matchesstatus:1,
+        interestedBId:1,
+        interestedDate:1,
+        interestedProduct:1,
+        active:1,
+        archive:1
+        
+      }
+    }
 
-    // {
-    //   $match:{$or:[
-    //     {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
-    // },
 
   ])
-  return {
-    data:mat,
-  }
+ 
 }
 
 const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,destination,page)=>{
@@ -234,7 +288,12 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
         type:1,
         SecretName:'$suppliersData.secretName',
         name:'$suppliersData.primaryContactName',
-        buyerpname:1,
+      date:1,
+        packtype:1,
+        expquantity:1,
+        expprice:1,
+        paymentmode:1,
+        supplierid:1,  buyerpname:1,
         minrange:1,
         maxrange:1,
         minprice:1,
@@ -245,12 +304,7 @@ const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,desti
         supplierpname:1,
         stocklocation:1,
         stockposition:1,
-        stockavailabilitydate:1,
-        packtype:1,
-        expquantity:1,
-        expprice:1,
-        paymentmode:1,
-        supplierid:1,
+        stockavailability:1,
         buyerid:1,
         selectboth:1,
         advance:1,
@@ -407,5 +461,5 @@ module.exports = {
   UyarchiApiProduct,
   getAllRequirementCollectionStatus,
   groupMap,
-  // data,
+   data,
 };
