@@ -123,6 +123,12 @@ const requirementCollectionSchema = new mongoose.Schema({
  matchesstatus:{
   type:String,
  },
+ interestedBId:{
+  type:String,
+ },
+ interestedDate:{
+  type:String,
+ },
   active: {
     type: Boolean,
     default: true,

@@ -7,6 +7,13 @@ const createRequirementCollection = async (requirementCollectionBody) => {
 return requirementCollection.create(requirementCollectionBody);
 };
 
+
+// const samedata = async () =>{
+//   requirementCollection.aggregate([
+
+//   ])
+// }
+
 const getAllRequirementCollection = async () => {
   return requirementCollection.aggregate([
     {
@@ -133,6 +140,35 @@ const getAllRequirementCollectionStatus = async () => {
 }
   ])
 };
+
+
+const data = async()=>{
+  const mat = await requirementCollection.aggregate([
+    {
+      $match:{$or:[
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
+        {$and:[{ type: { $eq: "Supplier" }},{ moderateStatus: { $eq: "Moderated" }}]},
+  ]},
+},
+ {
+      $lookup:{
+        from: 'requirementcollections',
+        localField: 'interestedBId',
+        foreignField: '_id',
+        as: 'buyerdata',
+      }
+    },
+
+    // {
+    //   $match:{$or:[
+    //     {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    // },
+
+  ])
+  return {
+    data:mat,
+  }
+}
 
 const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,destination,page)=>{
 
@@ -370,5 +406,6 @@ module.exports = {
   productAll,
   UyarchiApiProduct,
   getAllRequirementCollectionStatus,
-  groupMap
+  groupMap,
+  // data,
 };
