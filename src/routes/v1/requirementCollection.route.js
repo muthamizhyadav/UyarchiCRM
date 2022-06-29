@@ -20,5 +20,7 @@ router.route('/supplier/productName/:product/:fromprice/:toprice/:fromquantity/:
 router.route('/buyer/productAll').get(requirementCollectionController.getproductAll)
 router.route('/status/all').get(requirementCollectionController.getAllRequirementCollectionStatus)
 router.route('/buyer/interested').get(requirementCollectionController.getDataAllBuyerIntrested)
+router.route('/buyer/data').get(requirementCollectionController.getBuyerAll)
+router.route('/buyer/product/:id').get(requirementCollectionController.getBUyerProduct)
 
 module.exports = router;

@@ -15,6 +15,11 @@ const getDataAllBuyerIntrested = catchAsync (async (req, res)=>{
   res.send(buyer)
 })
 
+const getBUyerProduct = catchAsync (async (req, res)=>{
+  const buyer = await requirementCollectionService.BuyerSearch(req.params.id)
+  res.send(buyer)
+})
+
 
 const getAllmaxmin = catchAsync(async (req, res) => {
   const min = await requirementCollectionService.getmaxmin(req.params.product,req.params.fromprice,req.params.toprice,req.params.fromquantity,req.params.toquantity,req.params.destination,req.params.page);
@@ -23,6 +28,10 @@ const getAllmaxmin = catchAsync(async (req, res) => {
 
 const getproductAll = catchAsync(async(req,res) =>{
   const pro = await requirementCollectionService.productAll(req.params)
+  res.send(pro);
+})
+const getBuyerAll = catchAsync(async(req,res) =>{
+  const pro = await requirementCollectionService.buyerData(req.params)
   res.send(pro);
 })
 
@@ -91,4 +100,6 @@ module.exports = {
   getAllRequirementCollectionStatus,
   groupMapService,
   getDataAllBuyerIntrested,
+  getBuyerAll,
+  getBUyerProduct,
 };

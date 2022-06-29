@@ -223,6 +223,100 @@ const data = async()=>{
   ])
  
 }
+const buyerData = async ()=>{
+  return await requirementCollection.aggregate([
+    // {
+    //   $match:{$and:[{ type: { $eq: "Supplier" }}]}
+    // },
+    {
+      $match:{$or:[
+        {$and:[{ type: { $eq: "Both" }},{ selectboth: { $eq: "Buyer" }}]},
+        {$and:[{ type: { $eq: "Buyer" }}]},
+  ]},
+},
+    // {
+    //   $lookup:{
+    //     from: 'requirementcollections',
+    //     localField: 'supplierpname',
+    //     foreignField: 'buyerpname',
+    //     as: 'buyerdata',
+    //   }
+    // },
+
+    // {
+    //   $match:{$or:[
+    //     {$and:[{'buyerdata':{$type: 'array', $ne: []}}]}]}
+    // },
+    {
+      $lookup:{
+          from: "suppliers",  
+          localField:"name",
+          foreignField:"_id", 
+          as: "suppliersData" 
+      }
+  },
+  { $unwind:"$suppliersData" }, 
+ 
+    {
+      $project:{
+        _id : 1,
+        type:1,
+        SecretName:'$suppliersData.secretName',
+        name:'$suppliersData.primaryContactName',
+        mobileNumber:'$suppliersData.primaryContactNumber',
+        BuyerId:"$suppliersData._id",
+        date:1,
+        packtype:1,
+        expquantity:1,
+        expprice:1,
+        paymentmode:1,
+        supplierid:1, 
+        buyerpname:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        buyerdeliverydate:1,
+        supplierpname:1,
+        stocklocation:1,
+        stockposition:1,
+        stockavailability:1,
+        buyerid:1,
+        selectboth:1,
+        advance:1,
+        Date:1,
+        status:1,
+        reasonCallback:1,
+        dateCallback:1,
+        feedbackCallback:1,
+        statusAccept:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        moderateStatus:1,
+        editedPrice:1,
+        moderateRejectReason:1,
+        Slatitude:1,
+        Slongitude:1,
+        Blatitude:1,
+        Blongitude:1,
+        matchesstatus:1,
+        active:1,
+        archive:1
+      }
+    },
+  ])
+}
+
+const BuyerSearch = async (id) =>{
+   const data = requirementCollection.find({name:id}).select('buyerpname')
+   if(!data){
+    throw new ApiError(httpStatus.NOT_FOUND, 'RequirementCollection not found');
+   }
+   return data
+}
 
 const getmaxmin = async (product,fromprice,toprice,fromquantity,toquantity,destination,page)=>{
 
@@ -462,4 +556,6 @@ module.exports = {
   getAllRequirementCollectionStatus,
   groupMap,
    data,
+   buyerData,
+   BuyerSearch,
 };
