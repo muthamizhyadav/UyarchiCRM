@@ -12,12 +12,10 @@ const getAllSupplier = async () => {
 
 const createSupplierwithType = async (type) => {
   let values;
-  if (type == 'Supplier') {
-    values = await supplier.find({ type: 'Supplier' });
-  } else if (type == 'Buyer') {
-    values = await supplier.find({ type: 'Buyer' });
-  }else if(type == "Both") {
-    values = await supplier.find({ type: 'Both' });
+  if (type == 'supplier') {
+    values = await supplier.find({ type: 'supplier' });
+  } else if (type == 'buyer') {
+    values = await supplier.find({ type: 'buyer' });
   }
   return values;
 };
