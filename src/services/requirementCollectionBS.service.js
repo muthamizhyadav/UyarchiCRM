@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { RequirementBuyer,RequirementSupplier } = require('../models/requirementCollectionBS.model');
+const {SupplierRequirementUpdate} = require('../models/requirementUpdateBS')
 const supplier = require('../models/supplier.model')
 const axios = require('axios');
 
@@ -36,15 +37,16 @@ const getByIdSupplier = async (supplierId) => {
 }
 
 const getByIdBuyerAll = async () => {
-    return RequirementBuyer.find()
+    return RequirementBuyer.find({active:true})
 }
 
 const getByIdSupplierAll = async () => {
-    return RequirementSupplier.find()
+    return RequirementSupplier.find({active:true})
 }
 
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
+
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
     }
@@ -53,10 +55,15 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
   };
 
   const updateRequirementSupplierById = async (supplierId, updateBody) => {
-    let data = await getByIdSupplier(buyerId);
+    let data = await getByIdSupplier(supplierId);
+
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier not found');
     }
+    let values ={}
+    values = {...{userId:data.userId, supplierReqId:data._id, updatedQty:data.expectedQnty, price:data.expectedPrice, stockLocation:data.stockLocation, date:data.date, time:data.time}}
+    SupplierRequirementUpdate.create(values)
+
     data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
     return data;
   };

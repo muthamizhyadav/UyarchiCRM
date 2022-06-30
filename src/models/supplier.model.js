@@ -53,6 +53,9 @@ const supplierSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  createdBy:{
+    type:String,
+  },
   pinCode: {
     type: Number,
   },

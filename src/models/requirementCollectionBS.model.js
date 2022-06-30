@@ -45,6 +45,9 @@ lat:{
 lang:{
     type:Number,
 },
+status:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
@@ -103,6 +106,9 @@ const requirementSupplierSchema = new mongoose.Schema({
   },
   lang:{
       type:Number,
+  },
+  status:{
+    type:String,
   },
    active: {
       type: Boolean,

@@ -30,9 +30,6 @@ const createSupplierService = catchAsync(async (req, res) => {
   if (req.body.type == 'Supplier') {
     userId = 'SU' + center + totalcount;
   }
-  if (req.body.type == 'Both') {
-    userId = 'BO' + center + totalcount;
-  }
   let supplierss;
   if(userId !=''){
     supplierss = await supplierService.createSupplier(req.body);
