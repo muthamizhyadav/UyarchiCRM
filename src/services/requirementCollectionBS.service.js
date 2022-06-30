@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { RequirementBuyer,RequirementSupplier } = require('../models/requirementCollectionBS.model');
-const {SupplierRequirementUpdate} = require('../models/requirementUpdateBS')
+const {SupplierRequirementUpdate,BuyerRequirementUpdate} = require('../models/requirementUpdateBS')
 const supplier = require('../models/supplier.model')
 const axios = require('axios');
 
@@ -47,9 +47,12 @@ const getByIdSupplierAll = async () => {
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
   console.log(data)
+  let values = {}
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
     }
+    values = {...{userId:data.userId , buyerReqId:data._id, QtyMin:data.minrange, QtyMax:data.maxrange, priceMin:data.minprice ,priceMax:data.maxprice ,deliveryLocation:data.deliverylocation ,date:data.date ,time:data.time}}
+    BuyerRequirementUpdate.create(values)
     data = await RequirementBuyer.findByIdAndUpdate({ _id: buyerId }, updateBody, { new: true });
 
     return data;

@@ -65,6 +65,12 @@ const buyerRequirementUpdateSchema = mongoose.Schema({
   deliveryLocation:{
     type:String,
   },
+  date:{
+    type:String,
+  },
+  time:{
+    type:Number,
+  },
   active: {
     type: Boolean,
     default: true,
