@@ -24,10 +24,10 @@ const createSupplierService = catchAsync(async (req, res) => {
   // console.log(center, 0);
   let userId = '';
   let totalcount = Buy.length + 1;
-  if (req.body.type == 'Buyer') {
+  if (req.body.type == 'buyer') {
     userId = 'BU' + center + totalcount;
   }
-  if (req.body.type == 'Supplier') {
+  if (req.body.type == 'supplier') {
     userId = 'SU' + center + totalcount;
   }
   let supplierss;

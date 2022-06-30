@@ -46,15 +46,17 @@ const getByIdSupplierAll = async () => {
 
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
-
+  console.log(data)
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
     }
     data = await RequirementBuyer.findByIdAndUpdate({ _id: buyerId }, updateBody, { new: true });
-    return data;
-  };
 
-  const updateRequirementSupplierById = async (supplierId, updateBody) => {
+    return data;
+  }; 
+
+
+const updateRequirementSupplierById = async (supplierId, updateBody) => {
     let data = await getByIdSupplier(supplierId);
 
     if (!data) {
@@ -68,7 +70,7 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
     return data;
   };
   
-  const deleteRequirementBuyerById = async (buyerId) => {
+const deleteRequirementBuyerById = async (buyerId) => {
     const data = await getByIdBuyer(buyerId);
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
