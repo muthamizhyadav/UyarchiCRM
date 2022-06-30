@@ -33,6 +33,12 @@ const requirementBuyerSchema = new mongoose.Schema({
   deliverylocation: {
     type: String,
   },
+  deliveryDate:{
+    type:String,
+  },
+  deliveryTime:{
+    type:Number,
+  },
   date:{
     type:String,
   },
@@ -75,6 +81,12 @@ const requirementSupplierSchema = new mongoose.Schema({
     },
    stockLocation:{
     type:String,
+   },
+   stockAvailabilityDate:{
+    type:String,
+   },
+   stockAvailabilityTime:{
+    type:Number,
    },
    stockPosition:{
     type:String,
