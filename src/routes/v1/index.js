@@ -8,6 +8,7 @@ const supplierRoute = require('./supplier.route');
 const requirementCollectionRoute = require('./requirementCollection.route')
 const supplierAppUserRoute = require('./supplierAppUser.route')
 const slotandSlotsubmitRoute = require('./slotandSlotsubmit.route')
+const requirementCollectionBSRoute = require('./requirementCollectionBS.route')
 
 const router = express.Router();
 
@@ -39,6 +40,10 @@ const defaultRoutes = [
   {
     path:'/slotandSlotsubmit',
     route: slotandSlotsubmitRoute,
+  },
+  {
+    path:'/requirementCollectionBS',
+    route: requirementCollectionBSRoute,
   },
 
 ];
