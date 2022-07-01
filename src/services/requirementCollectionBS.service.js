@@ -94,6 +94,7 @@ const getByIdSupplier = async (supplierId) => {
           name:'$suppliersData.primaryContactName',
           secretName:'$suppliersData.secretName',
           _id:1,
+          userId:1,
           product:1,
           stockLocation:1,
           stockPosition:1,
@@ -181,6 +182,7 @@ const getByIdSupplierAll = async () => {
           name:'$suppliersData.primaryContactName',
           secretName:'$suppliersData.secretName',
           _id:1,
+          userId:1,
           product:1,
           stockLocation:1,
           stockPosition:1,
@@ -216,12 +218,32 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
 
 const updateRequirementSupplierById = async (supplierId, updateBody) => {
     let data = await getByIdSupplier(supplierId);
+    console.log(updateBody)
     let values ={}
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier not found');
     }
-    console.log(data[0].product)
-    values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty, price:data[0].expectedPrice, stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    if(data[0].expectedQnty != updateBody.expectedQnty && (data[0].expectedPrice == updateBody.expectedPrice && data[0].stockLocation == updateBody.stockLocation)){
+    values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].expectedPrice != updateBody.expectedPrice && (data[0].expectedQnty == updateBody.expectedQnty && data[0].stockLocation == updateBody.stockLocation) ){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, price:data[0].expectedPrice, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].stockLocation != updateBody.stockLocation && (data[0].expectedQnty == updateBody.expectedQnty && data[0].expectedPrice == updateBody.expectedPrice) ){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    }
+    if((data[0].expectedQnty != updateBody.expectedQnty && data[0].expectedPrice != updateBody.expectedPrice ) && ( data[0].stockLocation == updateBody.stockLocation) ){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty, price:data[0].expectedPrice, date:data[0].date, time:data[0].time}}
+    }
+    if((data[0].expectedQnty != updateBody.expectedQnty && data[0].stockLocation != updateBody.stockLocation ) && (data[0].expectedPrice == updateBody.expectedPrice) ){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty,  stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    }
+    if((data[0].expectedPrice != updateBody.expectedPrice && data[0].stockLocation != updateBody.stockLocation ) && (data[0].expectedQnty == updateBody.expectedQnty) ){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, price:data[0].expectedPrice,  stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].expectedPrice != updateBody.expectedPrice && data[0].stockLocation != updateBody.stockLocation  &&  data[0].expectedQnty != updateBody.expectedQnty){
+      values = {...{userId:data[0].userId, supplierReqId:data[0]._id, price:data[0].expectedPrice, updatedQty:data[0].expectedQnty, stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    }
     console.log(values)
     SupplierRequirementUpdate.create(values)
 
