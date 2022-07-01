@@ -29,7 +29,46 @@ const createRequirementSupplier = async (supplierBody)=>{
 }
 
 const getByIdBuyer = async (buyerId) => {
-    return RequirementBuyer.findById(buyerId)
+    return RequirementBuyer.aggregate([
+      {
+        $match:{
+          $and:[{_id:{$eq:buyerId}}]
+        }
+    },
+    {
+      $lookup:{
+        from:'suppliers',
+        localField:'userId',
+        foreignField:'_id',
+        as:'suppliersData'
+      }
+    },
+    {
+      $unwind:'$suppliersData'
+    },
+    {
+      $project:{
+        name:'$suppliersData.primaryContactName',
+        secretName:'$suppliersData.secretName',
+        _id:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        deliveryDate:1,
+        deliveryTime:1,
+        requirementAddBy:1,
+        date:1,
+        time:1,
+        lat:1,
+        lang:1,
+        status:1,
+        product:1,
+      }
+    },
+    ])
 }
 
 const getByIdSupplier = async (supplierId) => {
@@ -62,6 +101,9 @@ const getByIdSupplier = async (supplierId) => {
           expectedPrice:1,
           expectedQnty:1,
           paymentMode:1,
+          requirementAddBy:1,
+          stockAvailabilityDate:1,
+          stockAvailabilityTime:1,
           date:1,
           time:1,
           lat:1,
@@ -73,7 +115,46 @@ const getByIdSupplier = async (supplierId) => {
 }
 
 const getByIdBuyerAll = async () => {
-    return RequirementBuyer.find({active:true})
+    return RequirementBuyer.aggregate([
+      {
+        $match:{
+          $and:[{active:{$eq:true}}]
+        }
+    },
+    {
+      $lookup:{
+        from:'suppliers',
+        localField:'userId',
+        foreignField:'_id',
+        as:'suppliersData'
+      }
+    },
+    {
+      $unwind:'$suppliersData'
+    },
+    {
+      $project:{
+        name:'$suppliersData.primaryContactName',
+        secretName:'$suppliersData.secretName',
+        _id:1,
+        minrange:1,
+        maxrange:1,
+        minprice:1,
+        maxprice:1,
+        pdelivery:1,
+        deliverylocation:1,
+        deliveryDate:1,
+        deliveryTime:1,
+        requirementAddBy:1,
+        date:1,
+        time:1,
+        lat:1,
+        lang:1,
+        status:1,
+        product:1,
+      }
+    },
+    ])
 }
 
 const getByIdSupplierAll = async () => {

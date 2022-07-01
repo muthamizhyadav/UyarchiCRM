@@ -54,6 +54,9 @@ lang:{
 status:{
     type:String,
   },
+requirementAddBy:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
@@ -82,6 +85,9 @@ const requirementSupplierSchema = new mongoose.Schema({
    stockLocation:{
     type:String,
    },
+   requirementAddBy:{
+    type:String,
+  },
    stockAvailabilityDate:{
     type:String,
    },
