@@ -87,7 +87,7 @@ const requirementSupplierSchema = new mongoose.Schema({
    },
    requirementAddBy:{
     type:String,
-  },
+   },
    stockAvailabilityDate:{
     type:String,
    },

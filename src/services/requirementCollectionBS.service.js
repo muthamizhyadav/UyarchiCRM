@@ -109,6 +109,7 @@ const getByIdSupplier = async (supplierId) => {
           lat:1,
           lang:1,
           status:1,
+          advance:1,
         }
       },
     ])
@@ -192,6 +193,7 @@ const getByIdSupplierAll = async () => {
           lat:1,
           lang:1,
           status:1,
+          advance:1,
         }
       },
     ])
