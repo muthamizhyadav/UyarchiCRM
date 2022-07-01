@@ -95,7 +95,7 @@ const getAllSupplierAppUserResponce = async (id) => {
   };
   
   const deleteSupplierAppUserById = async (supplierAppUserId) => {
-    const Manage = await getSupplierAppUserById(supplierAppUserId);
+    const Manage = await getSupplierAppUserById(supplierAppUserId);  
     if (!Manage) {
       throw new ApiError(httpStatus.NOT_FOUND, 'SupplierAppUser not found');
     }

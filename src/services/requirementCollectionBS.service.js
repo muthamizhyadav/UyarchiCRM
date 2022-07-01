@@ -33,7 +33,43 @@ const getByIdBuyer = async (buyerId) => {
 }
 
 const getByIdSupplier = async (supplierId) => {
-    return RequirementSupplier.findById(supplierId)
+    return RequirementSupplier.aggregate([
+      {
+          $match:{
+            $and:[{_id:{$eq:supplierId}}]
+          }
+      },
+      {
+        $lookup:{
+          from:'suppliers',
+          localField:'userId',
+          foreignField:'_id',
+          as:'suppliersData'
+        }
+      },
+      {
+        $unwind:'$suppliersData'
+      },
+      {
+        $project:{
+          name:'$suppliersData.primaryContactName',
+          secretName:'$suppliersData.secretName',
+          _id:1,
+          product:1,
+          stockLocation:1,
+          stockPosition:1,
+          packType:1,
+          expectedPrice:1,
+          expectedQnty:1,
+          paymentMode:1,
+          date:1,
+          time:1,
+          lat:1,
+          lang:1,
+          status:1,
+        }
+      },
+    ])
 }
 
 const getByIdBuyerAll = async () => {
@@ -41,7 +77,43 @@ const getByIdBuyerAll = async () => {
 }
 
 const getByIdSupplierAll = async () => {
-    return RequirementSupplier.find({active:true})
+    return RequirementSupplier.aggregate([
+      {
+        $match:{
+          $and:[{active:{$eq:true}}]
+        }
+      },
+      {
+        $lookup:{
+          from:'suppliers',
+          localField:'userId',
+          foreignField:'_id',
+          as:'suppliersData'
+        }
+      },
+      {
+        $unwind:'$suppliersData'
+      },
+      {
+        $project:{
+          name:'$suppliersData.primaryContactName',
+          secretName:'$suppliersData.secretName',
+          _id:1,
+          product:1,
+          stockLocation:1,
+          stockPosition:1,
+          packType:1,
+          expectedPrice:1,
+          expectedQnty:1,
+          paymentMode:1,
+          date:1,
+          time:1,
+          lat:1,
+          lang:1,
+          status:1,
+        }
+      },
+    ])
 }
 
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
