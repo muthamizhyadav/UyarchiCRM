@@ -216,12 +216,13 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
 
 const updateRequirementSupplierById = async (supplierId, updateBody) => {
     let data = await getByIdSupplier(supplierId);
-
+    let values ={}
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier not found');
     }
-    let values ={}
-    values = {...{userId:data.userId, supplierReqId:data._id, updatedQty:data.expectedQnty, price:data.expectedPrice, stockLocation:data.stockLocation, date:data.date, time:data.time}}
+    console.log(data[0].product)
+    values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty, price:data[0].expectedPrice, stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
+    console.log(values)
     SupplierRequirementUpdate.create(values)
 
     data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
