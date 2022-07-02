@@ -212,6 +212,7 @@ const getByIdSupplierAll = async () => {
           userId:1,
           product:1,
           stockLocation:1,
+          requirementAddBy:1,
           stockPosition:1,
           packType:1,
           expectedPrice:1,
@@ -247,8 +248,79 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
     }
-    values = {...{userId:data.userId , buyerReqId:data._id, QtyMin:data.minrange, QtyMax:data.maxrange, priceMin:data.minprice ,priceMax:data.maxprice ,deliveryLocation:data.deliverylocation ,date:data.date ,time:data.time}}
+    if(data[0].minrange != updateBody.minrange && (data[0].minprice == updateBody.minprice && data[0].maxprice == updateBody.maxprice && data[0].deliverylocation == updateBody.deliverylocation )){
+    values = {...{userId:data[0].userId, buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date, time:data[0].time}}
+    // console.log("1")
+    }
+    if(data[0].maxrange != updateBody.maxrange && (data[0].minprice == updateBody.minprice && data[0].maxprice == updateBody.maxprice && data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("2")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].minprice != updateBody.minprice && ( data[0].minrange == updateBody.minrange && data[0].maxrange == updateBody.maxrange  && data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("3")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].maxprice != updateBody.maxprice && ( data[0].minrange == updateBody.minrange && data[0].maxrange == updateBody.maxrange  && data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("4")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].maxprice != updateBody.maxprice && data[0].minrange != updateBody.minrange && ( data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("01")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].maxprice != updateBody.maxprice && data[0].maxrange != updateBody.maxrange && ( data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("02")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].minprice != updateBody.minprice && data[0].minrange != updateBody.minrange && ( data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("03")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].minprice != updateBody.minprice && data[0].maxrange != updateBody.maxrange && ( data[0].deliverylocation == updateBody.deliverylocation )){
+      // console.log("404")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, date:data[0].date ,time:data[0].time}}
+    }
+
+    if(data[0].deliverylocation != updateBody.deliverylocation  && ( data[0].minrange == updateBody.minrange && data[0].maxrange == updateBody.maxrange  && data[0].minprice == updateBody.minprice && data[0].maxprice == updateBody.maxprice )){
+      // console.log("5")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].minrange != updateBody.minrange && (data[0].minprice == updateBody.minprice && data[0].maxprice == updateBody.maxprice )){
+      // console.log("6")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, deliveryLocation:data[0].deliverylocation, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].maxrange != updateBody.maxrange && (data[0].minprice == updateBody.minprice && data[0].maxprice == updateBody.maxprice )){
+      // console.log("7")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, deliveryLocation:data[0].deliverylocation, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].minprice != updateBody.minprice && (data[0].minrange == updateBody.minrange && data[0].maxrange == updateBody.maxrange)){
+      // console.log("8")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice, priceMax:data[0].maxprice, deliveryLocation:data[0].deliverylocation, date:data[0].date, time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].maxprice != updateBody.maxprice && (data[0].minrange == updateBody.minrange && data[0].maxrange == updateBody.maxrange )){
+      // console.log("9")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, priceMin:data[0].minprice ,priceMax:data[0].maxprice ,deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].minrange != updateBody.minrange  && data[0].minprice != updateBody.minprice){
+      // console.log("10")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, priceMin:data[0].minprice ,priceMax:data[0].maxprice ,deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].maxrange != updateBody.maxrange && data[0].maxprice != updateBody.maxprice ){
+      // console.log("11")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, priceMin:data[0].minprice ,priceMax:data[0].maxprice ,deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].minrange != updateBody.minrange && data[0].maxprice != updateBody.maxprice ){
+      // console.log("12")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, priceMin:data[0].minprice ,priceMax:data[0].maxprice ,deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+    if(data[0].deliverylocation != updateBody.deliverylocation  && data[0].maxrange != updateBody.maxrange && data[0].minprice != updateBody.minprice ){
+      // console.log("13")
+      values = {...{userId:data[0].userId , buyerReqId:data[0]._id, QtyMin:data[0].minrange, QtyMax:data[0].maxrange, priceMin:data[0].minprice ,priceMax:data[0].maxprice ,deliveryLocation:data[0].deliverylocation ,date:data[0].date ,time:data[0].time}}
+    }
+//  console.log(values)
+  if(Object.keys(values).length !== 0){
     BuyerRequirementUpdate.create(values)
+  }
     data = await RequirementBuyer.findByIdAndUpdate({ _id: buyerId }, updateBody, { new: true });
 
     return data;
@@ -282,7 +354,9 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
     if(data[0].expectedPrice != updateBody.expectedPrice && data[0].stockLocation != updateBody.stockLocation  &&  data[0].expectedQnty != updateBody.expectedQnty){
       values = {...{userId:data[0].userId, supplierReqId:data[0]._id, price:data[0].expectedPrice, updatedQty:data[0].expectedQnty, stockLocation:data[0].stockLocation, date:data[0].date, time:data[0].time}}
     }
+    if(Object.keys(values).length !== 0){
     SupplierRequirementUpdate.create(values)
+    }
 
     data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
     return data;
