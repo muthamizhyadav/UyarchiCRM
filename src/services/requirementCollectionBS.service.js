@@ -66,6 +66,15 @@ const getByIdBuyer = async (buyerId) => {
         lang:1,
         status:1,
         product:1,
+        status:1,
+        advance:1,
+        statusAccept:1,
+        reasonCallback:1,
+        dateCallback:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        feedbackCallback:1,
       }
     },
     ])
@@ -111,6 +120,15 @@ const getByIdSupplier = async (supplierId) => {
           lang:1,
           status:1,
           advance:1,
+          status:1,
+          advance:1,
+          statusAccept:1,
+          reasonCallback:1,
+          dateCallback:1,
+          aliveFeedback:1,
+          deadFeedback:1,
+          modificationFeedback:1,
+          feedbackCallback:1,
         }
       },
     ])
@@ -154,6 +172,15 @@ const getByIdBuyerAll = async () => {
         lang:1,
         status:1,
         product:1,
+        status:1,
+        advance:1,
+        statusAccept:1,
+        reasonCallback:1,
+        dateCallback:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        feedbackCallback:1,
       }
     },
     ])
@@ -196,14 +223,26 @@ const getByIdSupplierAll = async () => {
           lang:1,
           status:1,
           advance:1,
+          statusAccept:1,
+          reasonCallback:1,
+          dateCallback:1,
+          aliveFeedback:1,
+          deadFeedback:1,
+          modificationFeedback:1,
+          feedbackCallback:1,
         }
       },
     ])
 }
 
+// updated data get method
+const getUpdateDataQty = async (id) => {
+ const data = SupplierRequirementUpdate.find({supplierReqId:id})
+ return data
+} 
+
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
-  console.log(data)
   let values = {}
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
@@ -280,5 +319,6 @@ const deleteRequirementBuyerById = async (buyerId) => {
         updateRequirementSupplierById,
         deleteRequirementBuyerById,
         deleteRequirementSupplierById,
+        getUpdateDataQty,
    };
 

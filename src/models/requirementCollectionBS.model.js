@@ -57,6 +57,27 @@ status:{
 requirementAddBy:{
     type:String,
   },
+  statusAccept:{
+    type:String,
+  },
+  reasonCallback:{
+    type:String,
+  },
+  dateCallback:{
+    type:String,
+  },
+  aliveFeedback:{
+    type:String,
+  },
+  deadFeedback:{
+    type:String,
+  },
+  modificationFeedback:{
+    type:String,
+  },
+  feedbackCallback:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
@@ -112,6 +133,9 @@ const requirementSupplierSchema = new mongoose.Schema({
    advance:{
     type:String,
    },
+   reason:{
+    type:String,
+   },
 
     date:{
       type:String,
@@ -128,6 +152,28 @@ const requirementSupplierSchema = new mongoose.Schema({
   status:{
     type:String,
   },
+  statusAccept:{
+    type:String,
+  },
+  reasonCallback:{
+    type:String,
+  },
+  dateCallback:{
+    type:String,
+  },
+  aliveFeedback:{
+    type:String,
+  },
+  deadFeedback:{
+    type:String,
+  },
+  modificationFeedback:{
+    type:String,
+  },
+  feedbackCallback:{
+    type:String,
+  },
+
    active: {
       type: Boolean,
       default: true,

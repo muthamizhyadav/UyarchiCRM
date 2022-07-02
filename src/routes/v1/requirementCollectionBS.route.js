@@ -15,4 +15,7 @@ router
   .put(requirementCollectionController.updateRequirementSupplierById)
   .delete(requirementCollectionController.deleteRequirementSupplierById);
 
+  // updateData
+  router.route('/Supplier/UpdataData/:id').get(requirementCollectionController.getUpdateDataQnty)
+
 module.exports = router;
