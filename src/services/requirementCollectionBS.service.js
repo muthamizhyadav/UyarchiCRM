@@ -240,7 +240,12 @@ const getByIdSupplierAll = async () => {
 const getUpdateDataQty = async (id) => {
  const data = SupplierRequirementUpdate.find({supplierReqId:id})
  return data
-} 
+}
+
+const getUpdateDataBuyerQty = async (id) => {
+  const data = BuyerRequirementUpdate.find({buyerReqId:id})
+  return data
+ }
 
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
@@ -394,5 +399,6 @@ const deleteRequirementBuyerById = async (buyerId) => {
         deleteRequirementBuyerById,
         deleteRequirementSupplierById,
         getUpdateDataQty,
+        getUpdateDataBuyerQty,
    };
 

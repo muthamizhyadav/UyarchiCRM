@@ -17,5 +17,6 @@ router
 
   // updateData
   router.route('/Supplier/UpdataData/:id').get(requirementCollectionController.getUpdateDataQnty)
+  router.route('/Buyer/UpdataData/:id').get(requirementCollectionController.getUpdateDataBuyerQnty)
 
 module.exports = router;

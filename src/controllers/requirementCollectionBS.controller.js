@@ -33,6 +33,14 @@ const getUpdateDataQnty = catchAsync (async (req, res)=>{
   res.send(data)
 })
 
+const getUpdateDataBuyerQnty = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getUpdateDataBuyerQty(req.params.id)
+  if(!data){
+   throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
+ }
+ res.send(data)
+})
+
 const getSupplierById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getByIdSupplier(req.params.supplierId)
     if(!data || data.active == false){
@@ -94,4 +102,5 @@ module.exports = {
     deleteRequirementBuyerById,
     deleteRequirementSupplierById,
     getUpdateDataQnty,
+    getUpdateDataBuyerQnty,
 };
