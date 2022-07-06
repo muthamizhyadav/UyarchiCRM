@@ -41,6 +41,15 @@ const getUpdateDataBuyerQnty = catchAsync (async (req, res)=>{
  res.send(data)
 })
 
+const getModerateData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getModeratedata(req.params.id)
+  if(!data){
+    throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
+
+  }
+  res.send(data)
+})
+
 const getSupplierById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getByIdSupplier(req.params.supplierId)
     if(!data || data.active == false){
@@ -90,6 +99,22 @@ const deleteRequirementSupplierById = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+
+// get buyer requirement dead
+
+const getAllBuyerNotDead = catchAsync (async (req, res)=>{
+  console.log("hi")
+  const buyer = await requirementCollectionService.getBuyerAlive(req.params)
+  res.send(buyer)
+})
+
+
+const getAllBuyerProductSame = catchAsync (async (req, res)=>{
+  const buyer = await requirementCollectionService.getBuyerSameProduct(req.params.id)
+  res.send(buyer)
+})
+
+
 module.exports = {
     createRequirementBuyerService,
     createRequirementSupplierService,
@@ -103,4 +128,7 @@ module.exports = {
     deleteRequirementSupplierById,
     getUpdateDataQnty,
     getUpdateDataBuyerQnty,
+    getModerateData,
+    getAllBuyerNotDead,
+    getAllBuyerProductSame,
 };

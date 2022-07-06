@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { RequirementBuyer,RequirementSupplier } = require('../models/requirementCollectionBS.model');
-const {SupplierRequirementUpdate,BuyerRequirementUpdate} = require('../models/requirementUpdateBS')
+const {SupplierRequirementUpdate,BuyerRequirementUpdate,SupplierModerateUpdate} = require('../models/requirementUpdateBS')
 const supplier = require('../models/supplier.model')
 const axios = require('axios');
 
@@ -129,6 +129,8 @@ const getByIdSupplier = async (supplierId) => {
           deadFeedback:1,
           modificationFeedback:1,
           feedbackCallback:1,
+          moderatedPrice:1,
+          moderateStatus:1,
         }
       },
     ])
@@ -187,53 +189,178 @@ const getByIdBuyerAll = async () => {
 }
 
 const getByIdSupplierAll = async () => {
-    return RequirementSupplier.aggregate([
-      {
-        $match:{
-          $and:[{active:{$eq:true}}]
-        }
-      },
-      {
-        $lookup:{
-          from:'suppliers',
-          localField:'userId',
-          foreignField:'_id',
-          as:'suppliersData'
-        }
-      },
-      {
-        $unwind:'$suppliersData'
-      },
-      {
-        $project:{
-          name:'$suppliersData.primaryContactName',
-          secretName:'$suppliersData.secretName',
-          _id:1,
-          userId:1,
-          product:1,
-          stockLocation:1,
-          requirementAddBy:1,
-          stockPosition:1,
-          packType:1,
-          expectedPrice:1,
-          expectedQnty:1,
-          paymentMode:1,
-          date:1,
-          time:1,
-          lat:1,
-          lang:1,
-          status:1,
-          advance:1,
-          statusAccept:1,
-          reasonCallback:1,
-          dateCallback:1,
-          aliveFeedback:1,
-          deadFeedback:1,
-          modificationFeedback:1,
-          feedbackCallback:1,
-        }
-      },
-    ])
+  return RequirementSupplier.aggregate([
+    {
+      $match:{
+        $and:[{active:{$eq:true}}]
+      }
+    },
+    {
+      $lookup:{
+        from:'suppliers',
+        localField:'userId',
+        foreignField:'_id',
+        as:'suppliersData'
+      }
+    },
+    {
+      $unwind:'$suppliersData'
+    },
+    {
+      $project:{
+        name:'$suppliersData.primaryContactName',
+        secretName:'$suppliersData.secretName',
+        _id:1,
+        userId:1,
+        product:1,
+        stockLocation:1,
+        requirementAddBy:1,
+        stockPosition:1,
+        packType:1,
+        expectedPrice:1,
+        expectedQnty:1,
+        paymentMode:1,
+        date:1,
+        time:1,
+        lat:1,
+        lang:1,
+        status:1,
+        advance:1,
+        statusAccept:1,
+        reasonCallback:1,
+        dateCallback:1,
+        aliveFeedback:1,
+        deadFeedback:1,
+        modificationFeedback:1,
+        feedbackCallback:1,
+        moderatedPrice:1,
+        moderateStatus:1,
+      }
+    },
+  ])
+}
+
+ 
+// product match Buyer
+const getBuyerSameProduct = async (id) => {
+  const data = await RequirementBuyer.aggregate([
+    {
+      $match:{
+        $and:[{_id:{$eq:id}}]
+      }
+  },
+{
+      $lookup:{
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        as: 'requirementsuppliersData',
+      }
+    },
+    {
+      $unwind:'$requirementsuppliersData'
+    },
+  {
+    $lookup:{
+      from:'suppliers',
+      localField:'requirementsuppliersData.userId',
+      foreignField:'_id',
+      as:'suppliersData'
+    }
+  },
+  {
+    $unwind:'$suppliersData'
+  }, 
+
+  {
+    $project:{
+       name:'$suppliersData.primaryContactName',
+       secretName:'$suppliersData.secretName',
+       data:'$requirementsuppliersData',
+      // _id:1,
+      // userId:1,
+      // product:1,
+      // stockLocation:1,
+      // stockPosition:1,
+      // packType:1,
+      // expectedPrice:1,
+      // expectedQnty:1,
+      // paymentMode:1,
+      // requirementAddBy:1,
+      // stockAvailabilityDate:1,
+      // stockAvailabilityTime:1,
+      // date:1,
+      // time:1,
+      // lat:1,
+      // lang:1,
+      // advance:1,
+      // statusAccept:1,
+      // reasonCallback:1,
+      // dateCallback:1,
+      // aliveFeedback:1,
+      // deadFeedback:1,
+      // modificationFeedback:1,
+      // feedbackCallback:1,
+      // moderatedPrice:1,
+    }
+  },
+  ])
+  console.log(data.length)
+  return {data:data, matchCount:data.length}
+}
+
+
+// Buyer all live
+const getBuyerAlive = async () => {
+  return RequirementBuyer.aggregate([
+    {
+      $match:{
+        $and:[{active:{$eq:true}},{statusAccept:{$ne:'Requirement dead'}}]
+      }
+  },
+  {
+    $lookup:{
+      from:'suppliers',
+      localField:'userId',
+      foreignField:'_id',
+      as:'suppliersData'
+    }
+  },
+  {
+    $unwind:'$suppliersData'
+  },
+  {
+    $project:{
+      name:'$suppliersData.primaryContactName',
+      secretName:'$suppliersData.secretName',
+      _id:1,
+      minrange:1,
+      maxrange:1,
+      minprice:1,
+      maxprice:1,
+      pdelivery:1,
+      deliverylocation:1,
+      deliveryDate:1,
+      deliveryTime:1,
+      requirementAddBy:1,
+      date:1,
+      time:1,
+      lat:1,
+      lang:1,
+      status:1,
+      product:1,
+      status:1,
+      advance:1,
+      statusAccept:1,
+      reasonCallback:1,
+      dateCallback:1,
+      aliveFeedback:1,
+      deadFeedback:1,
+      modificationFeedback:1,
+      feedbackCallback:1,
+    }
+  },
+  ])
 }
 
 // updated data get method
@@ -246,7 +373,11 @@ const getUpdateDataBuyerQty = async (id) => {
   const data = BuyerRequirementUpdate.find({buyerReqId:id})
   return data
  }
-
+ 
+const getModeratedata = async (id) =>{
+  const data = SupplierModerateUpdate.find({supplierReqId:id})
+  return data
+} 
 const updateRequirementBuyerById = async (buyerId, updateBody) => {
     let data = await getByIdBuyer(buyerId);
   let values = {}
@@ -333,11 +464,19 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
 
 
 const updateRequirementSupplierById = async (supplierId, updateBody) => {
-    let data = await getByIdSupplier(supplierId);
-    let values ={}
+    let data = await getByIdSupplier(supplierId)
+      let values1 = {}
+    //  let values2 = {}
+    let values = {}
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier not found');
     }
+    console.log(data[0].moderatedPrice)
+    console.log(data)
+    if(updateBody.moderatedPrice != data[0].moderatedPrice){
+      console.log("yes")
+      values1 = {...{userId:data[0].userId, supplierReqId:data[0]._id, moderatedPrice:data[0].moderatedPrice}}
+      }
     if(data[0].expectedQnty != updateBody.expectedQnty && (data[0].expectedPrice == updateBody.expectedPrice && data[0].stockLocation == updateBody.stockLocation)){
     values = {...{userId:data[0].userId, supplierReqId:data[0]._id, updatedQty:data[0].expectedQnty, date:data[0].date, time:data[0].time}}
     }
@@ -362,6 +501,9 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
     if(Object.keys(values).length !== 0){
     SupplierRequirementUpdate.create(values)
     }
+    if(Object.keys(values1).length !== 0){
+      SupplierModerateUpdate.create(values1)
+      }
 
     data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
     return data;
@@ -400,5 +542,8 @@ const deleteRequirementBuyerById = async (buyerId) => {
         deleteRequirementSupplierById,
         getUpdateDataQty,
         getUpdateDataBuyerQty,
+        getModeratedata,
+        getBuyerAlive,
+        getBuyerSameProduct,
    };
 

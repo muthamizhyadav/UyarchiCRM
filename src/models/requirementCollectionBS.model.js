@@ -173,12 +173,18 @@ const requirementSupplierSchema = new mongoose.Schema({
   feedbackCallback:{
     type:String,
   },
-
-   active: {
+  moderatedPrice:{
+    type:Number,
+    deafault: 0,
+  },
+  moderateStatus:{
+    type:String,
+  },
+  active: {
       type: Boolean,
       default: true,
     },
-    archive: {
+  archive: {
       type: Boolean,
       default: false,
     },

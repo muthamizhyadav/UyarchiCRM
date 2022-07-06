@@ -82,7 +82,40 @@ const buyerRequirementUpdateSchema = mongoose.Schema({
 });
 
 const BuyerRequirementUpdate = mongoose.model('buyerRequirementUpdate', buyerRequirementUpdateSchema);
+const supplierModerateUpdateSchema = mongoose.Schema({
+  _id :{
+    type : String,
+    default:v4
+  },
+  userId: {
+    type: String,
+    
+  },
+  supplierReqId:{
+    type:String,
+  },
+  moderatedPrice: {
+    type: Number,
+  },
+  date:{
+    type:String,
+  },
+  time:{
+    type:Number,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  archive: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const SupplierModerateUpdate = mongoose.model('supplierModerateUpdate', supplierModerateUpdateSchema);
 module.exports = {
   SupplierRequirementUpdate,
   BuyerRequirementUpdate,
+  SupplierModerateUpdate,
 };

@@ -18,5 +18,9 @@ router
   // updateData
   router.route('/Supplier/UpdataData/:id').get(requirementCollectionController.getUpdateDataQnty)
   router.route('/Buyer/UpdataData/:id').get(requirementCollectionController.getUpdateDataBuyerQnty)
+  router.route('/Supplier/UpdateModerate/:id').get(requirementCollectionController.getModerateData)
 
+  // BuyerNotDead
+  router.route('/Buyer/Live/all').get(requirementCollectionController.getAllBuyerNotDead)
+  router.route('/Buyer/SameProduct/all/:id').get(requirementCollectionController.getAllBuyerProductSame)
 module.exports = router;
