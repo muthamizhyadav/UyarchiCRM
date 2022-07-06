@@ -141,7 +141,7 @@ const requirementSupplierSchema = new mongoose.Schema({
       type:String,
     },
     time:{
-  type:String,
+      type:Number,
   },
   lat:{
       type:Number,
