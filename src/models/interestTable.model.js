@@ -15,12 +15,12 @@ const supplierInterestSchema = mongoose.Schema({
   matchedBuyerId: {
     type: String,
   },
-  status:{
+  interestStatus:{
     type:String,
   },
-  action:{
-    type:String,
-  },
+  // action:{
+  //   type:String,
+  // },
   active: {
     type: Boolean,
     default: true,
@@ -32,6 +32,4 @@ const supplierInterestSchema = mongoose.Schema({
 });
 
 const SupplierInterest = mongoose.model('supplierInterest', supplierInterestSchema);
-module.exports = {
-    SupplierInterest,
-}
+module.exports = SupplierInterest ;

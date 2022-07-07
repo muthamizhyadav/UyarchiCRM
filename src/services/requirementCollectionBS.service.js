@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { RequirementBuyer,RequirementSupplier } = require('../models/requirementCollectionBS.model');
 const {SupplierRequirementUpdate,BuyerRequirementUpdate,SupplierModerateUpdate} = require('../models/requirementUpdateBS')
+const {SupplierInterest} = require('../models/interestTable.model')
 const supplier = require('../models/supplier.model')
 const axios = require('axios');
 
@@ -263,15 +264,16 @@ const getBuyerSameProduct = async (id) => {
     },
   {
     $lookup:{
-      from:'suppliers',
-      localField:'requirementsuppliersData.userId',
+      from:'supplierInterests',
+      localField:'',
       foreignField:'_id',
       as:'suppliersData'
     }
   },
   {
     $unwind:'$suppliersData'
-  }, 
+  },
+  
 
   {
     $project:{
@@ -306,9 +308,12 @@ const getBuyerSameProduct = async (id) => {
     }
   },
   ])
-  console.log(data.length)
+
   return {data:data, matchCount:data.length}
 }
+
+
+
 
 
 // Buyer all live
@@ -469,13 +474,16 @@ const updateRequirementBuyerById = async (buyerId, updateBody) => {
 const updateRequirementSupplierById = async (supplierId, updateBody) => {
     let data = await getByIdSupplier(supplierId)
       let values1 = {}
-    //  let values2 = {}
     let values = {}
+    let interestValues = {}
+  
     if (!data) {
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier not found');
     }
-    console.log(data[0].moderatedPrice)
-    console.log(data)
+    if(updateBody.supplierInterest){
+      interestValues = {...{userId:data[0].userId, supplierReqId:data[0]._id, matchedBuyerId:updateBody.matchedBuyerId, interestStatus:updateBody.supplierInterest}}
+      
+    }
     if(updateBody.moderatedPrice != data[0].moderatedPrice){
       console.log("yes")
       values1 = {...{userId:data[0].userId, supplierReqId:data[0]._id, moderatedPrice:data[0].moderatedPrice}}
@@ -508,6 +516,9 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
       SupplierModerateUpdate.create(values1)
       }
 
+      if(Object.keys(interestValues).length !== 0){
+        SupplierInterest.create(interestValues)
+        }
     data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
     return data;
   };
