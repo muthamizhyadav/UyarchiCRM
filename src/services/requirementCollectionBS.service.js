@@ -264,8 +264,8 @@ const getBuyerSameProduct = async (id) => {
     },
   {
     $lookup:{
-      from:'supplierInterests',
-      localField:'',
+      from:'suppliers',
+      localField:'userId',
       foreignField:'_id',
       as:'suppliersData'
     }
