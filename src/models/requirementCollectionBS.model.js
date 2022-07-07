@@ -78,6 +78,12 @@ requirementAddBy:{
   feedbackCallback:{
     type:String,
   },
+  matchesStatus:{
+    type:String,
+  },
+  interestCount:{
+    type:Number,
+  },
  active: {
     type: Boolean,
     default: true,

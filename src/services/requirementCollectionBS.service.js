@@ -50,6 +50,7 @@ const getByIdBuyer = async (buyerId) => {
       $project:{
         name:'$suppliersData.primaryContactName',
         secretName:'$suppliersData.secretName',
+        mobileNumber:'$suppliersData.primaryContactNumber',
         _id:1,
         minrange:1,
         maxrange:1,

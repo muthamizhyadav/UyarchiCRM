@@ -11,6 +11,7 @@ router
 
   router
   .route('/Supplier/:supplierId')
+  
   .get(requirementCollectionController.getSupplierById)
   .put(requirementCollectionController.updateRequirementSupplierById)
   .delete(requirementCollectionController.deleteRequirementSupplierById);
