@@ -359,6 +359,8 @@ const getBuyerAlive = async () => {
       deadFeedback:1,
       modificationFeedback:1,
       feedbackCallback:1,
+      matchesStatus:1,
+      interestCount:1,
     }
   },
   ])
