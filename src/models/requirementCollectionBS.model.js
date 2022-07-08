@@ -186,6 +186,12 @@ const requirementSupplierSchema = new mongoose.Schema({
   moderateStatus:{
     type:String,
   },
+  supplierInterest:{
+    type:String,
+  },
+  matchedBuyerId:{
+    type:String,
+  },
   active: {
       type: Boolean,
       default: true,
