@@ -300,6 +300,7 @@ const getBuyerSameProduct = async (id) => {
         moderatedPrice: '$requirementsuppliersData.moderatedPrice',
         expectedQnty: '$requirementsuppliersData.expectedQnty',
         stockLocation: '$requirementsuppliersData.stockLocation',
+        id:'$requirementsuppliersData._id'
       },
     },
   ]);
