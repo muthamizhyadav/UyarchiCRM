@@ -408,25 +408,25 @@ const getBuyerShortList = async (id) => {
         localField: 'product',
         foreignField: 'product',
         pipeline: [
-          {
-            $lookup: {
-              from: 'supplierinterests',
-              localField:'_id',
-              foreignField: 'supplierReqId',
-              pipeline:[
-                       {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField:'_id',
+          //     foreignField: 'supplierReqId',
+          //     pipeline:[
+          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
                   
-                   ],
-              as: 'shortlist',
-            },
-          },
+          //          ],
+          //     as: 'shortlist',
+          //   },
+          // },
           {
             $lookup: {
               from: 'supplierinterests',
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$and:[{interestStatus:{$eq:"interest"}}]}},
+                       {$match:{$or:[{interestStatus:{$eq:"interest"}},{interestStatus:{$eq:"shortlist"}}]}},
                   
                    ],
               as: 'supplierReqId',
@@ -508,7 +508,7 @@ const getBuyerShortList = async (id) => {
         name: '$suppliersData.primaryContactName',
         secretName: '$requirementsuppliersData.suppliersData.secretName',
         product: '$requirementsuppliersData.product',
-        short: '$requirementsuppliersData.shortlist',
+        ghrfstatus: '$requirementsuppliersData.supplierReqId.interestStatus',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
