@@ -310,7 +310,7 @@ const getBuyerSameProduct = async (id) => {
 
 // Buyer all live
 const getBuyerAlive = async () => {
-  return RequirementBuyer.aggregate([
+  return RequirementBuyer.aggregate([ 
     {
       $match: {
         $and: [{ active: { $eq: true } }, { statusAccept: { $ne: 'Requirement dead' } }],
@@ -335,12 +335,22 @@ const getBuyerAlive = async () => {
         as: 'supplierReqId',
       },
     },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'matchedBuyerId',
+        pipeline:[{$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}}],
+        as: 'supplierShort',
+      },
+    },
 
     {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
         interest: { $size: '$supplierReqId' },
+        shortlist:{ $size:'$supplierShort'},
         _id: 1,
         minrange: 1,
         maxrange: 1,
@@ -372,6 +382,8 @@ const getBuyerAlive = async () => {
     },
   ]);
 };
+
+
 
 // updated data get method
 const getUpdateDataQty = async (id) => {

@@ -21,13 +21,13 @@ const getAllInterest = async () => {
   return SupplierInterest.find({active:'true'});
 }
 
-const updateInterestId = async (supplierId, updateBody) => {
-    let Manage = await getInterestById(supplierId);
+const updateInterestId = async (interestId, updateBody) => {
+    let Manage = await getInterestById(interestId);
 
     if (!Manage) {
       throw new ApiError(httpStatus.NOT_FOUND, 'interest not found');
     }
-    Manage = await SupplierInterest.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
+    Manage = await SupplierInterest.findByIdAndUpdate({ _id: interestId }, updateBody, { new: true });
     return Manage;
   };
   
