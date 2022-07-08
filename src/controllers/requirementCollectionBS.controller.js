@@ -58,6 +58,14 @@ const getSupplierById = catchAsync (async (req, res)=>{
     res.send(data)
   })
 
+  const getShortclickById = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getBuyerShortList(req.params.id)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
+    }
+    res.send(data)
+  })
+
 
 const getAllBuyer = catchAsync (async (req, res)=>{
   const buyer = await requirementCollectionService.getByIdBuyerAll(req.params)
@@ -131,4 +139,5 @@ module.exports = {
     getModerateData,
     getAllBuyerNotDead,
     getAllBuyerProductSame,
+    getShortclickById,
 };

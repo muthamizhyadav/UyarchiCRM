@@ -344,6 +344,15 @@ const getBuyerAlive = async () => {
         as: 'supplierShort',
       },
     },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'matchedBuyerId',
+        pipeline:[{$match:{$and:[{interestStatus:{$eq:"fixed"}}]}}],
+        as: 'supplierFixed',
+      },
+    },
 
     {
       $project: {
@@ -351,6 +360,7 @@ const getBuyerAlive = async () => {
         secretName: '$suppliersData.secretName',
         interest: { $size: '$supplierReqId' },
         shortlist:{ $size:'$supplierShort'},
+        fixed: {$size:'$supplierFixed'},
         _id: 1,
         minrange: 1,
         maxrange: 1,
@@ -383,6 +393,137 @@ const getBuyerAlive = async () => {
   ]);
 };
 
+// shortlist 
+
+const getBuyerShortList = async (id) => {
+  const data = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField:'_id',
+              foreignField: 'supplierReqId',
+              pipeline:[
+                       {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+                  
+                   ],
+              as: 'shortlist',
+            },
+          },
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline:[
+                       {$match:{$and:[{interestStatus:{$eq:"interest"}}]}},
+                  
+                   ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $unwind: '$supplierReqId',
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+ 
+    // {
+    //   $lookup: {
+    //     from: 'requirementsuppliers',
+    //     localField: 'product',
+    //     foreignField: 'product',
+    //     as:'requirementsuppliersData',
+    //   }
+    // },
+    // {
+    //   $unwind: '$requirementsuppliersData',
+    // },
+    // {
+    //   $lookup: {
+    //     from: 'suppliers',
+    //     localField: 'requirementsuppliersData.userId',
+    //     foreignField: '_id',
+    //     as: 'suppliersData',
+    //   },
+    // },
+    // {
+    //   $unwind: '$suppliersData',
+    // },
+    // {
+    //   $lookup: {
+    //     from: 'supplierinterests',
+    //     localField:'requirementsuppliersData._id',
+    //     foreignField:'supplierReqId',
+    //     pipeline:[
+    //       {$match:{$and:[{interestStatus:{$eq:"interest"}}]}},
+      
+    //   ],
+    //     as: 'supplierinterestsData',
+    //   },
+    // },
+    // {
+    //   $unwind: '$supplierinterestsData',
+    // },
+    // {
+    //   $lookup: {
+    //     from: 'supplierinterests',
+    //     localField:'_id',
+    //     foreignField:'matchedBuyerId',
+    //     pipeline:[
+    //       {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+      
+    //   ],
+    //     as:'shortlist',
+    //   },
+    // },
+    {
+      $project: {
+        name: '$suppliersData.primaryContactName',
+        secretName: '$requirementsuppliersData.suppliersData.secretName',
+        product: '$requirementsuppliersData.product',
+        short: '$requirementsuppliersData.shortlist',
+        lat: '$requirementsuppliersData.lat',
+        lang: '$requirementsuppliersData.lang',
+        status: '$requirementsuppliersData.status',
+        moderateStatus: '$requirementsuppliersData.moderateStatus',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        moderatedPrice: '$requirementsuppliersData.moderatedPrice',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        stockLocation: '$requirementsuppliersData.stockLocation',
+        id:'$requirementsuppliersData._id'
+      },
+    },
+  ]);
+
+  return data;
+};
 
 
 // updated data get method
@@ -919,4 +1060,5 @@ module.exports = {
   getModeratedata,
   getBuyerAlive,
   getBuyerSameProduct,
+  getBuyerShortList,
 };

@@ -24,4 +24,5 @@ router
   // BuyerNotDead
   router.route('/Buyer/Live/all').get(requirementCollectionController.getAllBuyerNotDead)
   router.route('/Buyer/SameProduct/all/:id').get(requirementCollectionController.getAllBuyerProductSame)
+  router.route('/Buyer/SameProduct/short/all/:id').get(requirementCollectionController.getShortclickById)
 module.exports = router;
