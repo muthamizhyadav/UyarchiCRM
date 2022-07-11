@@ -509,6 +509,7 @@ const getBuyerShortList = async (id) => {
         secretName: '$requirementsuppliersData.suppliersData.secretName',
         product: '$requirementsuppliersData.product',
         ghrfstatus: '$requirementsuppliersData.supplierReqId.interestStatus',
+        interestId: '$requirementsuppliersData.supplierReqId._id',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
