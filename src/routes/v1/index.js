@@ -10,6 +10,7 @@ const supplierAppUserRoute = require('./supplierAppUser.route')
 const slotandSlotsubmitRoute = require('./slotandSlotsubmit.route')
 const requirementCollectionBSRoute = require('./requirementCollectionBS.route')
 const interestTableRoute = require('./interestTable.route')
+const manageTelecallerRoute = require('./manageTelecaller.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -48,6 +49,11 @@ const defaultRoutes = [
   {
     path:'/interestTable',
     route: interestTableRoute,
+
+  },
+  {
+    path:'/manageTelecaller',
+    route: manageTelecallerRoute,
 
   }
 
