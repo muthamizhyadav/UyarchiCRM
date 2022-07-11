@@ -11,6 +11,7 @@ const slotandSlotsubmitRoute = require('./slotandSlotsubmit.route')
 const requirementCollectionBSRoute = require('./requirementCollectionBS.route')
 const interestTableRoute = require('./interestTable.route')
 const manageTelecallerRoute = require('./manageTelecaller.route')
+const liveStreamRoute = require('./liveStream.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -55,7 +56,12 @@ const defaultRoutes = [
     path:'/manageTelecaller',
     route: manageTelecallerRoute,
 
-  }
+  },
+  {
+    path:'/liveStream',
+    route: liveStreamRoute,
+
+  },
 
 ];
 
