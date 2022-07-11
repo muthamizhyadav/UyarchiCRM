@@ -30,4 +30,24 @@ const loginManageUserEmailAndPassword = async (email, dateOfBirth) => {
   };
 
 
-module.exports = { ManageId , loginManageUserEmailAndPassword, createManage };
+  const updatemanageAttendance = async (id, updateBody) => {
+    let users = await manageTelecaller.findById(id);
+    if (!users) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'manageAttendance not Found');
+    }
+    users = await manageTelecaller.findByIdAndUpdate({ _id: id }, updateBody, { new: true });
+    return users;
+  };
+  
+  const deletemanageAttendance = async (id) => {
+    let users = await manageTelecaller.findById(id);
+    if (!users) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'manageAttendance Not Found');
+    }
+    (users.active = false), (users.archive = true);
+    await users.save();
+  };
+
+
+
+module.exports = { ManageId , loginManageUserEmailAndPassword, createManage, deletemanageAttendance,updatemanageAttendance, };

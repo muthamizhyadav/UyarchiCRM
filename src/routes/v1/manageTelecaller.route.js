@@ -3,7 +3,7 @@ const manageTelecallerController = require('../../controllers/manageTelecaller.c
 const router = express.Router();
 
 router.route('/').post(manageTelecallerController.createmanageTelecallerService);
-router.route('/:id').get(manageTelecallerController.getmanageTeleServiceById)
+router.route('/:id').get(manageTelecallerController.getmanageTeleServiceById).put(manageTelecallerController.updateManageAttendance).delete(manageTelecallerController.deletemanageAttendanceService)
 router.route('/login').post(manageTelecallerController.login)
 
 module.exports = router;

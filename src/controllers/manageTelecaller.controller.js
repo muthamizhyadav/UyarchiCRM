@@ -33,8 +33,22 @@ const getmanageTeleServiceById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+
+const deletemanageAttendanceService = catchAsync(async (req, res) => {
+    await manageTelecallerService.deletemanageAttendance(req.params.id);
+    res.status(httpStatus.NO_CONTENT).send();
+  });
+
+  const updateManageAttendance = catchAsync(async (req, res) => {
+    const manageIssues = await manageTelecallerService.updatemanageAttendance(req.params.id, req.body);
+    res.send(manageIssues);
+  });
+
+
 module.exports = {
     createmanageTelecallerService,
     login,
     getmanageTeleServiceById,
+    deletemanageAttendanceService,
+    updateManageAttendance,
   };
