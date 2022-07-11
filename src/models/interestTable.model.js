@@ -18,9 +18,9 @@ const supplierInterestSchema = mongoose.Schema({
   interestStatus:{
     type:String,
   },
-  // action:{
-  //   type:String,
-  // },
+  shortlistQuantity:{
+    type:String,
+  },
   active: {
     type: Boolean,
     default: true,
