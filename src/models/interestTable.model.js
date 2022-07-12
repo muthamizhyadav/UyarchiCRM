@@ -27,10 +27,35 @@ const supplierInterestSchema = mongoose.Schema({
   shortlistQuantity:{
     type:String,
   },
+
   callStatus:{
     type:String,
   },
-  active: {
+  shortStatus:{
+    type:String,
+  },
+  fixStatus:{
+    trype:String,
+  },
+  interestDate:{
+    type:String,
+  },
+  interestTime:{
+    type:Number,
+  },
+  shortDate:{
+    type:String,
+   },
+   shortTime:{
+    type:Number,
+   },
+   fixDate:{
+    type:String,
+   },
+   fixTime:{
+    type:Number,
+   },
+    active: {
     type: Boolean,
     default: true,
   },
