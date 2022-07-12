@@ -529,6 +529,92 @@ const getBuyerShortList = async (id) => {
 };
 
 
+// fixed 
+
+
+const getBuyerFixedList = async (id) => {
+  const data = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField:'_id',
+          //     foreignField: 'supplierReqId',
+          //     pipeline:[
+          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+                  
+          //          ],
+          //     as: 'shortlist',
+          //   },
+          // },
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline:[
+                       {$match:{$or:[{interestStatus:{$eq:"shortlist"}},{interestStatus:{$eq:"fixed"}}]}},
+                  
+                   ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $unwind: '$supplierReqId',
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+    {
+      $project: {
+        name: '$suppliersData.primaryContactName',
+        secretName: '$requirementsuppliersData.suppliersData.secretName',
+        product: '$requirementsuppliersData.product',
+        ghrfstatus: '$requirementsuppliersData.supplierReqId.interestStatus',
+        callStatus:'$requirementsuppliersData.supplierReqId.callStatus',
+        shortlistQuantity:'$requirementsuppliersData.supplierReqId.shortlistQuantity',
+        interestId: '$requirementsuppliersData.supplierReqId._id',
+        lat: '$requirementsuppliersData.lat',
+        lang: '$requirementsuppliersData.lang',
+        status: '$requirementsuppliersData.status',
+        moderateStatus: '$requirementsuppliersData.moderateStatus',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        moderatedPrice: '$requirementsuppliersData.moderatedPrice',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        stockLocation: '$requirementsuppliersData.stockLocation',
+        id:'$requirementsuppliersData._id'
+      },
+    },
+  ]);
+
+  return data;
+};
+
 // updated data get method
 const getUpdateDataQty = async (id) => {
   const data = SupplierRequirementUpdate.find({ supplierReqId: id });
@@ -1064,4 +1150,5 @@ module.exports = {
   getBuyerAlive,
   getBuyerSameProduct,
   getBuyerShortList,
+  getBuyerFixedList,
 };
