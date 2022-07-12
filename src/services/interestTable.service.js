@@ -7,7 +7,7 @@ const supplier = require('../models/supplier.model')
 const createinterest = async (interestBody) => {
 
     interestBody.data.forEach(async (e) => {
-        let values = {matchedBuyerId:interestBody.BId, supplierReqId:e, interestStatus:"interest"}
+        let values = {matchedBuyerId:interestBody.BId, supplierReqId:e, interestStatus:"interest", interestDate:interestBody.interestDate, interestTime:interestBody.interestTime}
         await SupplierInterest.create(values)
       });
       return "success"
