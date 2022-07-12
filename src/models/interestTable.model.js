@@ -18,6 +18,12 @@ const supplierInterestSchema = mongoose.Schema({
   interestStatus:{
     type:String,
   },
+  shortlistStatus:{
+    type:String,
+  },
+  fixedStatus:{
+    type:String,
+  },
   shortlistQuantity:{
     type:String,
   },

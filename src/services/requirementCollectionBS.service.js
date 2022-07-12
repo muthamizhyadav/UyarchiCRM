@@ -340,7 +340,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}}],
+        pipeline:[{$match:{$and:[{shortlistStatus:{$eq:"shortlist"}}]}}],
         as: 'supplierShort',
       },
     },
@@ -349,7 +349,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{interestStatus:{$eq:"fixed"}}]}}],
+        pipeline:[{$match:{$and:[{fixedStatus:{$eq:"fixed"}}]}}],
         as: 'supplierFixed',
       },
     },
@@ -426,7 +426,7 @@ const getBuyerShortList = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$or:[{interestStatus:{$eq:"interest"}},{interestStatus:{$eq:"shortlist"}}]}},
+                       {$match:{$or:[{interestStatus:{$eq:"interest"}},{shortlistStatus:{$eq:"shortlist"}}]}},
                   
                    ],
               as: 'supplierReqId',
@@ -563,7 +563,7 @@ const getBuyerFixedList = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$or:[{interestStatus:{$eq:"shortlist"}},{interestStatus:{$eq:"fixed"}}]}},
+                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"}},{fixedStatus:{$eq:"fixed"}}]}},
                   
                    ],
               as: 'supplierReqId',
