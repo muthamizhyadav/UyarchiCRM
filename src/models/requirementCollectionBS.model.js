@@ -87,6 +87,12 @@ requirementAddBy:{
   confirmCallStatus:{
     type:String,
   },
+  confirmCallStatusDate:{
+    type:String,
+  },
+  confirmCallStatusTime:{
+    type:Number,
+  },
  active: {
     type: Boolean,
     default: true,

@@ -189,6 +189,8 @@ const getByIdBuyerAll = async () => {
         modificationFeedback: 1,
         feedbackCallback: 1,
         confirmCallStatus:1,
+        confirmCallStatusDate:1,
+        confirmCallStatusTime:1,
       },
     },
   ]);
