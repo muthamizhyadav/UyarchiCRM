@@ -143,11 +143,11 @@ const getByIdSupplier = async (supplierId) => {
 
 const getByIdBuyerAll = async () => {
   return RequirementBuyer.aggregate([
-    {
-      $match: {
-        $and: [{ active: { $eq: true } }],
-      },
-    },
+    // {
+    //   $match: {
+    //     $and: [{ active: { $eq: true } }],
+    //   },
+    // },
     {
       $lookup: {
         from: 'suppliers',
@@ -188,6 +188,7 @@ const getByIdBuyerAll = async () => {
         deadFeedback: 1,
         modificationFeedback: 1,
         feedbackCallback: 1,
+        confirmCallStatus:1,
       },
     },
   ]);

@@ -84,6 +84,9 @@ requirementAddBy:{
   interestCount:{
     type:Number,
   },
+  confirmCallStatus:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
