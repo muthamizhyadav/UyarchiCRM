@@ -106,7 +106,7 @@ const updateRequirementSupplierById = catchAsync(async (req, res) => {
 
 const deleteRequirementBuyerById = catchAsync(async (req, res) => {
     const requirement = await requirementCollectionService.deleteRequirementBuyerById(req.params.buyerId);
-    res.status(httpStatus.NO_CONTENT).send(requirement);
+    res.status(httpStatus.NO_CONTENT).send();
   });
 
 

@@ -21,6 +21,7 @@ const createRequirementBuyer = async (buyerBody) => {
   return RequirementBuyer.create(values);
 };
 
+
 const createRequirementSupplier = async (supplierBody) => {
   const { userId } = supplierBody;
   let buy = await supplier.findById(userId);
@@ -1153,9 +1154,16 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
   data = await RequirementSupplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
   return data;
 };
+const getbyId = async (buyerId) => {
+  const data = await RequirementBuyer.findById(buyerId);
+  if (!data || data.active  == false) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
+  }
+  return data;
+};
 
 const deleteRequirementBuyerById = async (buyerId) => {
-  const data = await getByIdBuyer(buyerId);
+  const data = await getbyId(buyerId);
   if (!data) {
     throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
   }
