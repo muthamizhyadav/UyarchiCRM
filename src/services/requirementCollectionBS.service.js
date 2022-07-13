@@ -391,6 +391,9 @@ const getBuyerAlive = async () => {
         feedbackCallback: 1,
         matchesStatus: 1,
         interestCount: 1,
+        confirmCallStatus:1,
+        confirmCallStatusDate:1,
+        confirmCallStatusTime:1,
       },
     },
   ]);
