@@ -37,7 +37,7 @@ const getByIdBuyer = async (buyerId) => {
   return RequirementBuyer.aggregate([
     {
       $match: {
-        $and: [{ _id: { $eq: buyerId } }],
+        $and: [{ _id: { $eq: buyerId } },{ active: { $eq: true } }],
       },
     },
     {
