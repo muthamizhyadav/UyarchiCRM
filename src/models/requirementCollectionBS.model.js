@@ -93,6 +93,15 @@ requirementAddBy:{
   confirmCallStatusTime:{
     type:Number,
   },
+  fixCallStatus:{
+    type:String,
+  },
+  fixCallStatusDate:{
+    type:String,
+  },
+  fixCallStatusTime:{
+    type:Number,
+  },
  active: {
     type: Boolean,
     default: true,
