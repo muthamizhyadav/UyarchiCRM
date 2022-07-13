@@ -401,6 +401,9 @@ const getBuyerAlive = async () => {
         confirmCallStatus:1,
         confirmCallStatusDate:1,
         confirmCallStatusTime:1,
+        fixCallStatus:1,
+        fixCallStatusDate:1,
+        fixCallStatusTime:1,
       },
     },
   ]);
