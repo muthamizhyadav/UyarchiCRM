@@ -143,11 +143,11 @@ const getByIdSupplier = async (supplierId) => {
 
 const getByIdBuyerAll = async () => {
   return RequirementBuyer.aggregate([
-    // {
-    //   $match: {
-    //     $and: [{ active: { $eq: true } }],
-    //   },
-    // },
+    {
+      $match: {
+        $and: [{ active: { $eq: true } }],
+      },
+    },
     {
       $lookup: {
         from: 'suppliers',
@@ -263,6 +263,11 @@ const getBuyerSameProduct = async (id) => {
         foreignField: 'product',
         pipeline: [
           {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
+          {
             $lookup: {
               from: 'supplierinterests',
               localField: '_id',
@@ -295,6 +300,8 @@ const getBuyerSameProduct = async (id) => {
         secretName: '$requirementsuppliersData.suppliersData.secretName',
         product: '$requirementsuppliersData.product',
         inte: '$requirementsuppliersData.supplierReqId',
+        // inteDate: '$requirementsuppliersData.supplierReqId.interestDate',
+        // inteTime: '$requirementsuppliersData.supplierReqId.interestTime',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
@@ -303,7 +310,7 @@ const getBuyerSameProduct = async (id) => {
         moderatedPrice: '$requirementsuppliersData.moderatedPrice',
         expectedQnty: '$requirementsuppliersData.expectedQnty',
         stockLocation: '$requirementsuppliersData.stockLocation',
-        id:'$requirementsuppliersData._id'
+        id: '$requirementsuppliersData._id'
       },
     },
   ]);
@@ -414,6 +421,11 @@ const getBuyerShortList = async (id) => {
         localField: 'product',
         foreignField: 'product',
         pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
           // {
           //   $lookup: {
           //     from: 'supplierinterests',
@@ -557,6 +569,11 @@ const getBuyerFixedList = async (id) => {
         localField: 'product',
         foreignField: 'product',
         pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
           // {
           //   $lookup: {
           //     from: 'supplierinterests',
