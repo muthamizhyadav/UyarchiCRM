@@ -682,18 +682,6 @@ const getBuyerFixedOnly = async (id) => {
               $and: [{ moderateStatus: { $eq: 'Moderated' } }],
             },
           },
-          // {
-          //   $lookup: {
-          //     from: 'supplierinterests',
-          //     localField:'_id',
-          //     foreignField: 'supplierReqId',
-          //     pipeline:[
-          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
-                  
-          //          ],
-          //     as: 'shortlist',
-          //   },
-          // },
           {
             $lookup: {
               from: 'supplierinterests',
@@ -726,6 +714,9 @@ const getBuyerFixedOnly = async (id) => {
     },
     {
       $unwind: '$requirementsuppliersData',
+    },
+    {
+      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
     },
     {
       $project: {
