@@ -251,6 +251,7 @@ const getByIdSupplierAll = async () => {
 
 // product match Buyer
 const getBuyerSameProduct = async (id) => {
+  let match=[{matchedBuyerId:{$eq:id}}]
   const data = await RequirementBuyer.aggregate([
     {
       $match: {
@@ -273,6 +274,13 @@ const getBuyerSameProduct = async (id) => {
               from: 'supplierinterests',
               localField: '_id',
               foreignField: 'supplierReqId',
+              pipeline: [
+                {
+                  $match:{
+                    $and:match
+                  },
+                },
+              ],
               as: 'supplierReqId',
             },
           },
@@ -294,9 +302,7 @@ const getBuyerSameProduct = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
-    {
-      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
-    },
+   
 
     {
       $project: {
