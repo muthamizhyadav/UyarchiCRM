@@ -346,6 +346,9 @@ const getBuyerAlive = async () => {
         as: 'supplierReqId',
       },
     },
+    // {
+    //   $unwind: '$supplierReqId',
+    // },
     {
       $lookup: {
         from: 'supplierinterests',
@@ -360,7 +363,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{fixedStatus:{$eq:"fixed"}}]}}],
+        pipeline:[{$match:{$and:[{fixStatus:{$eq:"fixed"}}]}}],
         as: 'supplierFixed',
       },
     },
@@ -369,7 +372,7 @@ const getBuyerAlive = async () => {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
-        interest: { $size: '$supplierReqId' },
+        totalPrice: '$supplierFixed',
         shortlist:{ $size:'$supplierShort'},
         fixed: {$size:'$supplierFixed'},
         _id: 1,
