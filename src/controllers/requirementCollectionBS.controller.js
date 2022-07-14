@@ -76,7 +76,6 @@ const getSupplierById = catchAsync (async (req, res)=>{
 
   const getfixedOnlyById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getBuyerFixedOnly(req.params.id)
-    console.log(data)
     if(!data || data.active == false){
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
     }
@@ -128,7 +127,6 @@ const deleteRequirementSupplierById = catchAsync(async (req, res) => {
 // get buyer requirement dead
 
 const getAllBuyerNotDead = catchAsync (async (req, res)=>{
-  console.log("hi")
   const buyer = await requirementCollectionService.getBuyerAlive(req.params)
   res.send(buyer)
 })

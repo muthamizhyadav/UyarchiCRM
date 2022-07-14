@@ -294,6 +294,9 @@ const getBuyerSameProduct = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
+    {
+      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
+    },
 
     {
       $project: {
@@ -479,6 +482,9 @@ const getBuyerShortList = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
+    {
+      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
+    },
  
     // {
     //   $lookup: {
@@ -627,6 +633,9 @@ const getBuyerFixedList = async (id) => {
     },
     {
       $unwind: '$requirementsuppliersData',
+    },
+    {
+      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
     },
     {
       $project: {
