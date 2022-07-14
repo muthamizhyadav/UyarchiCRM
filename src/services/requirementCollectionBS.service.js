@@ -372,6 +372,7 @@ const getBuyerAlive = async () => {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
+        interest:{$size:'$supplierReqId'},
         totalPrice: '$supplierFixed',
         shortlist:{ $size:'$supplierShort'},
         fixed: {$size:'$supplierFixed'},
