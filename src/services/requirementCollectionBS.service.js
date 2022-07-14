@@ -540,6 +540,7 @@ const getBuyerShortList = async (id) => {
         interestTime: '$requirementsuppliersData.supplierReqId.interestTime',
         shortDate: '$requirementsuppliersData.supplierReqId.shortDate',
         shortTime: '$requirementsuppliersData.supplierReqId.shortTime',
+        totalPrice: '$requirementsuppliersData.supplierReqId.totalPrice',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
@@ -596,7 +597,7 @@ const getBuyerFixedList = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"}},{fixedStatus:{$eq:"fixed"}}]}},
+                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"}},{fixStatus:{$eq:"fixed"}}]}},
                   
                    ],
               as: 'supplierReqId',
@@ -639,6 +640,106 @@ const getBuyerFixedList = async (id) => {
         fixStatus: '$requirementsuppliersData.supplierReqId.fixStatus',
         fixDate: '$requirementsuppliersData.supplierReqId.fixDate',
         fixTime: '$requirementsuppliersData.supplierReqId.fixTime',
+        totalPrice: '$requirementsuppliersData.supplierReqId.totalPrice',
+        lat: '$requirementsuppliersData.lat',
+        lang: '$requirementsuppliersData.lang',
+        status: '$requirementsuppliersData.status',
+        moderateStatus: '$requirementsuppliersData.moderateStatus',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        moderatedPrice: '$requirementsuppliersData.moderatedPrice',
+        expectedQnty: '$requirementsuppliersData.expectedQnty',
+        stockLocation: '$requirementsuppliersData.stockLocation',
+        id:'$requirementsuppliersData._id'
+      },
+    },
+  ]);
+
+  return data;
+};
+
+
+
+// fixed only
+const getBuyerFixedOnly = async (id) => {
+  const data = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField:'_id',
+          //     foreignField: 'supplierReqId',
+          //     pipeline:[
+          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+                  
+          //          ],
+          //     as: 'shortlist',
+          //   },
+          // },
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline:[
+                       {$match:{$and:[{fixStatus:{$eq:"fixed"}}]}},
+                  
+                   ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $unwind: '$supplierReqId',
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+    {
+      $project: {
+        name: '$suppliersData.primaryContactName',
+        secretName: '$requirementsuppliersData.suppliersData.secretName',
+        product: '$requirementsuppliersData.product',
+        shortliststatus: '$requirementsuppliersData.supplierReqId.shortlistStatus',
+        fixedliststatus: '$requirementsuppliersData.supplierReqId.fixedStatus',
+        callStatus:'$requirementsuppliersData.supplierReqId.callStatus',
+        shortlistQuantity:'$requirementsuppliersData.supplierReqId.shortlistQuantity',
+        interestId: '$requirementsuppliersData.supplierReqId._id',
+        shortStatus: '$requirementsuppliersData.supplierReqId.shortStatus',
+        shortDate: '$requirementsuppliersData.supplierReqId.shortDate',
+        shortTime: '$requirementsuppliersData.supplierReqId.shortTime',
+        fixStatus: '$requirementsuppliersData.supplierReqId.fixStatus',
+        fixDate: '$requirementsuppliersData.supplierReqId.fixDate',
+        fixTime: '$requirementsuppliersData.supplierReqId.fixTime',
+        totalPrice: '$requirementsuppliersData.supplierReqId.totalPrice',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
@@ -1198,4 +1299,5 @@ module.exports = {
   getBuyerSameProduct,
   getBuyerShortList,
   getBuyerFixedList,
+  getBuyerFixedOnly
 };

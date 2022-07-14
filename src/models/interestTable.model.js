@@ -55,6 +55,9 @@ const supplierInterestSchema = mongoose.Schema({
    fixTime:{
     type:Number,
    },
+   totalPrice:{
+    type:Number,
+   },
     active: {
     type: Boolean,
     default: true,

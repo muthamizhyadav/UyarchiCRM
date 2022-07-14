@@ -74,6 +74,15 @@ const getSupplierById = catchAsync (async (req, res)=>{
     res.send(data)
   })
 
+  const getfixedOnlyById = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getBuyerFixedOnly(req.params.id)
+    console.log(data)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
+    }
+    res.send(data)
+  })
+
 
 const getAllBuyer = catchAsync (async (req, res)=>{
   const buyer = await requirementCollectionService.getByIdBuyerAll(req.params)
@@ -149,4 +158,5 @@ module.exports = {
     getAllBuyerProductSame,
     getShortclickById,
     getfixedclickById,
+    getfixedOnlyById,
 };
