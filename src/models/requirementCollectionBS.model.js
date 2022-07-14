@@ -210,6 +210,9 @@ const requirementSupplierSchema = new mongoose.Schema({
   matchedBuyerId:{
     type:String,
   },
+  moderateReason:{
+    type:String,
+  },
   active: {
       type: Boolean,
       default: true,
