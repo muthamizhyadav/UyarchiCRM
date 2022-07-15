@@ -12,6 +12,7 @@ const requirementCollectionBSRoute = require('./requirementCollectionBS.route')
 const interestTableRoute = require('./interestTable.route')
 const manageTelecallerRoute = require('./manageTelecaller.route')
 const liveStreamRoute = require('./liveStream.route')
+const paymentDataRoute = require('./paymentData.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -60,6 +61,11 @@ const defaultRoutes = [
   {
     path:'/liveStream',
     route: liveStreamRoute,
+
+  },
+  {
+    path:'/paymentData',
+    route: paymentDataRoute,
 
   },
 
