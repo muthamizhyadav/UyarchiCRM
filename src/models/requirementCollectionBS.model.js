@@ -102,6 +102,9 @@ requirementAddBy:{
   fixCallStatusTime:{
     type:Number,
   },
+  paymentCallStatus:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
