@@ -419,6 +419,7 @@ const getBuyerAlive = async () => {
         fixCallStatusDate:1,
         fixCallStatusTime:1,
         paymentCallStatus:1,
+        paymentConfirmCallStatus:1,
       },
     },
   ]);
