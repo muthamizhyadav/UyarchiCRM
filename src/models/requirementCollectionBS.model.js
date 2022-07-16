@@ -219,6 +219,24 @@ const requirementSupplierSchema = new mongoose.Schema({
   moderateReason:{
     type:String,
   },
+  minimumlot:{
+    type:String,
+  },
+  maximumlot:{
+    type:String,
+  },
+  stockTakeFromDay:{
+    type:String,
+  },
+  stockTakeToDay:{
+    type:String,
+  },
+  paymentFromDay:{
+    type:String,
+  },
+  paymentToDay:{
+    type:String,
+  },
   active: {
       type: Boolean,
       default: true,
