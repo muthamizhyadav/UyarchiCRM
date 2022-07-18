@@ -21,7 +21,6 @@ const createRequirementBuyer = async (buyerBody) => {
     throw new ApiError(httpStatus.NO_CONTENT, '!oops 🖕');
   }
   let billcount = await RequirementBuyer.find({ date: currentDate }).count();
-  console.log(billcount)
   let center = '';
   if (billcount < 9) {
     center = '000000';
@@ -44,7 +43,6 @@ const createRequirementBuyer = async (buyerBody) => {
   let total = billcount + 1;
   let billid = "BID"+ center + total;
   let values = {...buyerBody, ...{ billId: billid, userId: supp._id } } 
-  console.log(values)
   return RequirementBuyer.create(values)
 };
 
@@ -58,7 +56,7 @@ const createRequirementSupplier = async (supplierBody) => {
     throw new ApiError(httpStatus.NO_CONTENT, '!oops 🖕');
   }
   let billcount = await RequirementSupplier.find({ date: currentDate }).count();
-  console.log(billcount)
+
   let center = '';
   if (billcount < 9) {
     center = '000000';
@@ -81,7 +79,7 @@ const createRequirementSupplier = async (supplierBody) => {
   let total = billcount + 1;
   let billid = "BID"+ center + total;
   let values = {...supplierBody, ...{ billId: billid, userId: supp._id } } 
-  console.log(values)
+
   return RequirementSupplier.create(values)
 };
 
@@ -189,6 +187,8 @@ const getByIdSupplier = async (supplierId) => {
         feedbackCallback: 1,
         moderatedPrice: 1,
         moderateStatus: 1,
+        moderateTime:1,
+        moderateDate:1,
       },
     },
   ]);
@@ -309,7 +309,7 @@ const getModerateHistory = async (id) =>{
    return  SupplierModerateUpdate.aggregate([
     {
       $match: {
-        $and: [{ supplierReqId: { $eq: id } }],
+        $and: [{ supplierReqId: { $eq: id },active:{eq:true}}],
       },
     },
   ])
@@ -1215,6 +1215,7 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
     values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice, date:data[0].moderateDate, time:data[0].moderateTime} };
   }
 }
+console.log(values1)
   if (
     data[0].expectedQnty != updateBody.expectedQnty &&
     data[0].expectedPrice == updateBody.expectedPrice &&

@@ -214,7 +214,7 @@ const requirementSupplierSchema = new mongoose.Schema({
     type:String,
   },
   moderateTime:{
-    type:String,
+    type:Number,
   },
   moderateStatus:{
     type:String,
