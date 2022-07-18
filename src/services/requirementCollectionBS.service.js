@@ -353,6 +353,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
+        pipeline:[{$match:{$and:[{active:{$eq:true}}]}}],
         as: 'supplierReqId',
       },
     },
