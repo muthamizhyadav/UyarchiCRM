@@ -207,6 +207,12 @@ const requirementSupplierSchema = new mongoose.Schema({
     type:Number,
     deafault: 0,
   },
+  moderateDate:{
+    type:String,
+  },
+  moderateTime:{
+    type:String,
+  },
   moderateStatus:{
     type:String,
   },
