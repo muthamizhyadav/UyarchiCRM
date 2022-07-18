@@ -29,6 +29,9 @@ const paymentDataScheme = mongoose.Schema({
   time:{
     type:Number,
   },
+  BillId:{
+    type:String,
+  },
   status:{
     type:String,
   },

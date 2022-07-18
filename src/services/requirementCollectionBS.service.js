@@ -9,6 +9,8 @@ const {
 const { SupplierInterest } = require('../models/interestTable.model');
 const supplier = require('../models/supplier.model');
 const axios = require('axios');
+const moment = require('moment');
+let currentDate = moment().format('DD-MM-YYYY');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -24,13 +26,38 @@ const createRequirementBuyer = async (buyerBody) => {
 
 const createRequirementSupplier = async (supplierBody) => {
   const { userId } = supplierBody;
-  let buy = await supplier.findById(userId);
-  let values = {};
-  values = { ...supplierBody, ...{ userId: buy._id } };
-  if (buy === null) {
+  let supp = await supplier.findById(userId);
+  // let values = {};
+  // values = { ...buyerBody, ...{ userId: supp._id } };
+  if (supp === null) {
     throw new ApiError(httpStatus.NO_CONTENT, '!oops 🖕');
   }
-  return RequirementSupplier.create(values);
+  let billcount = await RequirementSupplier.find({ date: currentDate }).count();
+  console.log(billcount)
+  let center = '';
+  if (billcount < 9) {
+    center = '000000';
+  }
+  if (billcount < 99 && billcount >= 9) {
+    center = '00000';
+  }
+  if (billcount < 999 && billcount >= 99) {
+    center = '0000';
+  }
+  if (billcount < 9999 && billcount >= 999) {
+    center = '000';
+  }
+  if (billcount < 99999 && billcount >= 9999) {
+    center = '00';
+  }
+  if (billcount < 999999 && billcount >= 99999) {
+    center = '0';
+  }
+  let total = billcount + 1;
+  let billid = "BID"+ center + total;
+  let values = {...supplierBody, ...{ billId: billid, userId: supp._id } } 
+  console.log(values)
+  return RequirementSupplier.create(values)
 };
 
 const getByIdBuyer = async (buyerId) => {

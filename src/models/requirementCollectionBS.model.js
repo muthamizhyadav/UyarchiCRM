@@ -243,6 +243,9 @@ const requirementSupplierSchema = new mongoose.Schema({
   paymentToDay:{
     type:String,
   },
+  billId:{
+    type:String,
+  },
   active: {
       type: Boolean,
       default: true,
