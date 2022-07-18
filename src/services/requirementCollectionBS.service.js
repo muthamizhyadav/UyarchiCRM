@@ -1158,8 +1158,8 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
     };
   }
   if (updateBody.moderatedPrice != data[0].moderatedPrice) {
-    console.log('yes');
-    values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice } };
+    // console.log('yes');
+    values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice, date:data[0].moderateDate, time:data[0].moderateTime} };
   }
   if (
     data[0].expectedQnty != updateBody.expectedQnty &&
