@@ -309,7 +309,7 @@ const getModerateHistory = async (id) =>{
    return  SupplierModerateUpdate.aggregate([
     {
       $match: {
-        $and: [{ supplierReqId: { $eq: id },active:{eq:true}}],
+        $and: [{ supplierReqId: { $eq: id },active:{$eq:true}}],
       },
     },
   ])
