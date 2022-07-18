@@ -249,6 +249,20 @@ const getByIdSupplierAll = async () => {
   ]);
 };
 
+
+// moderateHistory 
+
+const getModerateHistory = async (id) =>{
+
+   return  SupplierModerateUpdate.aggregate([
+    {
+      $match: {
+        $and: [{ supplierReqId: { $eq: id } }],
+      },
+    },
+  ])
+}
+
 // product match Buyer
 
 const getBuyerSameProduct = async (id) => {
@@ -1314,5 +1328,6 @@ module.exports = {
   getBuyerSameProduct,
   getBuyerShortList,
   getBuyerFixedList,
-  getBuyerFixedOnly
+  getBuyerFixedOnly,
+  getModerateHistory,
 };

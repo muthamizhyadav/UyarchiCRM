@@ -102,6 +102,16 @@ const updateRequirementBuyerById = catchAsync(async (req, res) => {
   res.send(requirement);
 });
 
+// moderateHistory 
+
+const getModerateDataHistory = catchAsync(async (req, res) => {
+  const data = await requirementCollectionService.getModerateHistory(req.params.id)
+    if (!data) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'moderateData Not Found');
+    }
+  res.send(data);
+})
+
 
 const updateRequirementSupplierById = catchAsync(async (req, res) => {
     const requirement = await requirementCollectionService.updateRequirementSupplierById(req.params.supplierId, req.body);
@@ -157,4 +167,5 @@ module.exports = {
     getShortclickById,
     getfixedclickById,
     getfixedOnlyById,
+    getModerateDataHistory,
 };
