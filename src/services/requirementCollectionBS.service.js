@@ -722,7 +722,7 @@ const getBuyerFixedOnly = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$and:[{fixStatus:{$eq:"fixed"}}]}},
+                       {$match:{$and:[{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}},
                   
                    ],
               as: 'supplierReqId',
