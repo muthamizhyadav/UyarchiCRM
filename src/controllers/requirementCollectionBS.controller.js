@@ -7,7 +7,6 @@ const  requirementCollectionService = require('../services/requirementCollection
 const createRequirementBuyerService = catchAsync(async (req, res) => {
   const data = await requirementCollectionService.createRequirementBuyer(req.body);
   res.status(httpStatus.CREATED).send(data);
-  await data.save();
 });
 
 

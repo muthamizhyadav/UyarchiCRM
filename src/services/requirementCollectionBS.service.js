@@ -1209,13 +1209,14 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
       },
     };
   }
-  if(data[0].moderatedPrice != null){
+  if(data[0].moderatedPrice != null && updateBody.moderatedPrice ){
   if (updateBody.moderatedPrice != data[0].moderatedPrice) {
     // console.log('yes');
     values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice, date:data[0].moderateDate, time:data[0].moderateTime} };
   }
 }
-console.log(values1)
+
+if(updateBody.expectedQnty){
   if (
     data[0].expectedQnty != updateBody.expectedQnty &&
     data[0].expectedPrice == updateBody.expectedPrice &&
@@ -1231,11 +1232,14 @@ console.log(values1)
       },
     };
   }
+}
+if(updateBody.expectedPrice){
   if (
     data[0].expectedPrice != updateBody.expectedPrice &&
     data[0].expectedQnty == updateBody.expectedQnty &&
     data[0].stockLocation == updateBody.stockLocation
   ) {
+   
     values = {
       ...{
         userId: data[0].userId,
@@ -1246,11 +1250,14 @@ console.log(values1)
       },
     };
   }
+}
+if(updateBody.stockLocation){
   if (
     data[0].stockLocation != updateBody.stockLocation &&
     data[0].expectedQnty == updateBody.expectedQnty &&
     data[0].expectedPrice == updateBody.expectedPrice
   ) {
+
     values = {
       ...{
         userId: data[0].userId,
@@ -1261,11 +1268,14 @@ console.log(values1)
       },
     };
   }
+}
+  if(updateBody.expectedQnty && updateBody.expectedPrice){
   if (
     data[0].expectedQnty != updateBody.expectedQnty &&
     data[0].expectedPrice != updateBody.expectedPrice &&
     data[0].stockLocation == updateBody.stockLocation
   ) {
+    console.log(updateBody.expectedQnty)
     values = {
       ...{
         userId: data[0].userId,
@@ -1277,11 +1287,14 @@ console.log(values1)
       },
     };
   }
+}
+if(updateBody.expectedQnty && updateBody.stockLocation){
   if (
     data[0].expectedQnty != updateBody.expectedQnty &&
     data[0].stockLocation != updateBody.stockLocation &&
     data[0].expectedPrice == updateBody.expectedPrice
   ) {
+
     values = {
       ...{
         userId: data[0].userId,
@@ -1293,11 +1306,14 @@ console.log(values1)
       },
     };
   }
+}
+if(updateBody.expectedPrice && updateBody.stockLocation){
   if (
     data[0].expectedPrice != updateBody.expectedPrice &&
     data[0].stockLocation != updateBody.stockLocation &&
     data[0].expectedQnty == updateBody.expectedQnty
   ) {
+  
     values = {
       ...{
         userId: data[0].userId,
@@ -1309,6 +1325,8 @@ console.log(values1)
       },
     };
   }
+}
+if(updateBody.expectedPrice && updateBody.stockLocation && updateBody.expectedQnty){
   if (
     data[0].expectedPrice != updateBody.expectedPrice &&
     data[0].stockLocation != updateBody.stockLocation &&
@@ -1326,6 +1344,8 @@ console.log(values1)
       },
     };
   }
+}
+ 
   if (Object.keys(values).length !== 0) {
     SupplierRequirementUpdate.create(values);
   }
