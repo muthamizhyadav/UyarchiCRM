@@ -250,8 +250,9 @@ const getByIdSupplierAll = async () => {
 };
 
 // product match Buyer
+
 const getBuyerSameProduct = async (id) => {
-  let match=[{matchedBuyerId:{$eq:id}}]
+  let match=[{matchedBuyerId:{$eq:id},active:{$eq:true}}]
   const data = await RequirementBuyer.aggregate([
     {
       $match: {
@@ -363,7 +364,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{shortlistStatus:{$eq:"shortlist"}}]}}],
+        pipeline:[{$match:{$and:[{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}}]}}],
         as: 'supplierShort',
       },
     },
@@ -372,7 +373,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{fixStatus:{$eq:"fixed"}}]}}],
+        pipeline:[{$match:{$and:[{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}}],
         as: 'supplierFixed',
       },
     },
@@ -463,7 +464,7 @@ const getBuyerShortList = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$or:[{interestStatus:{$eq:"interest"}},{shortlistStatus:{$eq:"shortlist"}}]}},
+                       {$match:{$or:[{interestStatus:{$eq:"interest"},active:{$eq:true}},{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}}]}},
                   
                    ],
               as: 'supplierReqId',
@@ -615,7 +616,7 @@ const getBuyerFixedList = async (id) => {
               localField: '_id',
               foreignField: 'supplierReqId',
               pipeline:[
-                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"}},{fixStatus:{$eq:"fixed"}}]}},
+                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}},{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}},
                   
                    ],
               as: 'supplierReqId',
@@ -662,6 +663,7 @@ const getBuyerFixedList = async (id) => {
         fixDate: '$requirementsuppliersData.supplierReqId.fixDate',
         fixTime: '$requirementsuppliersData.supplierReqId.fixTime',
         totalPrice: '$requirementsuppliersData.supplierReqId.totalPrice',
+        supplierInterestTableId: '$requirementsuppliersData.supplierReqId._id',
         lat: '$requirementsuppliersData.lat',
         lang: '$requirementsuppliersData.lang',
         status: '$requirementsuppliersData.status',
