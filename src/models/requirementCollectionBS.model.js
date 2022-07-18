@@ -108,6 +108,9 @@ requirementAddBy:{
   paymentConfirmCallStatus:{
     type:String,
   },
+  billId:{
+    type:String,
+  },
  active: {
     type: Boolean,
     default: true,
