@@ -396,6 +396,8 @@ const getSupplierSameProduct = async (id) => {
       $project: {
         name: '$requirementsuppliersData.suppliersData.primaryContactName',
         secretName: '$requirementsuppliersData.suppliersData.secretName',
+        createdBy:'$requirementsuppliersData.suppliersData.createdBy',
+        requirementAddBy:'$requirementsuppliersData.requirementAddBy',
         product: '$requirementsuppliersData.product',
         buyerId:'$requirementsuppliersData._id',
         minrange:'$requirementsuppliersData.minrange',
@@ -499,6 +501,8 @@ const getSupplierInterestBuyer = async (id) => {
         // data: '$supplierReqId',
         name: '$requirementsuppliersData.suppliersData.primaryContactName',
         secretName: '$requirementsuppliersData.suppliersData.secretName',
+        createdBy:'$requirementsuppliersData.suppliersData.createdBy',
+        requirementAddBy:'$requirementsuppliersData.requirementAddBy',
         product: '$requirementsuppliersData.product',
         buyerId:'$requirementsuppliersData._id',
         minrange:'$requirementsuppliersData.minrange',
@@ -584,7 +588,7 @@ const getBuyerSameProduct = async (id) => {
               $and: [{ moderateStatus: { $eq: 'Moderated' } }],
             },
           },
-          
+
           {
             $lookup: {
               from: 'supplierinterests',
