@@ -4,8 +4,12 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const supplierService = require('../services/supplier.service');
 const { supplier } = require('../models');
+const {tokenService} = require('../services');
+const { jwt } = require('../config/config');
+const { NOT_FOUND } = require('http-status');
 
 const createSupplierService = catchAsync(async (req, res) => {
+
   const Buy = await supplier.find({ type: req.body.type });
   let center = '';
   // console.log(Buy.length);
@@ -38,6 +42,18 @@ const createSupplierService = catchAsync(async (req, res) => {
   // console.log(supplierss)
   res.status(httpStatus.CREATED).send(supplierss);
   await supplierss.save();
+});
+
+const login = catchAsync(async (req, res) => {
+  const { email, dateOfBirth } = req.body;
+  const data = await supplierService.loginUserEmailAndPassword(email, dateOfBirth);
+  const tokens = await tokenService.generateAuthTokens(data[0]);
+  let options = {
+    httpOnly : true,
+  }
+  res.cookie("token", tokens.access.token, options)
+  // jwt.verify(req.cookies['token'],);
+  res.send({ data, tokens });
 });
 
 const createSupplierwithType = catchAsync(async (req, res) => {
@@ -84,4 +100,5 @@ module.exports = {
   deleteSupplierByIdService,
   createSupplierwithType,
   getAllSupplierDeleteService,
+  login,
 };

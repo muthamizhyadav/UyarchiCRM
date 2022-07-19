@@ -10,6 +10,21 @@ const getAllSupplier = async () => {
   return supplier.find({ active: true });
 };
 
+const loginUserEmailAndPassword = async (email, dateOfBirth) => {
+  const data = await supplier.find({ email: email });
+  let dob = data[0].dateOfBirth.replace(/[^0-9\.]+/g, '');
+  if (data != '') {
+    if (dob == dateOfBirth) {
+    } else {
+      throw new ApiError(httpStatus.NOT_FOUND, 'DOB Not Match');
+    }
+  } else {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Email Not Registored');
+  }
+
+  return data;
+};
+
 const createSupplierwithType = async (type) => {
   let values;
   if (type == 'supplier') {
@@ -59,4 +74,5 @@ module.exports = {
   updateSupplierById,
   deleteSupplierById,
   getAllSupplierDelete,
+  loginUserEmailAndPassword,
 };

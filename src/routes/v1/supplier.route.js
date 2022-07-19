@@ -11,5 +11,7 @@ router
   .delete(supplierController.deleteSupplierByIdService);
 
 router.route('/type/getName/:type').get(supplierController.createSupplierwithType)
+//login
+router.route('/login/data').post(supplierController.login)
 
 module.exports = router;
