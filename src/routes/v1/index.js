@@ -13,6 +13,7 @@ const interestTableRoute = require('./interestTable.route')
 const manageTelecallerRoute = require('./manageTelecaller.route')
 const liveStreamRoute = require('./liveStream.route')
 const paymentDataRoute = require('./paymentData.route')
+const adminRegistrationRoute = require('./adminRegistration.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -67,6 +68,10 @@ const defaultRoutes = [
     path:'/paymentData',
     route: paymentDataRoute,
 
+  },
+  {
+    path:'/adminRegistration',
+    route: adminRegistrationRoute,
   },
 
 ];

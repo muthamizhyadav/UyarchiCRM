@@ -5,3 +5,4 @@ module.exports.userService = require('./user.service');
 module.exports.supplierService = require('./supplier.service');
 module.exports.requirementCollectionService = require('./requirementCollection.service');
 module.exports.supplierAppUser = require('./supplierAppUser.service');
+module.exports.adminRegistrationService = require('./adminRegistration.service')
