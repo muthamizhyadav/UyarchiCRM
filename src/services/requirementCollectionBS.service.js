@@ -269,9 +269,44 @@ const getByIdSupplierAll = async () => {
       $unwind: '$suppliersData',
     },
     {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'supplierReqId',
+        pipeline:[
+          {
+            $match: {
+              $and: [{ active: { $eq: true } }],
+            },
+          },
+        ],
+        as: 'supplierinterestsData',
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementbuyers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline:[
+          {
+            $match: {
+              $and: [{ active: { $eq: true } }],
+            },
+          },
+        ],
+        as: 'requirementbuyersData',
+      },
+    },
+    // {
+    //   $unwind: '$supplierinterestsData',
+    // },
+    {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
+        interestCount:{$size:'$supplierinterestsData'},
+        sameProductCount:{$size:'$requirementbuyersData'},
         _id: 1,
         userId: 1,
         product: 1,
