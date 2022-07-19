@@ -35,4 +35,8 @@ router
 
   router.route('/Buyer/paymentdataHistory/all/data/:id').get(requirementCollectionController.getpaymentData)
 
+ //supplierSameProduct
+ router.route('/Supplier/sameProduct/all/data/:id').get(requirementCollectionController.getsupplierSameProduct)
+ router.route('/Supplier/interestData/:id').get(requirementCollectionController.getsupplierBuyerInterestData)
+
 module.exports = router;

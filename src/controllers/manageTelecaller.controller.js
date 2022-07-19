@@ -33,6 +33,14 @@ const getmanageTeleServiceById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getmanageTeleServiceAll = catchAsync(async (req, res) => {
+  const data = await manageTelecallerService.ManageAll(req.params);
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'manageTelecaller not found');
+  }
+  res.send(data);
+});
+
 
 const deletemanageAttendanceService = catchAsync(async (req, res) => {
     await manageTelecallerService.deletemanageAttendance(req.params.id);
@@ -51,4 +59,5 @@ module.exports = {
     getmanageTeleServiceById,
     deletemanageAttendanceService,
     updateManageAttendance,
+    getmanageTeleServiceAll,
   };

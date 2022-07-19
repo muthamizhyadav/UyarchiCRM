@@ -302,6 +302,205 @@ const getByIdSupplierAll = async () => {
   ]);
 };
 
+// supplier matches
+const getSupplierSameProduct = async (id) => {
+
+  const data = await RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementbuyers',
+        localField: 'product',
+        foreignField: 'product',
+         pipeline: [
+        //   {
+        //     $match: {
+        //       $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+        //     },
+        //   },
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField: '_id',
+          //     foreignField: 'matchedBuyerId',
+          //     pipeline: [
+          //       {
+          //         $match:{
+          //           $and:[{active:{$eq:true}}]
+          //         },
+          //       },
+          //     ],
+          //     as: 'supplierReqId',
+          //   },
+          // },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+   
+
+    {
+      $project: {
+        name: '$requirementsuppliersData.suppliersData.primaryContactName',
+        secretName: '$requirementsuppliersData.suppliersData.secretName',
+        product: '$requirementsuppliersData.product',
+        buyerId:'$requirementsuppliersData._id',
+        minrange:'$requirementsuppliersData.minrange',
+        maxrange: '$requirementsuppliersData.maxrange',
+        minprice: '$requirementsuppliersData.minprice',
+        maxprice: '$requirementsuppliersData.maxprice',
+        pdelivery: '$requirementsuppliersData.pdelivery',
+        deliverylocation: '$requirementsuppliersData.deliverylocation',
+        deliveryDate: '$requirementsuppliersData.deliveryDate',
+        deliveryTime: '$requirementsuppliersData.deliveryTime',
+        lat: '$requirementsuppliersData.lat',
+        lang: '$requirementsuppliersData.lang',
+        date: '$requirementsuppliersData.date',
+        time: '$requirementsuppliersData.time',
+        status: '$requirementsuppliersData.status',
+        matchesStatus: '$requirementsuppliersData.matchesStatus',
+        interestCount: '$requirementsuppliersData.interestCount',
+        billId: '$requirementsuppliersData.billId',
+        aliveFeedback: '$requirementsuppliersData.aliveFeedback',
+        deadFeedback: '$requirementsuppliersData.deadFeedback',
+        feedbackCallback: '$requirementsuppliersData.feedbackCallback',
+        modificationFeedback: '$requirementsuppliersData.modificationFeedback',
+        reasonCallback: '$requirementsuppliersData.reasonCallback',
+        statusAccept: '$requirementsuppliersData.statusAccept',
+        confirmCallStatus:'$requirementsuppliersData.confirmCallStatus',
+        confirmCallStatusDate:'$requirementsuppliersData.confirmCallStatusDate',
+        confirmCallStatusTime:'$requirementsuppliersData.confirmCallStatusTime',
+        fixCallStatus:'$requirementsuppliersData.fixCallStatus',
+        paymentCallStatus:'$requirementsuppliersData.paymentCallStatus',
+        paymentConfirmCallStatus:'$requirementsuppliersData.paymentConfirmCallStatus',
+      },
+    },
+  ]);
+
+  return data;
+};
+
+
+// supplier intrestBuyer
+
+const getSupplierInterestBuyer = async (id) => {
+
+  const data = await RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField:'supplierReqId',
+        pipeline: [
+          {
+            $match:{
+              $and:[{active:{$eq:true}}]
+            },
+          },
+        ],
+        as: 'supplierReqId',
+      },
+    },
+    {
+      $unwind: '$supplierReqId',
+    },
+    {
+      $lookup: {
+        from: 'requirementbuyers',
+        localField: 'supplierReqId.matchedBuyerId',
+        foreignField: '_id',
+         pipeline: [
+          {
+            $match: {
+              $and: [{ active: { $eq: true } }],
+            },
+          },
+
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+   
+
+    {
+      $project: {
+        // data: '$supplierReqId',
+        name: '$requirementsuppliersData.suppliersData.primaryContactName',
+        secretName: '$requirementsuppliersData.suppliersData.secretName',
+        product: '$requirementsuppliersData.product',
+        buyerId:'$requirementsuppliersData._id',
+        minrange:'$requirementsuppliersData.minrange',
+        maxrange: '$requirementsuppliersData.maxrange',
+        minprice: '$requirementsuppliersData.minprice',
+        maxprice: '$requirementsuppliersData.maxprice',
+        pdelivery: '$requirementsuppliersData.pdelivery',
+        deliverylocation: '$requirementsuppliersData.deliverylocation',
+        deliveryDate: '$requirementsuppliersData.deliveryDate',
+        deliveryTime: '$requirementsuppliersData.deliveryTime',
+        lat: '$requirementsuppliersData.lat',
+        lang: '$requirementsuppliersData.lang',
+        date: '$requirementsuppliersData.date',
+        time: '$requirementsuppliersData.time',
+        status: '$requirementsuppliersData.status',
+        matchesStatus: '$requirementsuppliersData.matchesStatus',
+        interestCount: '$requirementsuppliersData.interestCount',
+        billId: '$requirementsuppliersData.billId',
+        aliveFeedback: '$requirementsuppliersData.aliveFeedback',
+        deadFeedback: '$requirementsuppliersData.deadFeedback',
+        feedbackCallback: '$requirementsuppliersData.feedbackCallback',
+        modificationFeedback: '$requirementsuppliersData.modificationFeedback',
+        reasonCallback: '$requirementsuppliersData.reasonCallback',
+        statusAccept: '$requirementsuppliersData.statusAccept',
+        confirmCallStatus:'$requirementsuppliersData.confirmCallStatus',
+        confirmCallStatusDate:'$requirementsuppliersData.confirmCallStatusDate',
+        confirmCallStatusTime:'$requirementsuppliersData.confirmCallStatusTime',
+        fixCallStatus:'$requirementsuppliersData.fixCallStatus',
+        paymentCallStatus:'$requirementsuppliersData.paymentCallStatus',
+        paymentConfirmCallStatus:'$requirementsuppliersData.paymentConfirmCallStatus',
+      },
+    },
+  ]);
+
+  return data;
+};
+
 
 // moderateHistory 
 
@@ -1420,4 +1619,6 @@ module.exports = {
   getBuyerFixedOnly,
   getModerateHistory,
   getPaymentHistory,
+  getSupplierSameProduct,
+  getSupplierInterestBuyer,
 };

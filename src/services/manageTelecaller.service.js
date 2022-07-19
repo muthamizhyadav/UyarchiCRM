@@ -29,6 +29,12 @@ const loginManageUserEmailAndPassword = async (email, dateOfBirth) => {
     return Manage;
   };
 
+  
+  const ManageAll = async () => {
+    const data = await manageTelecaller.find();
+    return data;
+  };
+
 
   const updatemanageAttendance = async (id, updateBody) => {
     let users = await manageTelecaller.findById(id);
@@ -50,4 +56,4 @@ const loginManageUserEmailAndPassword = async (email, dateOfBirth) => {
 
 
 
-module.exports = { ManageId , loginManageUserEmailAndPassword, createManage, deletemanageAttendance,updatemanageAttendance, };
+module.exports = { ManageId , loginManageUserEmailAndPassword, createManage, deletemanageAttendance,updatemanageAttendance,ManageAll };

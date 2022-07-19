@@ -76,6 +76,27 @@ const getSupplierById = catchAsync (async (req, res)=>{
     res.send(data)
   })
 
+  // supplier sameProduct
+
+  const getsupplierSameProduct = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getSupplierSameProduct(req.params.id)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer Not Found');
+    }
+    res.send(data)
+  })
+
+  // getBuyerSupplierInterest
+
+  const getsupplierBuyerInterestData = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getSupplierInterestBuyer(req.params.id)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer Not Found');
+    }
+    res.send(data)
+  })
+
+
   const getfixedclickById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getBuyerFixedList(req.params.id)
     if(!data || data.active == false){
@@ -179,4 +200,6 @@ module.exports = {
     getfixedOnlyById,
     getModerateDataHistory,
     getpaymentData,
+    getsupplierSameProduct,
+    getsupplierBuyerInterestData,
 };

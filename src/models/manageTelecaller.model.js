@@ -47,7 +47,16 @@ const manageTelecallerSchema = mongoose.Schema({
   idProofNo:{
     type:String,
   },
-  idProofUpload:{
+  // idProofUpload:{
+  //   type:String,
+  // },
+  country:{
+    type:String,
+  },
+  state:{
+    type:String,
+  },
+  city:{
     type:String,
   },
   active: {
