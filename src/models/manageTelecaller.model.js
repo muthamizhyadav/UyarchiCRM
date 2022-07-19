@@ -18,7 +18,7 @@ const manageTelecallerSchema = mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'email already taken'],
     unique: true,
     trim: true,
     lowercase: true,

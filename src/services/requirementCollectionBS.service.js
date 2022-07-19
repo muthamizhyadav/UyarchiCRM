@@ -584,6 +584,7 @@ const getBuyerSameProduct = async (id) => {
               $and: [{ moderateStatus: { $eq: 'Moderated' } }],
             },
           },
+          
           {
             $lookup: {
               from: 'supplierinterests',
@@ -617,7 +618,7 @@ const getBuyerSameProduct = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
-   
+
 
     {
       $project: {
