@@ -31,4 +31,8 @@ router
   //moderateHistory
   router.route('/supplier/moderateHistory/all/:id').get(requirementCollectionController.getModerateDataHistory)
 
+  //paymentHistory
+
+  router.route('/Buyer/paymentdataHistory/all/data/:id').get(requirementCollectionController.getpaymentData)
+
 module.exports = router;

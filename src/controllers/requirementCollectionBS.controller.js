@@ -9,6 +9,16 @@ const createRequirementBuyerService = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(data);
 });
 
+// paymentHistory
+
+
+const getpaymentData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getPaymentHistory(req.params.id)
+  if(!data){
+    throw new ApiError(httpStatus.NOT_FOUND, 'paymentData Not Found');
+  }
+  res.send(data)
+})
 
 const createRequirementSupplierService = catchAsync(async (req, res) => {
     const data = await requirementCollectionService.createRequirementSupplier(req.body);
@@ -168,4 +178,5 @@ module.exports = {
     getfixedclickById,
     getfixedOnlyById,
     getModerateDataHistory,
+    getpaymentData,
 };

@@ -6,6 +6,7 @@ const {
   BuyerRequirementUpdate,
   SupplierModerateUpdate,
 } = require('../models/requirementUpdateBS');
+const paymentData = require('../models/paymentData.model')
 const { SupplierInterest } = require('../models/interestTable.model');
 const supplier = require('../models/supplier.model');
 const axios = require('axios');
@@ -314,6 +315,19 @@ const getModerateHistory = async (id) =>{
     },
   ])
 }
+
+// paymentHistory 
+const getPaymentHistory = async (id) =>{
+
+  return  paymentData.aggregate([
+   {
+     $match: {
+       $and: [{ buyerId: { $eq: id },active:{$eq:true}}],
+     },
+   },
+ ])
+}
+
 
 // product match Buyer
 
@@ -1405,4 +1419,5 @@ module.exports = {
   getBuyerFixedList,
   getBuyerFixedOnly,
   getModerateHistory,
+  getPaymentHistory,
 };
