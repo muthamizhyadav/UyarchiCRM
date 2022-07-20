@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const { supplier } = require('../models');
 const TextLocal = require('../config/OTP');
 const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
+const bcrypt = require('bcryptjs');
 const createSupplier = async (supplierBody) => {
   return supplier.create(supplierBody);
 };
@@ -92,11 +93,13 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
   if (!suppliers) {
     throw new ApiError(httpStatus.NOT_FOUND, 'suppliers Not found');
   }
-  let optverify = await CreateSupplierOtp.findOne({ supplierId: id});
+  let optverify = await CreateSupplierOtp.findOne({ supplierId: id });
   if (!optverify) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Otp Is Not Valid Or Expired');
   }
   let { password } = updateBody;
+  const salt = await bcrypt.genSalt(10);
+  password = await bcrypt.hash(password, salt);
   suppliers = await supplier.findByIdAndUpdate({ _id: id }, { dateOfBirth: password }, { new: true });
   await CreateSupplierOtp.deleteOne({ supplierId: id });
   return suppliers;
