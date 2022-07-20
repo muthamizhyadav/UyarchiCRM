@@ -4,12 +4,11 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const supplierService = require('../services/supplier.service');
 const { supplier } = require('../models');
-const {tokenService} = require('../services');
+const { tokenService } = require('../services');
 const { jwt } = require('../config/config');
 const { NOT_FOUND } = require('http-status');
 
 const createSupplierService = catchAsync(async (req, res) => {
-
   const Buy = await supplier.find({ type: req.body.type });
   let center = '';
   // console.log(Buy.length);
@@ -35,7 +34,7 @@ const createSupplierService = catchAsync(async (req, res) => {
     userId = 'SU' + center + totalcount;
   }
   let supplierss;
-  if(userId !=''){
+  if (userId != '') {
     supplierss = await supplierService.createSupplier(req.body);
   }
   supplierss.secretName = userId;
@@ -49,9 +48,9 @@ const login = catchAsync(async (req, res) => {
   const data = await supplierService.loginUserEmailAndPassword(email, dateOfBirth);
   const tokens = await tokenService.generateAuthTokens(data[0]);
   let options = {
-    httpOnly : true,
-  }
-  res.cookie("token", tokens.access.token, options)
+    httpOnly: true,
+  };
+  res.cookie('token', tokens.access.token, options);
   // jwt.verify(req.cookies['token'],);
   res.send({ data, tokens });
 });
@@ -92,6 +91,22 @@ const deleteSupplierByIdService = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const forgetPassword = catchAsync(async (req, res) => {
+  const supplier = await supplierService.forgetPassword(req.body);
+  res.send(supplier);
+});
+
+const otpVerification = catchAsync(async (req, res) => {
+  const otp = await supplierService.otpVerification(req.body);
+  res.send(otp);
+});
+
+const updatePasswordByIdSupplierId = catchAsync(async (req, res) => {
+  const changePwd = await supplierService.updatePasswordByIdSupplierId(req.params.id, req.body);
+  console.log(changePwd)
+  res.send(changePwd);
+});
+
 module.exports = {
   createSupplierService,
   getAllSupplierService,
@@ -101,4 +116,7 @@ module.exports = {
   createSupplierwithType,
   getAllSupplierDeleteService,
   login,
+  forgetPassword,
+  otpVerification,
+  updatePasswordByIdSupplierId,
 };

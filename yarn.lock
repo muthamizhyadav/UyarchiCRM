@@ -3271,7 +3271,7 @@
   "resolved" "https://registry.npmjs.org/husky/-/husky-8.0.1.tgz"
   "version" "8.0.1"
 
-"iconv-lite@^0.4.4", "iconv-lite@0.4.24":
+"iconv-lite@^0.4.4", "iconv-lite@~0.4.11", "iconv-lite@0.4.24":
   "integrity" "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA=="
   "resolved" "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz"
   "version" "0.4.24"
@@ -5563,6 +5563,11 @@
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
 
+"rawurlencode@^1.0.2":
+  "integrity" "sha512-unHicDwr2+pN5EjyN7tl2NUGUBCgk4Wv6nV+lQb40C7gmA4bzOsGwgmCwIiLfihzfZW70aBkDBIIx+aFbmliCQ=="
+  "resolved" "https://registry.npmjs.org/rawurlencode/-/rawurlencode-1.0.2.tgz"
+  "version" "1.0.2"
+
 "react-is@^17.0.1":
   "integrity" "sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
@@ -6799,6 +6804,13 @@
   "integrity" "sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI= sha512-Am1ousAhSLBeB9cG/7k7r2R0zj50uDRlZHPGbazid5s9rlF1F/QKYObEKSIunSjIOkJZqwRRLpvewjEkM7pSqg=="
   "resolved" "https://registry.npmjs.org/urix/-/urix-0.1.0.tgz"
   "version" "0.1.0"
+
+"urlencode@^1.1.0":
+  "integrity" "sha512-OOAOh9owHXr/rCN1tteSnYwIvsrGHamSz0hafMhmQa7RcS4+Ets6/2iVClVGjt9jkDW84UqoMw/Gmpc7QolX6A=="
+  "resolved" "https://registry.npmjs.org/urlencode/-/urlencode-1.1.0.tgz"
+  "version" "1.1.0"
+  dependencies:
+    "iconv-lite" "~0.4.11"
 
 "use@^3.1.0":
   "integrity" "sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ=="

@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { supplier } = require('../models');
-
+const TextLocal = require('../config/OTP');
+const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
 const createSupplier = async (supplierBody) => {
   return supplier.create(supplierBody);
 };
@@ -36,11 +37,11 @@ const createSupplierwithType = async (type) => {
 };
 
 const getAllSupplierDelete = async () => {
-  return  supplier.find();
+  return supplier.find();
 };
 
 const getSupplierById = async (id) => {
-    console.log(id)
+  console.log(id);
   const sup = supplier.findById(id);
   if (!sup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Supplier Not Found');
@@ -53,7 +54,7 @@ const updateSupplierById = async (supplierId, updateBody) => {
   if (!sup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'supplier not found');
   }
-  sup = await  supplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
+  sup = await supplier.findByIdAndUpdate({ _id: supplierId }, updateBody, { new: true });
   return sup;
 };
 
@@ -66,6 +67,42 @@ const deleteSupplierById = async (supplierId) => {
   return supplier;
 };
 
+const forgetPassword = async (body) => {
+  console.log(body);
+  let supplierdata = await supplier.findOne({ primaryContactNumber: body.mobileNumber });
+  if (!supplierdata) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Suplier Not Found');
+  }
+  return await TextLocal.Otp(body, supplierdata);
+};
+
+const otpVerification = async (body) => {
+  let otp = await CreateSupplierOtp.findOne({ OTP: body.otp });
+  if (!otp) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Otp is Not Valid');
+  }
+  let supplierData = await supplier.findById(otp.supplierId);
+  await CreateSupplierOtp.findByIdAndUpdate({ _id: otp._id }, { verify: true }, { new: true });
+  console.log(otp);
+  return supplierData;
+};
+
+const updatePasswordByIdSupplierId = async (id, updateBody) => {
+  let suppliers = await supplier.findById(id);
+  if (!suppliers) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'suppliers Not found');
+  }
+  let optverify = await CreateSupplierOtp.findOne({ supplierId: id});
+  console.log(optverify)
+  if (!optverify) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Otp Is Not Valid Or Expired');
+  }
+  let { password } = updateBody;
+  suppliers = await supplier.findByIdAndUpdate({ _id: id }, { dateOfBirth: password }, { new: true });
+  await CreateSupplierOtp.deleteOne({ supplierId: id });
+  return suppliers;
+};
+
 module.exports = {
   createSupplier,
   getAllSupplier,
@@ -75,4 +112,7 @@ module.exports = {
   deleteSupplierById,
   getAllSupplierDelete,
   loginUserEmailAndPassword,
+  forgetPassword,
+  otpVerification,
+  updatePasswordByIdSupplierId,
 };
