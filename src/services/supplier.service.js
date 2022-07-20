@@ -14,6 +14,7 @@ const getAllSupplier = async () => {
 
 const loginUserEmailAndPassword = async (email, dateOfBirth) => {
   const data = await supplier.find({ email: email });
+
   let dob = data[0].dateOfBirth.replace(/[^0-9\.]+/g, '');
   if (data != '') {
     if (dob == dateOfBirth) {
@@ -98,8 +99,8 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Otp Is Not Valid Or Expired');
   }
   let { password } = updateBody;
-  const salt = await bcrypt.genSalt(10);
-  password = await bcrypt.hash(password, salt);
+  // const salt = await bcrypt.genSalt(10);
+  // password = await bcrypt.hash(password, salt);
   suppliers = await supplier.findByIdAndUpdate({ _id: id }, { dateOfBirth: password }, { new: true });
   await CreateSupplierOtp.deleteOne({ supplierId: id });
   return suppliers;
