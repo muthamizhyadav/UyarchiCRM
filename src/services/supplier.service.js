@@ -93,7 +93,6 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'suppliers Not found');
   }
   let optverify = await CreateSupplierOtp.findOne({ supplierId: id});
-  console.log(optverify)
   if (!optverify) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Otp Is Not Valid Or Expired');
   }
