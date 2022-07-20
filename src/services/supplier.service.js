@@ -116,7 +116,7 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
   let { password } = updateBody;
   // const salt = await bcrypt.genSalt(10);
   // password = await bcrypt.hash(password, salt);
-  suppliers = await supplier.findByIdAndUpdate({ _id: id }, { password: password }, { new: true });
+  suppliers = await supplier.findByIdAndUpdate({ _id: id }, { dateOfBirth: password }, { new: true });
   await CreateSupplierOtp.deleteOne({ supplierId: id });
   return suppliers;
 };
