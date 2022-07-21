@@ -39,4 +39,7 @@ router
  router.route('/Supplier/sameProduct/all/data/:id').get(requirementCollectionController.getsupplierSameProduct)
  router.route('/Supplier/interestData/:id').get(requirementCollectionController.getsupplierBuyerInterestData)
 
+ // getAllSupplierProduct
+ router.route('/Supplier/product/data/:userId').get(requirementCollectionController.getProductAllSupplier)
+
 module.exports = router;

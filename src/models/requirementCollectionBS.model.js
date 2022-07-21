@@ -249,6 +249,12 @@ const requirementSupplierSchema = new mongoose.Schema({
   billId:{
     type:String,
   },
+  liveStreamDate:{
+    type:String,
+  },
+  liveStreamTime:{
+    type:Number,
+  },
   active: {
       type: Boolean,
       default: true,

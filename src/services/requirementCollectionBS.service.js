@@ -137,6 +137,20 @@ const getByIdBuyer = async (buyerId) => {
   ]);
 };
 
+// paymentHistory
+
+const getProductAllApi = async (userId) => {
+  // console.log(userId)
+  return RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{ userId: { $eq: userId } }],
+      },
+    },
+
+  ])
+}
+
 const getByIdSupplier = async (supplierId) => {
   return RequirementSupplier.aggregate([
     {
@@ -1661,4 +1675,5 @@ module.exports = {
   getPaymentHistory,
   getSupplierSameProduct,
   getSupplierInterestBuyer,
+  getProductAllApi,
 };
