@@ -1721,6 +1721,9 @@ const getAllLiveStreamData = async () =>{
         moderateDate:1,
         liveStreamDate:1,
         liveStreamTime:1,
+        liveStreamStatus:1,
+        liveStreamReason:1,
+
       },
     },
 
