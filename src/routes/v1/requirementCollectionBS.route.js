@@ -45,4 +45,7 @@ router
 // getAllBuyerProuctData
 router.route('/Buyer/product/data/:userId').get(requirementCollectionController.getBuyerProductApi)
 
+//getAllDataLiveStream
+
+router.route('/SupplierLiveStrem/all/data').get(requirementCollectionController.getAllLiveStreamData)
 module.exports = router;

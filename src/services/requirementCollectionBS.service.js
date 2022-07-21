@@ -1663,6 +1663,72 @@ const deleteRequirementSupplierById = async (supplierId) => {
   return data;
 };
 
+
+// get alll data liveStream
+ 
+const getAllLiveStreamData = async () =>{
+  const data = await RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{liveStreamDate:{$ne:null } },{ liveStreamDate: {$ne:""} },{ active: { $eq:true }}],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'suppliersData',
+      },
+    },
+    {
+      $unwind: '$suppliersData',
+    },
+    {
+      $project: {
+        name: '$suppliersData.primaryContactName',
+        secretName: '$suppliersData.secretName',
+        _id: 1,
+        userId: 1,
+        product: 1,
+        stockLocation: 1,
+        stockPosition: 1,
+        packType: 1,
+        expectedPrice: 1,
+        expectedQnty: 1,
+        paymentMode: 1,
+        requirementAddBy: 1,
+        stockAvailabilityDate: 1,
+        stockAvailabilityTime: 1,
+        date: 1,
+        time: 1,
+        lat: 1,
+        lang: 1,
+        status: 1,
+        advance: 1,
+        status: 1,
+        advance: 1,
+        statusAccept: 1,
+        reasonCallback: 1,
+        dateCallback: 1,
+        aliveFeedback: 1,
+        deadFeedback: 1,
+        modificationFeedback: 1,
+        feedbackCallback: 1,
+        moderatedPrice: 1,
+        moderateStatus: 1,
+        moderateTime:1,
+        moderateDate:1,
+        liveStreamDate:1,
+        liveStreamTime:1,
+      },
+    },
+
+ ])
+  return data
+}
+
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -1688,4 +1754,5 @@ module.exports = {
   getSupplierInterestBuyer,
   getProductAllApi,
   getAllBuyerProduct,
+  getAllLiveStreamData,
 };

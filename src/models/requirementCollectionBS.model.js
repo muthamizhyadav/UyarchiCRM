@@ -255,6 +255,12 @@ const requirementSupplierSchema = new mongoose.Schema({
   liveStreamTime:{
     type:Number,
   },
+  liveStreamStatus:{
+    type:String,
+  },
+  liveStreamReason:{
+    type:String,
+  },
   active: {
       type: Boolean,
       default: true,
