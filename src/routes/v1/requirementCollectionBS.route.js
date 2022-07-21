@@ -48,4 +48,11 @@ router.route('/Buyer/product/data/:userId').get(requirementCollectionController.
 //getAllDataLiveStream
 
 router.route('/SupplierLiveStrem/all/data').get(requirementCollectionController.getAllLiveStreamData)
+
+// getDataLiveStreamReject
+router.route('/SupplierLiveReject/all/data/:userId').get(requirementCollectionController.getAllLiveStreamRejectData)
+
+
+// getDataLiveStreamApproved
+router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionController.getAllLiveStreamApprovedData)
 module.exports = router;

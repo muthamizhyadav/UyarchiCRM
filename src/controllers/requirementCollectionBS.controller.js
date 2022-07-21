@@ -202,6 +202,16 @@ const getAllLiveStreamData = catchAsync (async (req, res)=>{
   res.send(data)
 })
 
+// getdataLiveStreamReject
+const getAllLiveStreamRejectData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getdataLiveStreamReject(req.params.userId)
+  res.send(data)
+})
+
+const getAllLiveStreamApprovedData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getdataLiveStreamApproved(req.params.userId)
+  res.send(data)
+})
 
 module.exports = {
     createRequirementBuyerService,
@@ -229,4 +239,6 @@ module.exports = {
     getProductAllSupplier,
     getBuyerProductApi,
     getAllLiveStreamData,
+    getAllLiveStreamRejectData,
+    getAllLiveStreamApprovedData,
 };
