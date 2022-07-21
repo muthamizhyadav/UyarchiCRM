@@ -42,4 +42,7 @@ router
  // getAllSupplierProduct
  router.route('/Supplier/product/data/:userId').get(requirementCollectionController.getProductAllSupplier)
 
+// getAllBuyerProuctData
+router.route('/Buyer/product/data/:userId').get(requirementCollectionController.getBuyerProductApi)
+
 module.exports = router;

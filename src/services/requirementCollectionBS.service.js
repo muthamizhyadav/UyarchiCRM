@@ -151,6 +151,17 @@ const getProductAllApi = async (userId) => {
   ])
 }
 
+// getAllBuyerProduct
+const getAllBuyerProduct = async (userId) => {
+  return RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ userId: { $eq: userId } }],
+      },
+    },
+  ])
+}
+
 const getByIdSupplier = async (supplierId) => {
   return RequirementSupplier.aggregate([
     {
@@ -1676,4 +1687,5 @@ module.exports = {
   getSupplierSameProduct,
   getSupplierInterestBuyer,
   getProductAllApi,
+  getAllBuyerProduct,
 };

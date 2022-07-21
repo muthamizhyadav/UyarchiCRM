@@ -103,6 +103,16 @@ const getSupplierById = catchAsync (async (req, res)=>{
     res.send(data)
   })
 
+  // getBuyerProductApi 
+
+  const getBuyerProductApi = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getAllBuyerProduct(req.params.userId)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer Not Found');
+    }
+    res.send(data)
+  })
+
 
   const getfixedclickById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getBuyerFixedList(req.params.id)
@@ -210,4 +220,5 @@ module.exports = {
     getsupplierSameProduct,
     getsupplierBuyerInterestData,
     getProductAllSupplier,
+    getBuyerProductApi,
 };
