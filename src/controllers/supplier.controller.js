@@ -103,7 +103,6 @@ const otpVerification = catchAsync(async (req, res) => {
 
 const updatePasswordByIdSupplierId = catchAsync(async (req, res) => {
   const changePwd = await supplierService.updatePasswordByIdSupplierId(req.params.id, req.body);
-  console.log(changePwd)
   res.send(changePwd);
 });
 
