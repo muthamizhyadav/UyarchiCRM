@@ -58,6 +58,21 @@ const updateSupplierById = async (supplierId, updateBody) => {
   return sup;
 };
 
+const updateSupplierChangeById = async (supplierId, updateBody) => {
+  let sup = await getSupplierById(supplierId);
+  if (!sup) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'supplier not found');
+  }
+  let  {oldPassword,newPassword} = updateBody
+  let dob = sup.dateOfBirth.replace(/[^0-9\.]+/g, '');
+  if(dob == oldPassword){
+  }else{
+    throw new ApiError(httpStatus.NOT_FOUND, 'OldPassword Not Same');
+  }
+    sup = await supplier.findByIdAndUpdate({ _id: supplierId }, { dateOfBirth: newPassword }, { new: true });
+   return sup;
+};
+
 const deleteSupplierById = async (supplierId) => {
   const supplier = await getSupplierById(supplierId);
   if (!supplier) {
@@ -98,6 +113,9 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
   }
   let { password } = updateBody;
   suppliers = await supplier.findByIdAndUpdate({ _id: id }, { password: password }, { new: true });
+  // const salt = await bcrypt.genSalt(10);
+  // password = await bcrypt.hash(password, salt);
+  suppliers = await supplier.findByIdAndUpdate({ _id: id }, { dateOfBirth: password }, { new: true });
   await CreateSupplierOtp.deleteOne({ supplierId: id });
   return suppliers;
 };
@@ -114,4 +132,5 @@ module.exports = {
   forgetPassword,
   otpVerification,
   updatePasswordByIdSupplierId,
+  updateSupplierChangeById,
 };

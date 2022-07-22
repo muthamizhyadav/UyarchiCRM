@@ -9,9 +9,16 @@ const createRequirementBuyerService = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(data);
 });
 
+// getallproduct api
+const getProductAllSupplier = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getProductAllApi(req.params.userId)
+  if(!data){
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product Not Found');
+  }
+  res.send(data)
+})
+
 // paymentHistory
-
-
 const getpaymentData = catchAsync (async (req, res)=>{
   const data = await requirementCollectionService.getPaymentHistory(req.params.id)
   if(!data){
@@ -90,6 +97,16 @@ const getSupplierById = catchAsync (async (req, res)=>{
 
   const getsupplierBuyerInterestData = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getSupplierInterestBuyer(req.params.id)
+    if(!data || data.active == false){
+      throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer Not Found');
+    }
+    res.send(data)
+  })
+
+  // getBuyerProductApi 
+
+  const getBuyerProductApi = catchAsync (async (req, res)=>{
+    const data = await requirementCollectionService.getAllBuyerProduct(req.params.userId)
     if(!data || data.active == false){
       throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer Not Found');
     }
@@ -178,6 +195,23 @@ const getAllBuyerProductSame = catchAsync (async (req, res)=>{
   res.send(buyer)
 })
 
+// liveStreamData
+
+const getAllLiveStreamData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getAllLiveStreamData(req.params)
+  res.send(data)
+})
+
+// getdataLiveStreamReject
+const getAllLiveStreamRejectData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getdataLiveStreamReject(req.params.userId)
+  res.send(data)
+})
+
+const getAllLiveStreamApprovedData = catchAsync (async (req, res)=>{
+  const data = await requirementCollectionService.getdataLiveStreamApproved(req.params.userId)
+  res.send(data)
+})
 
 module.exports = {
     createRequirementBuyerService,
@@ -202,4 +236,9 @@ module.exports = {
     getpaymentData,
     getsupplierSameProduct,
     getsupplierBuyerInterestData,
+    getProductAllSupplier,
+    getBuyerProductApi,
+    getAllLiveStreamData,
+    getAllLiveStreamRejectData,
+    getAllLiveStreamApprovedData,
 };

@@ -86,6 +86,11 @@ const updateSupplierByIdService = catchAsync(async (req, res) => {
   res.send(supplier);
 });
 
+const changePasswordSupplierByIdService = catchAsync(async (req, res) => {
+  const supplier = await supplierService.updateSupplierChangeById(req.params.supplierId, req.body);
+  res.send(supplier);
+});
+
 const deleteSupplierByIdService = catchAsync(async (req, res) => {
   const supplier = await supplierService.deleteSupplierById(req.params.supplierId);
   res.status(httpStatus.NO_CONTENT).send();
@@ -118,4 +123,5 @@ module.exports = {
   forgetPassword,
   otpVerification,
   updatePasswordByIdSupplierId,
+  changePasswordSupplierByIdService,
 };

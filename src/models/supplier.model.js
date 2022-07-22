@@ -22,6 +22,7 @@ const supplierSchema = new mongoose.Schema({
   },
   primaryContactNumber: {
     type: String,
+    unique: [true, 'mobileNumber already taken'],
   },
   primaryContactName: {
     type: String,
@@ -52,13 +53,16 @@ const supplierSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, 'email already taken'],
-    unique: true,
+    required:true,
+    unique: [true, 'email already taken'],
     trim: true,
     lowercase: true,
   },
   dateOfBirth: {
     type: String,
+  },
+  password:{
+    type:String,
   },
   createdBy:{
     type:String,

@@ -39,4 +39,20 @@ router
  router.route('/Supplier/sameProduct/all/data/:id').get(requirementCollectionController.getsupplierSameProduct)
  router.route('/Supplier/interestData/:id').get(requirementCollectionController.getsupplierBuyerInterestData)
 
+ // getAllSupplierProduct
+ router.route('/Supplier/product/data/:userId').get(requirementCollectionController.getProductAllSupplier)
+
+// getAllBuyerProuctData
+router.route('/Buyer/product/data/:userId').get(requirementCollectionController.getBuyerProductApi)
+
+//getAllDataLiveStream
+
+router.route('/SupplierLiveStrem/all/data').get(requirementCollectionController.getAllLiveStreamData)
+
+// getDataLiveStreamReject
+router.route('/SupplierLiveReject/all/data/:userId').get(requirementCollectionController.getAllLiveStreamRejectData)
+
+
+// getDataLiveStreamApproved
+router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionController.getAllLiveStreamApprovedData)
 module.exports = router;

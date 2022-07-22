@@ -16,4 +16,5 @@ router.route('/login/data').post(supplierController.login);
 router.route('/forgot/password').post(supplierController.forgetPassword);
 router.route('/otpVerification/password-change').post(supplierController.otpVerification);
 router.route('/updatePassword/afterOtp/:id').put(supplierController.updatePasswordByIdSupplierId);
+router.route('/changePassword/data/:supplierId').put(supplierController.changePasswordSupplierByIdService);
 module.exports = router;
