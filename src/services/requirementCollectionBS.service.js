@@ -757,7 +757,7 @@ const getallApprovedLiveStream = async () =>{
         maximumlot:1,
         minimumlot:1,
         expectedQnty:1,
-        liveStreamData:'$livestreamsData.token',
+        liveStreamData:'$livestreamsData',
       },
     },
   ])
