@@ -11,7 +11,6 @@ router
 
   router
   .route('/Supplier/:supplierId')
-  
   .get(requirementCollectionController.getSupplierById)
   .put(requirementCollectionController.updateRequirementSupplierById)
   .delete(requirementCollectionController.deleteRequirementSupplierById);
@@ -55,4 +54,8 @@ router.route('/SupplierLiveReject/all/data/:userId').get(requirementCollectionCo
 
 // getDataLiveStreamApproved
 router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionController.getAllLiveStreamApprovedData)
+
+//getAllBuyerLiveStatusApprovedData
+
+router.route('/BuyerData/liveApproved/SameProduct').get(requirementCollectionController.getallApprovedLiveStreamService)
 module.exports = router;

@@ -21,7 +21,13 @@ const liveStreamSchema = mongoose.Schema({
   },
   expiry:{
     type:String,
-  }
+  },
+  userId:{
+    type:String,
+  },
+  streaming:{
+    type:String,
+  },
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
 module.exports = liveStream;

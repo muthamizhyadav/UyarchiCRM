@@ -579,6 +579,7 @@ const getModerateHistory = async (id) =>{
   ])
 }
 
+
 // paymentHistory 
 const getPaymentHistory = async (id) =>{
 
@@ -672,6 +673,96 @@ const getBuyerSameProduct = async (id) => {
 
   return data;
 };
+
+// getallApprovedLiveStream 
+const getallApprovedLiveStream = async () =>{
+  const data = await RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{ active: { $eq: true } },{ liveStreamStatus: {$eq:'Approved'} }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'suppliersData',
+      },
+    },
+    {
+      $unwind: '$suppliersData',
+    },
+    {
+      $lookup: {
+        from: 'requirementbuyers',
+        localField: 'product',
+        foreignField: 'product',
+        as: 'buyersData',
+      },
+    },
+    {
+      $unwind: '$buyersData',
+    },
+    {
+      $lookup: {
+        from: 'livestreams',
+        localField:'_id',
+        foreignField: 'userId',
+        as: 'livestreamsData',
+      },
+    },
+    {
+      $unwind: '$livestreamsData',
+    },
+    {
+      $project: {
+        name: '$suppliersData.primaryContactName',
+        secretName: '$suppliersData.secretName',
+        buyerId: '$buyersData._id',
+        minrange: '$buyersData.minrange',
+        maxrange: '$buyersData.maxrange',
+        minprice: '$buyersData.minprice',
+        maxprice: '$buyersData.maxprice',
+        pdelivery: '$buyersData.pdelivery',
+        deliverylocation:  '$buyersData.deliverylocation',
+        deliveryDate: '$buyersData.deliveryDate',
+        deliveryTime: '$buyersData.deliveryTime',
+        requirementAddBy: '$buyersData.requirementAddBy',
+        date: '$buyersData.date',
+        time:'$buyersData.time',
+        lat:'$buyersData.lat', 
+        lang: '$buyersData.lang',
+        status:'$buyersData.status',
+        product:'$buyersData.product',
+        status: '$buyersData.status',
+        advance:'$buyersData.advance',
+        statusAccept: '$buyersData.statusAccept',
+        reasonCallback: '$buyersData.reasonCallback',
+        dateCallback: '$buyersData.dateCallback',
+        aliveFeedback: '$buyersData.aliveFeedback',
+        deadFeedback:'$buyersData.deadFeedback',
+        modificationFeedback: '$buyersData.modificationFeedback',
+        feedbackCallback: '$buyersData.feedbackCallback',
+        matchesStatus:'$buyersData.matchesStatus',
+        interestCount: '$buyersData.interestCount',
+        confirmCallStatus:'$buyersData.confirmCallStatus',
+        confirmCallStatusDate:'$buyersData.confirmCallStatusDate',
+        confirmCallStatusTime:'$buyersData.confirmCallStatusTime',
+        fixCallStatus:'$buyersData.fixCallStatus',
+        fixCallStatusDate:'$buyersData.fixCallStatusDate',
+        fixCallStatusTime:'$buyersData.fixCallStatusTime',
+        paymentCallStatus:'$buyersData.paymentCallStatus',
+        paymentConfirmCallStatus:'$buyersData.paymentConfirmCallStatus',
+        maximumlot:1,
+        minimumlot:1,
+        expectedQnty:1,
+        liveStreamData:'$livestreamsData.token',
+      },
+    },
+  ])
+  return data
+}
 
 // Buyer all live
 const getBuyerAlive = async () => {
@@ -1892,4 +1983,5 @@ module.exports = {
   getAllLiveStreamData,
   getdataLiveStreamReject,
   getdataLiveStreamApproved,
+  getallApprovedLiveStream,
 };
