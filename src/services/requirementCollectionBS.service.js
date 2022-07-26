@@ -12,6 +12,7 @@ const supplier = require('../models/supplier.model');
 const axios = require('axios');
 const moment = require('moment');
 let currentDate = moment().format('DD-MM-YYYY');
+const liveStreamservice = require('../services/liveStream.service');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -42,8 +43,8 @@ const createRequirementBuyer = async (buyerBody) => {
     center = '0';
   }
   let total = billcount + 1;
-  let billid = "BID"+ center + total;
-  let values = {...buyerBody, ...{ billId: billid, userId: supp._id } } 
+  let billid = "BID" + center + total;
+  let values = { ...buyerBody, ...{ billId: billid, userId: supp._id } }
   return RequirementBuyer.create(values)
 };
 
@@ -78,17 +79,21 @@ const createRequirementSupplier = async (supplierBody) => {
     center = '0';
   }
   let total = billcount + 1;
-  let billid = "BID"+ center + total;
-  let values = {...supplierBody, ...{ billId: billid, userId: supp._id } } 
+  let billid = "BID" + center + total;
+  let values = { ...supplierBody, ...{ billId: billid, userId: supp._id } }
 
-  return RequirementSupplier.create(values)
+  let requirement = RequirementSupplier.create(values)
+  if (supplierBody.type == 'own') {
+    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement.id })
+  }
+  return requirement;
 };
 
 const getByIdBuyer = async (buyerId) => {
   return RequirementBuyer.aggregate([
     {
       $match: {
-        $and: [{ _id: { $eq: buyerId } },{ active: { $eq: true } }],
+        $and: [{ _id: { $eq: buyerId } }, { active: { $eq: true } }],
       },
     },
     {
@@ -213,8 +218,8 @@ const getByIdSupplier = async (supplierId) => {
         feedbackCallback: 1,
         moderatedPrice: 1,
         moderateStatus: 1,
-        moderateTime:1,
-        moderateDate:1,
+        moderateTime: 1,
+        moderateDate: 1,
       },
     },
   ]);
@@ -267,9 +272,9 @@ const getByIdBuyerAll = async () => {
         deadFeedback: 1,
         modificationFeedback: 1,
         feedbackCallback: 1,
-        confirmCallStatus:1,
-        confirmCallStatusDate:1,
-        confirmCallStatusTime:1,
+        confirmCallStatus: 1,
+        confirmCallStatusDate: 1,
+        confirmCallStatusTime: 1,
       },
     },
   ]);
@@ -298,7 +303,7 @@ const getByIdSupplierAll = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'supplierReqId',
-        pipeline:[
+        pipeline: [
           {
             $match: {
               $and: [{ active: { $eq: true } }],
@@ -313,7 +318,7 @@ const getByIdSupplierAll = async () => {
         from: 'requirementbuyers',
         localField: 'product',
         foreignField: 'product',
-        pipeline:[
+        pipeline: [
           {
             $match: {
               $and: [{ active: { $eq: true } }],
@@ -330,8 +335,8 @@ const getByIdSupplierAll = async () => {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
-        interestCount:{$size:'$supplierinterestsData'},
-        sameProductCount:{$size:'$requirementbuyersData'},
+        interestCount: { $size: '$supplierinterestsData' },
+        sameProductCount: { $size: '$requirementbuyersData' },
         _id: 1,
         userId: 1,
         product: 1,
@@ -376,12 +381,12 @@ const getSupplierSameProduct = async (id) => {
         from: 'requirementbuyers',
         localField: 'product',
         foreignField: 'product',
-         pipeline: [
-        //   {
-        //     $match: {
-        //       $and: [{ moderateStatus: { $eq: 'Moderated' } }],
-        //     },
-        //   },
+        pipeline: [
+          //   {
+          //     $match: {
+          //       $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+          //     },
+          //   },
           // {
           //   $lookup: {
           //     from: 'supplierinterests',
@@ -415,17 +420,17 @@ const getSupplierSameProduct = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
-   
+
 
     {
       $project: {
         name: '$requirementsuppliersData.suppliersData.primaryContactName',
         secretName: '$requirementsuppliersData.suppliersData.secretName',
-        createdBy:'$requirementsuppliersData.suppliersData.createdBy',
-        requirementAddBy:'$requirementsuppliersData.requirementAddBy',
+        createdBy: '$requirementsuppliersData.suppliersData.createdBy',
+        requirementAddBy: '$requirementsuppliersData.requirementAddBy',
         product: '$requirementsuppliersData.product',
-        buyerId:'$requirementsuppliersData._id',
-        minrange:'$requirementsuppliersData.minrange',
+        buyerId: '$requirementsuppliersData._id',
+        minrange: '$requirementsuppliersData.minrange',
         maxrange: '$requirementsuppliersData.maxrange',
         minprice: '$requirementsuppliersData.minprice',
         maxprice: '$requirementsuppliersData.maxprice',
@@ -447,12 +452,12 @@ const getSupplierSameProduct = async (id) => {
         modificationFeedback: '$requirementsuppliersData.modificationFeedback',
         reasonCallback: '$requirementsuppliersData.reasonCallback',
         statusAccept: '$requirementsuppliersData.statusAccept',
-        confirmCallStatus:'$requirementsuppliersData.confirmCallStatus',
-        confirmCallStatusDate:'$requirementsuppliersData.confirmCallStatusDate',
-        confirmCallStatusTime:'$requirementsuppliersData.confirmCallStatusTime',
-        fixCallStatus:'$requirementsuppliersData.fixCallStatus',
-        paymentCallStatus:'$requirementsuppliersData.paymentCallStatus',
-        paymentConfirmCallStatus:'$requirementsuppliersData.paymentConfirmCallStatus',
+        confirmCallStatus: '$requirementsuppliersData.confirmCallStatus',
+        confirmCallStatusDate: '$requirementsuppliersData.confirmCallStatusDate',
+        confirmCallStatusTime: '$requirementsuppliersData.confirmCallStatusTime',
+        fixCallStatus: '$requirementsuppliersData.fixCallStatus',
+        paymentCallStatus: '$requirementsuppliersData.paymentCallStatus',
+        paymentConfirmCallStatus: '$requirementsuppliersData.paymentConfirmCallStatus',
       },
     },
   ]);
@@ -475,11 +480,11 @@ const getSupplierInterestBuyer = async (id) => {
       $lookup: {
         from: 'supplierinterests',
         localField: '_id',
-        foreignField:'supplierReqId',
+        foreignField: 'supplierReqId',
         pipeline: [
           {
-            $match:{
-              $and:[{active:{$eq:true}}]
+            $match: {
+              $and: [{ active: { $eq: true } }]
             },
           },
         ],
@@ -494,7 +499,7 @@ const getSupplierInterestBuyer = async (id) => {
         from: 'requirementbuyers',
         localField: 'supplierReqId.matchedBuyerId',
         foreignField: '_id',
-         pipeline: [
+        pipeline: [
           {
             $match: {
               $and: [{ active: { $eq: true } }],
@@ -519,18 +524,18 @@ const getSupplierInterestBuyer = async (id) => {
     {
       $unwind: '$requirementsuppliersData',
     },
-   
+
 
     {
       $project: {
         // data: '$supplierReqId',
         name: '$requirementsuppliersData.suppliersData.primaryContactName',
         secretName: '$requirementsuppliersData.suppliersData.secretName',
-        createdBy:'$requirementsuppliersData.suppliersData.createdBy',
-        requirementAddBy:'$requirementsuppliersData.requirementAddBy',
+        createdBy: '$requirementsuppliersData.suppliersData.createdBy',
+        requirementAddBy: '$requirementsuppliersData.requirementAddBy',
         product: '$requirementsuppliersData.product',
-        buyerId:'$requirementsuppliersData._id',
-        minrange:'$requirementsuppliersData.minrange',
+        buyerId: '$requirementsuppliersData._id',
+        minrange: '$requirementsuppliersData.minrange',
         maxrange: '$requirementsuppliersData.maxrange',
         minprice: '$requirementsuppliersData.minprice',
         maxprice: '$requirementsuppliersData.maxprice',
@@ -552,12 +557,12 @@ const getSupplierInterestBuyer = async (id) => {
         modificationFeedback: '$requirementsuppliersData.modificationFeedback',
         reasonCallback: '$requirementsuppliersData.reasonCallback',
         statusAccept: '$requirementsuppliersData.statusAccept',
-        confirmCallStatus:'$requirementsuppliersData.confirmCallStatus',
-        confirmCallStatusDate:'$requirementsuppliersData.confirmCallStatusDate',
-        confirmCallStatusTime:'$requirementsuppliersData.confirmCallStatusTime',
-        fixCallStatus:'$requirementsuppliersData.fixCallStatus',
-        paymentCallStatus:'$requirementsuppliersData.paymentCallStatus',
-        paymentConfirmCallStatus:'$requirementsuppliersData.paymentConfirmCallStatus',
+        confirmCallStatus: '$requirementsuppliersData.confirmCallStatus',
+        confirmCallStatusDate: '$requirementsuppliersData.confirmCallStatusDate',
+        confirmCallStatusTime: '$requirementsuppliersData.confirmCallStatusTime',
+        fixCallStatus: '$requirementsuppliersData.fixCallStatus',
+        paymentCallStatus: '$requirementsuppliersData.paymentCallStatus',
+        paymentConfirmCallStatus: '$requirementsuppliersData.paymentConfirmCallStatus',
       },
     },
   ]);
@@ -568,12 +573,12 @@ const getSupplierInterestBuyer = async (id) => {
 
 // moderateHistory 
 
-const getModerateHistory = async (id) =>{
+const getModerateHistory = async (id) => {
 
-   return  SupplierModerateUpdate.aggregate([
+  return SupplierModerateUpdate.aggregate([
     {
       $match: {
-        $and: [{ supplierReqId: { $eq: id },active:{$eq:true}}],
+        $and: [{ supplierReqId: { $eq: id }, active: { $eq: true } }],
       },
     },
   ])
@@ -581,22 +586,22 @@ const getModerateHistory = async (id) =>{
 
 
 // paymentHistory 
-const getPaymentHistory = async (id) =>{
+const getPaymentHistory = async (id) => {
 
-  return  paymentData.aggregate([
-   {
-     $match: {
-       $and: [{ buyerId: { $eq: id },active:{$eq:true}}],
-     },
-   },
- ])
+  return paymentData.aggregate([
+    {
+      $match: {
+        $and: [{ buyerId: { $eq: id }, active: { $eq: true } }],
+      },
+    },
+  ])
 }
 
 
 // product match Buyer
 
 const getBuyerSameProduct = async (id) => {
-  let match=[{matchedBuyerId:{$eq:id},active:{$eq:true}}]
+  let match = [{ matchedBuyerId: { $eq: id }, active: { $eq: true } }]
   const data = await RequirementBuyer.aggregate([
     {
       $match: {
@@ -622,8 +627,8 @@ const getBuyerSameProduct = async (id) => {
               foreignField: 'supplierReqId',
               pipeline: [
                 {
-                  $match:{
-                    $and:match
+                  $match: {
+                    $and: match
                   },
                 },
               ],
@@ -675,11 +680,11 @@ const getBuyerSameProduct = async (id) => {
 };
 
 // getallApprovedLiveStream 
-const getallApprovedLiveStream = async () =>{
+const getallApprovedLiveStream = async () => {
   const data = await RequirementSupplier.aggregate([
     {
       $match: {
-        $and: [{ active: { $eq: true } },{ liveStreamStatus: {$eq:'Approved'} }],
+        $and: [{ active: { $eq: true } }, { liveStreamStatus: { $eq: 'Approved' } }],
       },
     },
     {
@@ -707,7 +712,7 @@ const getallApprovedLiveStream = async () =>{
     {
       $lookup: {
         from: 'livestreams',
-        localField:'_id',
+        localField: '_id',
         foreignField: 'userId',
         as: 'livestreamsData',
       },
@@ -725,39 +730,39 @@ const getallApprovedLiveStream = async () =>{
         minprice: '$buyersData.minprice',
         maxprice: '$buyersData.maxprice',
         pdelivery: '$buyersData.pdelivery',
-        deliverylocation:  '$buyersData.deliverylocation',
+        deliverylocation: '$buyersData.deliverylocation',
         deliveryDate: '$buyersData.deliveryDate',
         deliveryTime: '$buyersData.deliveryTime',
         requirementAddBy: '$buyersData.requirementAddBy',
         date: '$buyersData.date',
-        time:'$buyersData.time',
-        lat:'$buyersData.lat', 
+        time: '$buyersData.time',
+        lat: '$buyersData.lat',
         lang: '$buyersData.lang',
-        status:'$buyersData.status',
-        product:'$buyersData.product',
         status: '$buyersData.status',
-        advance:'$buyersData.advance',
+        product: '$buyersData.product',
+        status: '$buyersData.status',
+        advance: '$buyersData.advance',
         statusAccept: '$buyersData.statusAccept',
         reasonCallback: '$buyersData.reasonCallback',
         dateCallback: '$buyersData.dateCallback',
         aliveFeedback: '$buyersData.aliveFeedback',
-        deadFeedback:'$buyersData.deadFeedback',
+        deadFeedback: '$buyersData.deadFeedback',
         modificationFeedback: '$buyersData.modificationFeedback',
         feedbackCallback: '$buyersData.feedbackCallback',
-        matchesStatus:'$buyersData.matchesStatus',
+        matchesStatus: '$buyersData.matchesStatus',
         interestCount: '$buyersData.interestCount',
-        confirmCallStatus:'$buyersData.confirmCallStatus',
-        confirmCallStatusDate:'$buyersData.confirmCallStatusDate',
-        confirmCallStatusTime:'$buyersData.confirmCallStatusTime',
-        fixCallStatus:'$buyersData.fixCallStatus',
-        fixCallStatusDate:'$buyersData.fixCallStatusDate',
-        fixCallStatusTime:'$buyersData.fixCallStatusTime',
-        paymentCallStatus:'$buyersData.paymentCallStatus',
-        paymentConfirmCallStatus:'$buyersData.paymentConfirmCallStatus',
-        maximumlot:1,
-        minimumlot:1,
-        expectedQnty:1,
-        liveStreamData:'$livestreamsData',
+        confirmCallStatus: '$buyersData.confirmCallStatus',
+        confirmCallStatusDate: '$buyersData.confirmCallStatusDate',
+        confirmCallStatusTime: '$buyersData.confirmCallStatusTime',
+        fixCallStatus: '$buyersData.fixCallStatus',
+        fixCallStatusDate: '$buyersData.fixCallStatusDate',
+        fixCallStatusTime: '$buyersData.fixCallStatusTime',
+        paymentCallStatus: '$buyersData.paymentCallStatus',
+        paymentConfirmCallStatus: '$buyersData.paymentConfirmCallStatus',
+        maximumlot: 1,
+        minimumlot: 1,
+        expectedQnty: 1,
+        liveStreamData: '$livestreamsData',
       },
     },
   ])
@@ -766,7 +771,7 @@ const getallApprovedLiveStream = async () =>{
 
 // Buyer all live
 const getBuyerAlive = async () => {
-  return RequirementBuyer.aggregate([ 
+  return RequirementBuyer.aggregate([
     {
       $match: {
         $and: [{ active: { $eq: true } }, { statusAccept: { $ne: 'Requirement dead' } }],
@@ -788,7 +793,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{active:{$eq:true}}]}}],
+        pipeline: [{ $match: { $and: [{ active: { $eq: true } }] } }],
         as: 'supplierReqId',
       },
     },
@@ -800,7 +805,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}}]}}],
+        pipeline: [{ $match: { $and: [{ shortlistStatus: { $eq: "shortlist" }, active: { $eq: true } }] } }],
         as: 'supplierShort',
       },
     },
@@ -809,7 +814,7 @@ const getBuyerAlive = async () => {
         from: 'supplierinterests',
         localField: '_id',
         foreignField: 'matchedBuyerId',
-        pipeline:[{$match:{$and:[{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}}],
+        pipeline: [{ $match: { $and: [{ fixStatus: { $eq: "fixed" }, active: { $eq: true } }] } }],
         as: 'supplierFixed',
       },
     },
@@ -818,10 +823,10 @@ const getBuyerAlive = async () => {
       $project: {
         name: '$suppliersData.primaryContactName',
         secretName: '$suppliersData.secretName',
-        interest:{$size:'$supplierReqId'},
+        interest: { $size: '$supplierReqId' },
         totalPrice: '$supplierFixed',
-        shortlist:{ $size:'$supplierShort'},
-        fixed: {$size:'$supplierFixed'},
+        shortlist: { $size: '$supplierShort' },
+        fixed: { $size: '$supplierFixed' },
         _id: 1,
         minrange: 1,
         maxrange: 1,
@@ -849,14 +854,14 @@ const getBuyerAlive = async () => {
         feedbackCallback: 1,
         matchesStatus: 1,
         interestCount: 1,
-        confirmCallStatus:1,
-        confirmCallStatusDate:1,
-        confirmCallStatusTime:1,
-        fixCallStatus:1,
-        fixCallStatusDate:1,
-        fixCallStatusTime:1,
-        paymentCallStatus:1,
-        paymentConfirmCallStatus:1,
+        confirmCallStatus: 1,
+        confirmCallStatusDate: 1,
+        confirmCallStatusTime: 1,
+        fixCallStatus: 1,
+        fixCallStatusDate: 1,
+        fixCallStatusTime: 1,
+        paymentCallStatus: 1,
+        paymentConfirmCallStatus: 1,
       },
     },
   ]);
@@ -889,7 +894,7 @@ const getBuyerShortList = async (id) => {
           //     foreignField: 'supplierReqId',
           //     pipeline:[
           //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
-                  
+
           //          ],
           //     as: 'shortlist',
           //   },
@@ -899,10 +904,10 @@ const getBuyerShortList = async (id) => {
               from: 'supplierinterests',
               localField: '_id',
               foreignField: 'supplierReqId',
-              pipeline:[
-                       {$match:{$or:[{interestStatus:{$eq:"interest"},active:{$eq:true}},{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}}]}},
-                  
-                   ],
+              pipeline: [
+                { $match: { $or: [{ interestStatus: { $eq: "interest" }, active: { $eq: true } }, { shortlistStatus: { $eq: "shortlist" }, active: { $eq: true } }] } },
+
+              ],
               as: 'supplierReqId',
             },
           },
@@ -928,9 +933,9 @@ const getBuyerShortList = async (id) => {
       $unwind: '$requirementsuppliersData',
     },
     {
-      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
+      $match: { $and: [{ 'requirementsuppliersData.supplierReqId.matchedBuyerId': { $eq: id } }] }
     },
- 
+
     // {
     //   $lookup: {
     //     from: 'requirementsuppliers',
@@ -960,7 +965,7 @@ const getBuyerShortList = async (id) => {
     //     foreignField:'supplierReqId',
     //     pipeline:[
     //       {$match:{$and:[{interestStatus:{$eq:"interest"}}]}},
-      
+
     //   ],
     //     as: 'supplierinterestsData',
     //   },
@@ -975,7 +980,7 @@ const getBuyerShortList = async (id) => {
     //     foreignField:'matchedBuyerId',
     //     pipeline:[
     //       {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
-      
+
     //   ],
     //     as:'shortlist',
     //   },
@@ -987,8 +992,8 @@ const getBuyerShortList = async (id) => {
         product: '$requirementsuppliersData.product',
         ghrfstatus: '$requirementsuppliersData.supplierReqId.interestStatus',
         shortliststatus: '$requirementsuppliersData.supplierReqId.shortlistStatus',
-        callStatus:'$requirementsuppliersData.supplierReqId.callStatus',
-        shortlistQuantity:'$requirementsuppliersData.supplierReqId.shortlistQuantity',
+        callStatus: '$requirementsuppliersData.supplierReqId.callStatus',
+        shortlistQuantity: '$requirementsuppliersData.supplierReqId.shortlistQuantity',
         interestId: '$requirementsuppliersData.supplierReqId._id',
         shortStatus: '$requirementsuppliersData.supplierReqId.shortStatus',
         interestDate: '$requirementsuppliersData.supplierReqId.interestDate',
@@ -1004,7 +1009,7 @@ const getBuyerShortList = async (id) => {
         moderatedPrice: '$requirementsuppliersData.moderatedPrice',
         expectedQnty: '$requirementsuppliersData.expectedQnty',
         stockLocation: '$requirementsuppliersData.stockLocation',
-        id:'$requirementsuppliersData._id'
+        id: '$requirementsuppliersData._id'
       },
     },
   ]);
@@ -1041,7 +1046,7 @@ const getBuyerFixedList = async (id) => {
           //     foreignField: 'supplierReqId',
           //     pipeline:[
           //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
-                  
+
           //          ],
           //     as: 'shortlist',
           //   },
@@ -1051,10 +1056,10 @@ const getBuyerFixedList = async (id) => {
               from: 'supplierinterests',
               localField: '_id',
               foreignField: 'supplierReqId',
-              pipeline:[
-                       {$match:{$or:[{shortlistStatus:{$eq:"shortlist"},active:{$eq:true}},{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}},
-                  
-                   ],
+              pipeline: [
+                { $match: { $or: [{ shortlistStatus: { $eq: "shortlist" }, active: { $eq: true } }, { fixStatus: { $eq: "fixed" }, active: { $eq: true } }] } },
+
+              ],
               as: 'supplierReqId',
             },
           },
@@ -1080,7 +1085,7 @@ const getBuyerFixedList = async (id) => {
       $unwind: '$requirementsuppliersData',
     },
     {
-      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
+      $match: { $and: [{ 'requirementsuppliersData.supplierReqId.matchedBuyerId': { $eq: id } }] }
     },
     {
       $project: {
@@ -1089,8 +1094,8 @@ const getBuyerFixedList = async (id) => {
         product: '$requirementsuppliersData.product',
         shortliststatus: '$requirementsuppliersData.supplierReqId.shortlistStatus',
         fixedliststatus: '$requirementsuppliersData.supplierReqId.fixedStatus',
-        callStatus:'$requirementsuppliersData.supplierReqId.callStatus',
-        shortlistQuantity:'$requirementsuppliersData.supplierReqId.shortlistQuantity',
+        callStatus: '$requirementsuppliersData.supplierReqId.callStatus',
+        shortlistQuantity: '$requirementsuppliersData.supplierReqId.shortlistQuantity',
         interestId: '$requirementsuppliersData.supplierReqId._id',
         shortStatus: '$requirementsuppliersData.supplierReqId.shortStatus',
         shortDate: '$requirementsuppliersData.supplierReqId.shortDate',
@@ -1108,7 +1113,7 @@ const getBuyerFixedList = async (id) => {
         moderatedPrice: '$requirementsuppliersData.moderatedPrice',
         expectedQnty: '$requirementsuppliersData.expectedQnty',
         stockLocation: '$requirementsuppliersData.stockLocation',
-        id:'$requirementsuppliersData._id'
+        id: '$requirementsuppliersData._id'
       },
     },
   ]);
@@ -1142,10 +1147,10 @@ const getBuyerFixedOnly = async (id) => {
               from: 'supplierinterests',
               localField: '_id',
               foreignField: 'supplierReqId',
-              pipeline:[
-                       {$match:{$and:[{fixStatus:{$eq:"fixed"},active:{$eq:true}}]}},
-                  
-                   ],
+              pipeline: [
+                { $match: { $and: [{ fixStatus: { $eq: "fixed" }, active: { $eq: true } }] } },
+
+              ],
               as: 'supplierReqId',
             },
           },
@@ -1171,7 +1176,7 @@ const getBuyerFixedOnly = async (id) => {
       $unwind: '$requirementsuppliersData',
     },
     {
-      $match:{$and:[{'requirementsuppliersData.supplierReqId.matchedBuyerId':{$eq:id}}]}
+      $match: { $and: [{ 'requirementsuppliersData.supplierReqId.matchedBuyerId': { $eq: id } }] }
     },
     {
       $project: {
@@ -1180,8 +1185,8 @@ const getBuyerFixedOnly = async (id) => {
         product: '$requirementsuppliersData.product',
         shortliststatus: '$requirementsuppliersData.supplierReqId.shortlistStatus',
         fixedliststatus: '$requirementsuppliersData.supplierReqId.fixedStatus',
-        callStatus:'$requirementsuppliersData.supplierReqId.callStatus',
-        shortlistQuantity:'$requirementsuppliersData.supplierReqId.shortlistQuantity',
+        callStatus: '$requirementsuppliersData.supplierReqId.callStatus',
+        shortlistQuantity: '$requirementsuppliersData.supplierReqId.shortlistQuantity',
         interestId: '$requirementsuppliersData.supplierReqId._id',
         shortStatus: '$requirementsuppliersData.supplierReqId.shortStatus',
         shortDate: '$requirementsuppliersData.supplierReqId.shortDate',
@@ -1198,7 +1203,7 @@ const getBuyerFixedOnly = async (id) => {
         moderatedPrice: '$requirementsuppliersData.moderatedPrice',
         expectedQnty: '$requirementsuppliersData.expectedQnty',
         stockLocation: '$requirementsuppliersData.stockLocation',
-        id:'$requirementsuppliersData._id'
+        id: '$requirementsuppliersData._id'
       },
     },
   ]);
@@ -1578,143 +1583,143 @@ const updateRequirementSupplierById = async (supplierId, updateBody) => {
       },
     };
   }
-  if(data[0].moderatedPrice != null && updateBody.moderatedPrice ){
-  if (updateBody.moderatedPrice != data[0].moderatedPrice) {
-    // console.log('yes');
-    values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice, date:data[0].moderateDate, time:data[0].moderateTime} };
+  if (data[0].moderatedPrice != null && updateBody.moderatedPrice) {
+    if (updateBody.moderatedPrice != data[0].moderatedPrice) {
+      // console.log('yes');
+      values1 = { ...{ userId: data[0].userId, supplierReqId: data[0]._id, moderatedPrice: data[0].moderatedPrice, date: data[0].moderateDate, time: data[0].moderateTime } };
+    }
   }
-}
 
-if(updateBody.expectedQnty){
-  if (
-    data[0].expectedQnty != updateBody.expectedQnty &&
-    data[0].expectedPrice == updateBody.expectedPrice &&
-    data[0].stockLocation == updateBody.stockLocation
-  ) {
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        updatedQty: data[0].expectedQnty,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
+  if (updateBody.expectedQnty) {
+    if (
+      data[0].expectedQnty != updateBody.expectedQnty &&
+      data[0].expectedPrice == updateBody.expectedPrice &&
+      data[0].stockLocation == updateBody.stockLocation
+    ) {
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          updatedQty: data[0].expectedQnty,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
   }
-}
-if(updateBody.expectedPrice){
-  if (
-    data[0].expectedPrice != updateBody.expectedPrice &&
-    data[0].expectedQnty == updateBody.expectedQnty &&
-    data[0].stockLocation == updateBody.stockLocation
-  ) {
-   
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        price: data[0].expectedPrice,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
-  }
-}
-if(updateBody.stockLocation){
-  if (
-    data[0].stockLocation != updateBody.stockLocation &&
-    data[0].expectedQnty == updateBody.expectedQnty &&
-    data[0].expectedPrice == updateBody.expectedPrice
-  ) {
+  if (updateBody.expectedPrice) {
+    if (
+      data[0].expectedPrice != updateBody.expectedPrice &&
+      data[0].expectedQnty == updateBody.expectedQnty &&
+      data[0].stockLocation == updateBody.stockLocation
+    ) {
 
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        stockLocation: data[0].stockLocation,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          price: data[0].expectedPrice,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
   }
-}
-  if(updateBody.expectedQnty && updateBody.expectedPrice){
-  if (
-    data[0].expectedQnty != updateBody.expectedQnty &&
-    data[0].expectedPrice != updateBody.expectedPrice &&
-    data[0].stockLocation == updateBody.stockLocation
-  ) {
-    console.log(updateBody.expectedQnty)
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        updatedQty: data[0].expectedQnty,
-        price: data[0].expectedPrice,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
-  }
-}
-if(updateBody.expectedQnty && updateBody.stockLocation){
-  if (
-    data[0].expectedQnty != updateBody.expectedQnty &&
-    data[0].stockLocation != updateBody.stockLocation &&
-    data[0].expectedPrice == updateBody.expectedPrice
-  ) {
+  if (updateBody.stockLocation) {
+    if (
+      data[0].stockLocation != updateBody.stockLocation &&
+      data[0].expectedQnty == updateBody.expectedQnty &&
+      data[0].expectedPrice == updateBody.expectedPrice
+    ) {
 
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        updatedQty: data[0].expectedQnty,
-        stockLocation: data[0].stockLocation,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          stockLocation: data[0].stockLocation,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
   }
-}
-if(updateBody.expectedPrice && updateBody.stockLocation){
-  if (
-    data[0].expectedPrice != updateBody.expectedPrice &&
-    data[0].stockLocation != updateBody.stockLocation &&
-    data[0].expectedQnty == updateBody.expectedQnty
-  ) {
-  
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        price: data[0].expectedPrice,
-        stockLocation: data[0].stockLocation,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
+  if (updateBody.expectedQnty && updateBody.expectedPrice) {
+    if (
+      data[0].expectedQnty != updateBody.expectedQnty &&
+      data[0].expectedPrice != updateBody.expectedPrice &&
+      data[0].stockLocation == updateBody.stockLocation
+    ) {
+      console.log(updateBody.expectedQnty)
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          updatedQty: data[0].expectedQnty,
+          price: data[0].expectedPrice,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
   }
-}
-if(updateBody.expectedPrice && updateBody.stockLocation && updateBody.expectedQnty){
-  if (
-    data[0].expectedPrice != updateBody.expectedPrice &&
-    data[0].stockLocation != updateBody.stockLocation &&
-    data[0].expectedQnty != updateBody.expectedQnty
-  ) {
-    values = {
-      ...{
-        userId: data[0].userId,
-        supplierReqId: data[0]._id,
-        price: data[0].expectedPrice,
-        updatedQty: data[0].expectedQnty,
-        stockLocation: data[0].stockLocation,
-        date: data[0].date,
-        time: data[0].time,
-      },
-    };
+  if (updateBody.expectedQnty && updateBody.stockLocation) {
+    if (
+      data[0].expectedQnty != updateBody.expectedQnty &&
+      data[0].stockLocation != updateBody.stockLocation &&
+      data[0].expectedPrice == updateBody.expectedPrice
+    ) {
+
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          updatedQty: data[0].expectedQnty,
+          stockLocation: data[0].stockLocation,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
   }
-}
- 
+  if (updateBody.expectedPrice && updateBody.stockLocation) {
+    if (
+      data[0].expectedPrice != updateBody.expectedPrice &&
+      data[0].stockLocation != updateBody.stockLocation &&
+      data[0].expectedQnty == updateBody.expectedQnty
+    ) {
+
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          price: data[0].expectedPrice,
+          stockLocation: data[0].stockLocation,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
+  }
+  if (updateBody.expectedPrice && updateBody.stockLocation && updateBody.expectedQnty) {
+    if (
+      data[0].expectedPrice != updateBody.expectedPrice &&
+      data[0].stockLocation != updateBody.stockLocation &&
+      data[0].expectedQnty != updateBody.expectedQnty
+    ) {
+      values = {
+        ...{
+          userId: data[0].userId,
+          supplierReqId: data[0]._id,
+          price: data[0].expectedPrice,
+          updatedQty: data[0].expectedQnty,
+          stockLocation: data[0].stockLocation,
+          date: data[0].date,
+          time: data[0].time,
+        },
+      };
+    }
+  }
+
   if (Object.keys(values).length !== 0) {
     SupplierRequirementUpdate.create(values);
   }
@@ -1730,7 +1735,7 @@ if(updateBody.expectedPrice && updateBody.stockLocation && updateBody.expectedQn
 };
 const getbyId = async (buyerId) => {
   const data = await RequirementBuyer.findById(buyerId);
-  if (!data || data.active  == false) {
+  if (!data || data.active == false) {
     throw new ApiError(httpStatus.NOT_FOUND, 'RequirementBuyer not found');
   }
   return data;
@@ -1756,12 +1761,12 @@ const deleteRequirementSupplierById = async (supplierId) => {
 
 
 // get alll data liveStream
- 
-const getAllLiveStreamData = async () =>{
+
+const getAllLiveStreamData = async () => {
   const data = await RequirementSupplier.aggregate([
     {
       $match: {
-        $and: [{liveStreamDate:{$ne:null } },{ liveStreamDate: {$ne:""} },{ active: { $eq:true }}],
+        $and: [{ liveStreamDate: { $ne: null } }, { liveStreamDate: { $ne: "" } }, { active: { $eq: true } }],
       },
     },
     {
@@ -1808,26 +1813,26 @@ const getAllLiveStreamData = async () =>{
         feedbackCallback: 1,
         moderatedPrice: 1,
         moderateStatus: 1,
-        moderateTime:1,
-        moderateDate:1,
-        liveStreamDate:1,
-        liveStreamTime:1,
-        liveStreamStatus:1,
-        liveStreamReason:1,
+        moderateTime: 1,
+        moderateDate: 1,
+        liveStreamDate: 1,
+        liveStreamTime: 1,
+        liveStreamStatus: 1,
+        liveStreamReason: 1,
 
       },
     },
 
- ])
+  ])
   return data
 }
 
 // getdataLiveStreamReject
-const getdataLiveStreamReject = async (userId) =>{
+const getdataLiveStreamReject = async (userId) => {
   const data = await RequirementSupplier.aggregate([
     {
       $match: {
-        $and: [{userId:{$eq:userId } },{liveStreamDate:{$ne:null } },{liveStreamStatus:{$eq:"Rejected" } },{ liveStreamDate: {$ne:""} },{ active: { $eq:true }}],
+        $and: [{ userId: { $eq: userId } }, { liveStreamDate: { $ne: null } }, { liveStreamStatus: { $eq: "Rejected" } }, { liveStreamDate: { $ne: "" } }, { active: { $eq: true } }],
       },
     },
     {
@@ -1874,27 +1879,27 @@ const getdataLiveStreamReject = async (userId) =>{
         feedbackCallback: 1,
         moderatedPrice: 1,
         moderateStatus: 1,
-        moderateTime:1,
-        moderateDate:1,
-        liveStreamDate:1,
-        liveStreamTime:1,
-        liveStreamStatus:1,
-        liveStreamReason:1,
+        moderateTime: 1,
+        moderateDate: 1,
+        liveStreamDate: 1,
+        liveStreamTime: 1,
+        liveStreamStatus: 1,
+        liveStreamReason: 1,
 
       },
     },
 
- ])
+  ])
   return data
 }
 
 
 // getdataLiveStreamApproved
-const getdataLiveStreamApproved = async (userId) =>{
+const getdataLiveStreamApproved = async (userId) => {
   const data = await RequirementSupplier.aggregate([
     {
       $match: {
-        $and: [{userId:{$eq:userId } },{liveStreamDate:{$ne:null } },{liveStreamStatus:{$eq:"Approved" } },{ liveStreamDate: {$ne:""} },{ active: { $eq:true }}],
+        $and: [{ userId: { $eq: userId } }, { liveStreamDate: { $ne: null } }, { liveStreamStatus: { $eq: "Approved" } }, { liveStreamDate: { $ne: "" } }, { active: { $eq: true } }],
       },
     },
     {
@@ -1941,17 +1946,17 @@ const getdataLiveStreamApproved = async (userId) =>{
         feedbackCallback: 1,
         moderatedPrice: 1,
         moderateStatus: 1,
-        moderateTime:1,
-        moderateDate:1,
-        liveStreamDate:1,
-        liveStreamTime:1,
-        liveStreamStatus:1,
-        liveStreamReason:1,
+        moderateTime: 1,
+        moderateDate: 1,
+        liveStreamDate: 1,
+        liveStreamTime: 1,
+        liveStreamStatus: 1,
+        liveStreamReason: 1,
 
       },
     },
 
- ])
+  ])
   return data
 }
 
