@@ -84,7 +84,7 @@ const createRequirementSupplier = async (supplierBody) => {
 
   let requirement = RequirementSupplier.create(values)
   if (supplierBody.type == 'own') {
-    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement.id })
+    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id, })
   }
   return requirement;
 };
