@@ -82,7 +82,8 @@ const createRequirementSupplier = async (supplierBody) => {
   let billid = "BID" + center + total;
   let values = { ...supplierBody, ...{ billId: billid, userId: supp._id } }
 
-  let requirement = RequirementSupplier.create(values)
+  let requirement = RequirementSupplier.create(values);
+  console.log(requirement)
   if (supplierBody.type == 'own') {
     await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id, })
   }
