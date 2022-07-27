@@ -264,6 +264,9 @@ const getAllBuyerMatch = async (id) => {
 };
 
 const getAllSUpplierMatch = async (id) => {
+  let arr = []
+  const dat = await RequirementBuyer.find({userId:id})
+  for(let i = 0; i < dat.length; i++){
   const data = await RequirementBuyer.aggregate([
     // {
     //   $match: {
@@ -272,7 +275,7 @@ const getAllSUpplierMatch = async (id) => {
     // },
     {
       $match: {
-        $and: [{ _id: { $eq: id } },{ active: { $eq: true } }],
+        $and: [{_id:{$eq:dat[i]._id}},{ active: { $eq: true } }],
       },
     },
     {
@@ -327,7 +330,9 @@ const getAllSUpplierMatch = async (id) => {
       }
     }
   ]);
-  return data;
+  arr.push(data[0])
+  }
+  return arr;
 };
 
 module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch };
