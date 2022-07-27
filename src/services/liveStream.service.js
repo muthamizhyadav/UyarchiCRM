@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const liveStream = require('../models/liveStream.model');
 const Agora = require("agora-access-token");
+const { RequirementBuyer, RequirementSupplier } = require('../models/requirementCollectionBS.model');
 
 const createLiveStream = async (userBody) => {
 
@@ -262,4 +263,71 @@ const getAllBuyerMatch = async (id) => {
   return data;
 };
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch };
+const getAllSUpplierMatch = async (id) => {
+  const data = await RequirementBuyer.aggregate([
+    // {
+    //   $match: {
+    //     $and: [{ adminAprove: { $eq: "Approved" } }],
+    //   },
+    // },
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } },{ active: { $eq: true } }],
+      },
+    },
+    {
+      $lookup: {
+        from: "requirementsuppliers",
+        localField: "product",
+        foreignField: "product",
+        as: "requirementsuppliers"
+      }
+    },
+    { $unwind: "$requirementsuppliers" },
+    {
+      $lookup: {
+        from: "suppliers",
+        localField: "userId",
+        foreignField: "_id",
+        as: "suppliers"
+      }
+    },
+    { $unwind: "$suppliers" },
+    {
+      $lookup: {
+        from: "livestreams",
+        localField: "requirementsuppliers._id",
+        foreignField: "requirementId",
+        as: "livestreamsData"
+      }
+    },
+    { $unwind: "$livestreamsData" },
+    {
+      $match: {
+        $and: [{ 'livestreamsData.adminAprove': { $eq: "Approved" } }],
+      },
+    },
+    {
+      $project: {
+        // liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        // requirementID: "$requirementsuppliers._id",
+        // liveStreamTime: "$requirementsuppliers.liveStreamTime",
+        // date: "$requirementsuppliers.date",
+        // product: "$requirementsuppliers.product",
+        // expectedPrice: "$requirementsuppliers.expectedPrice",
+        // expectedQnty: "$requirementsuppliers.expectedQnty",
+        // billId: "$requirementsuppliers.billId",
+        // userId: 1,
+        secretName: "$suppliers.secretName",
+        adminAprove: '$livestreamsData.adminAprove',
+        streaming: '$livestreamsData.streaming',
+        expiry: '$livestreamsData.expiry',
+        token:'$livestreamsData.token',
+        supplierData:"$requirementsuppliers",
+      }
+    }
+  ]);
+  return data;
+};
+
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch };
