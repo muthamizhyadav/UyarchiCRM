@@ -18,10 +18,51 @@ const createLiveStream = async (userBody) => {
 };
 
 const getliveStream = async (id) => {
-  const data = await liveStream.findById(id);
+  const data = await liveStream.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: "requirementsuppliers",
+        localField: "requirementId",
+        foreignField: "_id",
+        as: "requirementsuppliers"
+      }
+    },
+    { $unwind: "$requirementsuppliers" },
+    {
+      $lookup: {
+        from: "suppliers",
+        localField: "userId",
+        foreignField: "_id",
+        as: "suppliers"
+      }
+    },
+    { $unwind: "$suppliers" },
+    {
+      $project: {
+        liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        liveStreamTime: "$requirementsuppliers.liveStreamTime",
+        date: "$requirementsuppliers.date",
+        product: "$requirementsuppliers.product",
+        expectedPrice: "$requirementsuppliers.expectedPrice",
+        expectedQnty: "$requirementsuppliers.expectedQnty",
+        billId: "$requirementsuppliers.billId",
+        userId: 1,
+        secretName: "$suppliers.secretName",
+        adminAprove: 1,
+        streaming: 1,
+        expiry: 1,
+        token:1
+      }
+    }
+  ])
   return data;
 };
-const getAllliveStriming = async (id) => {
+const getAllliveStriming = async () => {
   const data = await liveStream.aggregate([
     {
       $lookup: {

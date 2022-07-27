@@ -11,14 +11,18 @@ const createliveStream = catchAsync(async (req, res) => {
 
 const getliveStreamId = catchAsync(async (req, res) => {
   const data = await liveStreamservice.getliveStream(req.params.id);
-  res.send(data);
+  if (data.length == 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Token Not Available');
+  }
+
+  res.send(data[0]);
 });
 const getAllliveStriming = catchAsync(async (req, res) => {
   const data = await liveStreamservice.getAllliveStriming();
   res.send(data);
 });
 const updatetoken = catchAsync(async (req, res) => {
-  const data = await liveStreamservice.updatetoken(req.params.id,req.body);
+  const data = await liveStreamservice.updatetoken(req.params.id, req.body);
   res.send('not working');
 });
 const getAllliveStrimingapproved = catchAsync(async (req, res) => {
@@ -27,4 +31,4 @@ const getAllliveStrimingapproved = catchAsync(async (req, res) => {
 });
 
 
-module.exports = { createliveStream, getliveStreamId, getAllliveStriming ,updatetoken,getAllliveStrimingapproved};
+module.exports = { createliveStream, getliveStreamId, getAllliveStriming, updatetoken, getAllliveStrimingapproved };
