@@ -68,7 +68,7 @@ const getAllliveStrimingapproved = async (id) => {
   const data = await liveStream.aggregate([
     {
       $match: {
-        $and: [{ adminAprove: { $eq: "Approved" } }],
+        $and: [{ adminAprove: { $eq: "Approved" } }, { userId: { $eq: id } }],
       },
     },
     {

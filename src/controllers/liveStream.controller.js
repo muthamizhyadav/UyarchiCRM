@@ -22,7 +22,7 @@ const updatetoken = catchAsync(async (req, res) => {
   res.send('not working');
 });
 const getAllliveStrimingapproved = catchAsync(async (req, res) => {
-  const data = await liveStreamservice.getAllliveStrimingapproved();
+  const data = await liveStreamservice.getAllliveStrimingapproved(req.params.uId);
   res.send(data);
 });
 
