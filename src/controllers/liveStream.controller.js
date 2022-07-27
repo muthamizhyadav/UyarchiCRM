@@ -34,5 +34,11 @@ const getBuyerWatch = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAllBuyerMatch = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.getAllBuyerMatch(req.params.id);
+  res.send(data);
+});
 
-module.exports = { createliveStream, getliveStreamId, getAllliveStriming, updatetoken, getAllliveStrimingapproved ,getBuyerWatch};
+
+
+module.exports = { createliveStream, getliveStreamId, getAllliveStriming, updatetoken, getAllliveStrimingapproved ,getBuyerWatch, getAllBuyerMatch};
