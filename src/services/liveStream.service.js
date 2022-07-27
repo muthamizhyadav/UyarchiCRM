@@ -58,10 +58,55 @@ const getAllliveStriming = async (id) => {
   ]);
   return data;
 };
-const updatetoken = async (id,bodydata) => {
-  const data = await liveStream.findByIdAndUpdate({_id:id},bodydata,{new:true});
+const updatetoken = async (id, bodydata) => {
+  const data = await liveStream.findByIdAndUpdate({ _id: id }, bodydata, { new: true });
   return data;
 };
 
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming ,updatetoken};
+const getAllliveStrimingapproved = async (id) => {
+  const data = await liveStream.aggregate([
+    {
+      $match: {
+        $and: [{ adminAprove: { $eq: "Approved" } }],
+      },
+    },
+    {
+      $lookup: {
+        from: "requirementsuppliers",
+        localField: "requirementId",
+        foreignField: "_id",
+        as: "requirementsuppliers"
+      }
+    },
+    { $unwind: "$requirementsuppliers" },
+    {
+      $lookup: {
+        from: "suppliers",
+        localField: "userId",
+        foreignField: "_id",
+        as: "suppliers"
+      }
+    },
+    { $unwind: "$suppliers" },
+    {
+      $project: {
+        liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        liveStreamTime: "$requirementsuppliers.liveStreamTime",
+        date: "$requirementsuppliers.date",
+        product: "$requirementsuppliers.product",
+        expectedPrice: "$requirementsuppliers.expectedPrice",
+        expectedQnty: "$requirementsuppliers.expectedQnty",
+        billId: "$requirementsuppliers.billId",
+        userId: 1,
+        secretName: "$suppliers.secretName",
+        adminAprove: 1,
+        streaming: 1,
+        expiry: 1,
+      }
+    }
+  ]);
+  return data;
+};
+
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved };
