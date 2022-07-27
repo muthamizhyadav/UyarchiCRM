@@ -13,7 +13,7 @@ const createLiveStream = async (userBody) => {
   const expirationTimeInSeconds = 3600;
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
-  const token = Agora.RtmTokenBuilder.buildToken(appID, appCertificate, "live", expirationTimestamp);
+  const token = Agora.RtmTokenBuilder.buildToken(appID, appCertificate, userBody.requirementId, expirationTimestamp);
   return liveStream.create({ token: token, userId: userBody.userId, requirementId: userBody.requirementId });
 };
 
@@ -45,6 +45,7 @@ const getliveStream = async (id) => {
     {
       $project: {
         liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        requirementID: "$requirementsuppliers._id",
         liveStreamTime: "$requirementsuppliers.liveStreamTime",
         date: "$requirementsuppliers.date",
         product: "$requirementsuppliers.product",
@@ -85,6 +86,7 @@ const getAllliveStriming = async () => {
     {
       $project: {
         liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        requirementID: "$requirementsuppliers._id",
         liveStreamTime: "$requirementsuppliers.liveStreamTime",
         date: "$requirementsuppliers.date",
         product: "$requirementsuppliers.product",
@@ -133,6 +135,7 @@ const getAllliveStrimingapproved = async (id) => {
     {
       $project: {
         liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        requirementID: "$requirementsuppliers._id",
         liveStreamTime: "$requirementsuppliers.liveStreamTime",
         date: "$requirementsuppliers.date",
         product: "$requirementsuppliers.product",
@@ -177,6 +180,7 @@ const getBuyerWatch = async (id) => {
     {
       $project: {
         liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        requirementID: "$requirementsuppliers._id",
         liveStreamTime: "$requirementsuppliers.liveStreamTime",
         date: "$requirementsuppliers.date",
         product: "$requirementsuppliers.product",
@@ -188,11 +192,11 @@ const getBuyerWatch = async (id) => {
         adminAprove: 1,
         streaming: 1,
         expiry: 1,
-        _id:1,
+        _id: 1,
       }
     }
   ]);
   return data;
 };
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved,getBuyerWatch };
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch };
