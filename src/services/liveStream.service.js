@@ -14,7 +14,6 @@ const createLiveStream = async (userBody) => {
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
   const token = Agora.RtmTokenBuilder.buildToken(appID, appCertificate, "live", expirationTimestamp);
-  console.log(userBody)
   return liveStream.create({ token: token, userId: userBody.userId, requirementId: userBody.requirementId });
 };
 
@@ -22,6 +21,47 @@ const getliveStream = async (id) => {
   const data = await liveStream.findById(id);
   return data;
 };
+const getAllliveStriming = async (id) => {
+  const data = await liveStream.aggregate([
+    {
+      $lookup: {
+        from: "requirementsuppliers",
+        localField: "requirementId",
+        foreignField: "_id",
+        as: "requirementsuppliers"
+      }
+    },
+    { $unwind: "$requirementsuppliers" },
+    {
+      $lookup: {
+        from: "suppliers",
+        localField: "userId",
+        foreignField: "_id",
+        as: "suppliers"
+      }
+    },
+    { $unwind: "$suppliers" },
+    {
+      $project: {
+        liveStreamDate: "$requirementsuppliers.liveStreamDate",
+        liveStreamTime: "$requirementsuppliers.liveStreamTime",
+        date: "$requirementsuppliers.date",
+        product: "$requirementsuppliers.product",
+        billId: "$requirementsuppliers.billId",
+        userId: 1,
+        secretName: "$suppliers.secretName",
+        adminAprove: 1,
+        streaming: 1,
+        expiry: 1,
+      }
+    }
+  ]);
+  return data;
+};
+const updatetoken = async (id,bodydata) => {
+  const data = await liveStream.findByIdAndUpdate({_id:id},bodydata,{new:true});
+  return data;
+};
 
 
-module.exports = { createLiveStream, getliveStream };
+module.exports = { createLiveStream, getliveStream, getAllliveStriming ,updatetoken};
