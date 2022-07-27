@@ -21,7 +21,7 @@ const liveStreamSchema = mongoose.Schema({
   },
   expiry: {
     type: Boolean,
-    default:false
+    default: false
   },
   userId: {
     type: String,
@@ -34,7 +34,11 @@ const liveStreamSchema = mongoose.Schema({
   },
   adminAprove: {
     type: String,
-    default:"Pending"
+    default: "Pending"
+
+  },
+  reason: {
+    type: String,
 
   }
 

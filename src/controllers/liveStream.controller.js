@@ -21,7 +21,10 @@ const updatetoken = catchAsync(async (req, res) => {
   const data = await liveStreamservice.updatetoken(req.params.id,req.body);
   res.send('not working');
 });
+const getAllliveStrimingapproved = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.getAllliveStrimingapproved();
+  res.send(data);
+});
 
 
-
-module.exports = { createliveStream, getliveStreamId, getAllliveStriming ,updatetoken};
+module.exports = { createliveStream, getliveStreamId, getAllliveStriming ,updatetoken,getAllliveStrimingapproved};

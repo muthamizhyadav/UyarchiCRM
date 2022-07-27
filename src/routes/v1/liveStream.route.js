@@ -6,5 +6,6 @@ router.route('/').post(liveStreamController.createliveStream)
 router.route('/:id').get(liveStreamController.getliveStreamId)
 router.route('/:id').put(liveStreamController.updatetoken)
 router.route('/getAll/token').get(liveStreamController.getAllliveStriming)
+router.route('/getAll/token/approved').get(liveStreamController.getAllliveStrimingapproved)
 
 module.exports = router;
