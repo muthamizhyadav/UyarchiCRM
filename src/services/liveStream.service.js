@@ -154,6 +154,7 @@ const getAllliveStrimingapproved = async (id) => {
   return data;
 };
 const getBuyerWatch = async (id) => {
+  console.log(id)
   const data = await liveStream.aggregate([
     {
       $match: {
@@ -165,6 +166,21 @@ const getBuyerWatch = async (id) => {
         from: "requirementsuppliers",
         localField: "requirementId",
         foreignField: "_id",
+        pipeline: [
+          {
+            $lookup: {
+              from: "requirementbuyers",
+              localField: "product",
+              foreignField: "product",
+              pipeline: [
+                { $match: { userId: id } },
+              ],
+              as: "requirementbuyers"
+            }
+          },
+          { $unwind: "$requirementbuyers" },
+
+        ],
         as: "requirementsuppliers"
       }
     },
@@ -188,8 +204,8 @@ const getBuyerWatch = async (id) => {
         expectedPrice: "$requirementsuppliers.expectedPrice",
         expectedQnty: "$requirementsuppliers.expectedQnty",
         billId: "$requirementsuppliers.billId",
-        minimumlot:"$requirementsuppliers.minimumlot",
-        maximumlot:"$requirementsuppliers.maximumlot",
+        minimumlot: "$requirementsuppliers.minimumlot",
+        maximumlot: "$requirementsuppliers.maximumlot",
         userId: 1,
         secretName: "$suppliers.secretName",
         adminAprove: 1,
@@ -256,9 +272,9 @@ const getAllBuyerMatch = async (id) => {
         adminAprove: 1,
         streaming: 1,
         expiry: 1,
-        token:1,
+        token: 1,
         _id: 1,
-        buyerData:"$requirementbuyersData",
+        buyerData: "$requirementbuyersData",
       }
     }
   ]);
@@ -267,72 +283,72 @@ const getAllBuyerMatch = async (id) => {
 
 const getAllSUpplierMatch = async (id) => {
   let arr = []
-  const dat = await RequirementBuyer.find({userId:id})
-  for(let i = 0; i < dat.length; i++){
-  const data = await RequirementBuyer.aggregate([
-    // {
-    //   $match: {
-    //     $and: [{ adminAprove: { $eq: "Approved" } }],
-    //   },
-    // },
-    {
-      $match: {
-        $and: [{_id:{$eq:dat[i]._id}},{ active: { $eq: true } }],
+  const dat = await RequirementBuyer.find({ userId: id })
+  for (let i = 0; i < dat.length; i++) {
+    const data = await RequirementBuyer.aggregate([
+      // {
+      //   $match: {
+      //     $and: [{ adminAprove: { $eq: "Approved" } }],
+      //   },
+      // },
+      {
+        $match: {
+          $and: [{ _id: { $eq: dat[i]._id } }, { active: { $eq: true } }],
+        },
       },
-    },
-    {
-      $lookup: {
-        from: "requirementsuppliers",
-        localField: "product",
-        foreignField: "product",
-        as: "requirementsuppliers"
-      }
-    },
-    { $unwind: "$requirementsuppliers" },
-    {
-      $lookup: {
-        from: "suppliers",
-        localField: "userId",
-        foreignField: "_id",
-        as: "suppliers"
-      }
-    },
-    { $unwind: "$suppliers" },
-    {
-      $lookup: {
-        from: "livestreams",
-        localField: "requirementsuppliers._id",
-        foreignField: "requirementId",
-        as: "livestreamsData"
-      }
-    },
-    { $unwind: "$livestreamsData" },
-    {
-      $match: {
-        $and: [{ 'livestreamsData.adminAprove': { $eq: "Approved" } }],
+      {
+        $lookup: {
+          from: "requirementsuppliers",
+          localField: "product",
+          foreignField: "product",
+          as: "requirementsuppliers"
+        }
       },
-    },
-    {
-      $project: {
-        // liveStreamDate: "$requirementsuppliers.liveStreamDate",
-        // requirementID: "$requirementsuppliers._id",
-        // liveStreamTime: "$requirementsuppliers.liveStreamTime",
-        // date: "$requirementsuppliers.date",
-        // product: "$requirementsuppliers.product",
-        // expectedPrice: "$requirementsuppliers.expectedPrice",
-        // expectedQnty: "$requirementsuppliers.expectedQnty",
-        // billId: "$requirementsuppliers.billId",
-        // userId: 1,
-        secretName: "$suppliers.secretName",
-        adminAprove: '$livestreamsData.adminAprove',
-        streaming: '$livestreamsData.streaming',
-        expiry: '$livestreamsData.expiry',
-        token:'$livestreamsData.token',
-        supplierData:"$requirementsuppliers",
+      { $unwind: "$requirementsuppliers" },
+      {
+        $lookup: {
+          from: "suppliers",
+          localField: "userId",
+          foreignField: "_id",
+          as: "suppliers"
+        }
+      },
+      { $unwind: "$suppliers" },
+      {
+        $lookup: {
+          from: "livestreams",
+          localField: "requirementsuppliers._id",
+          foreignField: "requirementId",
+          as: "livestreamsData"
+        }
+      },
+      { $unwind: "$livestreamsData" },
+      {
+        $match: {
+          $and: [{ 'livestreamsData.adminAprove': { $eq: "Approved" } }],
+        },
+      },
+      {
+        $project: {
+          // liveStreamDate: "$requirementsuppliers.liveStreamDate",
+          // requirementID: "$requirementsuppliers._id",
+          // liveStreamTime: "$requirementsuppliers.liveStreamTime",
+          // date: "$requirementsuppliers.date",
+          // product: "$requirementsuppliers.product",
+          // expectedPrice: "$requirementsuppliers.expectedPrice",
+          // expectedQnty: "$requirementsuppliers.expectedQnty",
+          // billId: "$requirementsuppliers.billId",
+          // userId: 1,
+          secretName: "$suppliers.secretName",
+          adminAprove: '$livestreamsData.adminAprove',
+          streaming: '$livestreamsData.streaming',
+          expiry: '$livestreamsData.expiry',
+          token: '$livestreamsData.token',
+          supplierData: "$requirementsuppliers",
+        }
       }
-    }
-  ]);
-  arr.push(data[0])
+    ]);
+    arr.push(data[0])
   }
   return arr;
 };
