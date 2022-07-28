@@ -188,6 +188,8 @@ const getBuyerWatch = async (id) => {
         expectedPrice: "$requirementsuppliers.expectedPrice",
         expectedQnty: "$requirementsuppliers.expectedQnty",
         billId: "$requirementsuppliers.billId",
+        minimumlot:"$requirementsuppliers.minimumlot",
+        maximumlot:"$requirementsuppliers.maximumlot",
         userId: 1,
         secretName: "$suppliers.secretName",
         adminAprove: 1,
