@@ -261,6 +261,18 @@ const requirementSupplierSchema = new mongoose.Schema({
   liveStreamReason:{
     type:String,
   },
+  streamInterest:{
+    type:String, 
+  },
+  streamAddToCart:{
+    type:String, 
+  },
+  streamFixedQuantity:{
+    type:String, 
+  },
+  streamFixedPrice:{
+    type:String, 
+  },
   active: {
       type: Boolean,
       default: true,
