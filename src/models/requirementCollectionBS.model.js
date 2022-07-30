@@ -136,6 +136,9 @@ const requirementSupplierSchema = new mongoose.Schema({
     product: {
       type: String,
     },
+    type:{
+      type:String,
+    },
    stockLocation:{
     type:String,
    },

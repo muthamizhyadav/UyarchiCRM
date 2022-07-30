@@ -156,7 +156,7 @@ const getAllliveStrimingapproved = async (id) => {
   return data;
 };
 const getBuyerWatch = async (id) => {
-  console.log(id)
+  // console.log(id)
   const data = await liveStream.aggregate([
     {
       $match: {
