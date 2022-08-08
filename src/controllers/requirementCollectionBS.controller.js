@@ -67,6 +67,13 @@ const getModerateData = catchAsync (async (req, res)=>{
   res.send(data)
 })
 
+ // getallApprovedLiveStream
+
+ const getallApprovedLiveStreamService = catchAsync(async (req,res)=>{
+  const data = await requirementCollectionService.getallApprovedLiveStream(req.params)
+  res.send(data)
+ })
+
 const getSupplierById = catchAsync (async (req, res)=>{
     const data = await requirementCollectionService.getByIdSupplier(req.params.supplierId)
     if(!data || data.active == false){
@@ -241,4 +248,5 @@ module.exports = {
     getAllLiveStreamData,
     getAllLiveStreamRejectData,
     getAllLiveStreamApprovedData,
+    getallApprovedLiveStreamService,
 };

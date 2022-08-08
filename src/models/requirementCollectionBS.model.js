@@ -136,6 +136,9 @@ const requirementSupplierSchema = new mongoose.Schema({
     product: {
       type: String,
     },
+    type:{
+      type:String,
+    },
    stockLocation:{
     type:String,
    },
@@ -260,6 +263,18 @@ const requirementSupplierSchema = new mongoose.Schema({
   },
   liveStreamReason:{
     type:String,
+  },
+  streamInterest:{
+    type:String, 
+  },
+  streamAddToCart:{
+    type:String, 
+  },
+  streamFixedQuantity:{
+    type:String, 
+  },
+  streamFixedPrice:{
+    type:String, 
   },
   active: {
       type: Boolean,
