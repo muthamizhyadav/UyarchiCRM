@@ -4,6 +4,7 @@ const { supplier } = require('../models');
 const TextLocal = require('../config/OTP');
 const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
 const bcrypt = require('bcryptjs');
+
 const createSupplier = async (supplierBody) => {
   return supplier.create(supplierBody);
 };
@@ -41,7 +42,6 @@ const getAllSupplierDelete = async () => {
 };
 
 const getSupplierById = async (id) => {
-  console.log(id);
   const sup = supplier.findById(id);
   if (!sup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Supplier Not Found');
@@ -63,14 +63,14 @@ const updateSupplierChangeById = async (supplierId, updateBody) => {
   if (!sup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'supplier not found');
   }
-  let  {oldPassword,newPassword} = updateBody
+  let { oldPassword, newPassword } = updateBody;
   let dob = sup.dateOfBirth.replace(/[^0-9\.]+/g, '');
-  if(dob == oldPassword){
-  }else{
+  if (dob == oldPassword) {
+  } else {
     throw new ApiError(httpStatus.NOT_FOUND, 'OldPassword Not Same');
   }
-    sup = await supplier.findByIdAndUpdate({ _id: supplierId }, { dateOfBirth: newPassword }, { new: true });
-   return sup;
+  sup = await supplier.findByIdAndUpdate({ _id: supplierId }, { dateOfBirth: newPassword }, { new: true });
+  return sup;
 };
 
 const deleteSupplierById = async (supplierId) => {
@@ -83,7 +83,6 @@ const deleteSupplierById = async (supplierId) => {
 };
 
 const forgetPassword = async (body) => {
-  console.log(body);
   let supplierdata = await supplier.findOne({ primaryContactNumber: body.mobileNumber });
   if (!supplierdata) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Suplier Not Found');
@@ -98,7 +97,6 @@ const otpVerification = async (body) => {
   }
   let supplierData = await supplier.findById(otp.supplierId);
   await CreateSupplierOtp.findByIdAndUpdate({ _id: otp._id }, { verify: true }, { new: true });
-  console.log(otp);
   return supplierData;
 };
 
