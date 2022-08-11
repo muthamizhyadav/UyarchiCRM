@@ -19,6 +19,7 @@ const createLiveStream = async (userBody) => {
 };
 
 const getliveStream = async (id) => {
+ 
   const data = await liveStream.aggregate([
     {
       $match: {
@@ -160,7 +161,7 @@ const getBuyerWatch = async (id) => {
   const data = await liveStream.aggregate([
     {
       $match: {
-        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $eq:false } },],
+        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $ne:false } },],
       },
     },
     {
