@@ -27,7 +27,8 @@ const liveStreamSchema = mongoose.Schema({
     type: Number,
   },
   expiry: {
-    type: String,
+    type: Boolean,
+    default: true,
   },
   active: {
     type: Boolean,

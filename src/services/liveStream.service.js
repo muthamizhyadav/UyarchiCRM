@@ -161,7 +161,7 @@ const getBuyerWatch = async (id) => {
   const data = await liveStream.aggregate([
     {
       $match: {
-        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $ne:false } },],
+        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $eq:true } }]
       },
     },
     {
