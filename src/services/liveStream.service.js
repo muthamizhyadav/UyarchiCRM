@@ -215,6 +215,7 @@ const getBuyerWatch = async (id) => {
         streaming: 1,
         expiry: 1,
         _id: 1,
+        confirm:1,
       }
     }
   ]);
