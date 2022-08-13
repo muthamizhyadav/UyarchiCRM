@@ -364,10 +364,11 @@ const getById = async (id) => {
 
 const updateBuyerId = async (id, updateBody) => {
   let Manage = await getById(id);
+  console.log(Manage)
   if (!Manage) {
     throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
   }
-  Manage = await liveStream.findByIdAndUpdate({ _id: id }, updateBody, { new: true });
+  Manage = await liveStream.findByIdAndUpdate({ _id: id },  { $push: { confirm: updateBody.confirm } }, { new: true });
   return Manage;
 };
 
