@@ -356,4 +356,18 @@ const getAllSUpplierMatch = async (id) => {
   return arr;
 };
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch };
+const getById = async (id) => {
+  return liveStream.findById(id);
+};
+
+
+const updateBuyerId = async (id, updateBody) => {
+  let Manage = await getById(id);
+  if (!Manage) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
+  }
+  Manage = await liveStream.findByIdAndUpdate({ _id: id }, updateBody, { new: true });
+  return Manage;
+};
+
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyerId};

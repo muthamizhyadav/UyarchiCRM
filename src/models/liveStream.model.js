@@ -54,6 +54,9 @@ const liveStreamSchema = mongoose.Schema({
   reason: {
     type: String,
   },
+  confirm:{
+    type:Array,
+  },
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
 module.exports = liveStream;
