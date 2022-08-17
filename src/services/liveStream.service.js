@@ -381,7 +381,7 @@ const updateRejectData = async (id, updateBody) => {
   if (!Manage) {
     throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
   }
-  Manage = await liveStream.findByIdAndUpdate({ _id: id },  {rejectDate: serverdate, rejectTime: time, adminAprove:updateBody.adminAprove}, { new: true });
+  Manage = await liveStream.findByIdAndUpdate({ _id: id },  {rejectDate: serverdate, rejectTime: time, adminAprove:updateBody.adminAprove, reason:updateBody.reason}, { new: true });
   return Manage;
 };
 
