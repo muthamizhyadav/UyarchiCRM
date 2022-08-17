@@ -392,6 +392,29 @@ const getallRejected = async (userId) => {
       $and: [{userId:{ $eq: userId} },{adminAprove:{ $eq: "Rejected"} }],
     },
   },
+  {
+    $lookup: {
+      from: "requirementsuppliers",
+      localField: "requirementId",
+      foreignField: "_id",
+      as: "requirementsuppliersData"
+    }
+  },
+  { $unwind: "$requirementsuppliersData" },
+  {
+    $project: {
+      product: "$requirementsuppliersData.product",
+      adminAprove:1,
+      streaming:1,
+      expiry:1,
+      token:1,
+      confirm:1,
+      userId:1,
+      requirementId:1,
+      rejectDate:1,
+      rejectTime:1,
+    }
+  }
 ]);
 };
 
