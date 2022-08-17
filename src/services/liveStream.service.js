@@ -413,6 +413,7 @@ const getallRejected = async (userId) => {
       requirementId:1,
       rejectDate:1,
       rejectTime:1,
+      reason:1,
     }
   }
 ]);
