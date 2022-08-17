@@ -11,4 +11,6 @@ router.route('/getAll/token/approved/buyer/:uId').get(liveStreamController.getBu
 router.route('/getAll/token/approved/buyerData/:id').get(liveStreamController.getAllBuyerMatch)
 router.route('/getAll/token/approved/supplierData/:id').get(liveStreamController.getAllSUpplierMatch)
 router.route('/updateBuyerId/:id').put(liveStreamController.updateBuyer)
+router.route('/updateReject/:id').put(liveStreamController.updateReject)
+router.route('/getAllReject/:userId').get(liveStreamController.getAllRejected)
 module.exports = router;

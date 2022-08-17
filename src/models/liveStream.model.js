@@ -57,6 +57,12 @@ const liveStreamSchema = mongoose.Schema({
   confirm:{
     type:Array,
   },
+  rejectDate:{
+    type:String,
+  },
+  rejectTime:{
+    type:Number,
+  },
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
 module.exports = liveStream;

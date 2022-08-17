@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
+const moment = require('moment');
 const liveStream = require('../models/liveStream.model');
 const Agora = require("agora-access-token");
 const { RequirementBuyer, RequirementSupplier } = require('../models/requirementCollectionBS.model');
@@ -372,4 +373,29 @@ const updateBuyerId = async (id, updateBody) => {
   return Manage;
 };
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyerId};
+const updateRejectData = async (id, updateBody) => {
+
+  let Manage = await getById(id);
+  let time = moment().format('HHmmss');
+  let serverdate = moment().format('yyyy-MM-DD');
+  if (!Manage) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
+  }
+  Manage = await liveStream.findByIdAndUpdate({ _id: id },  {rejectDate: serverdate, rejectTime: time, adminAprove:updateBody.adminAprove}, { new: true });
+  return Manage;
+};
+
+
+const getallRejected = async (userId) => {
+  return liveStream.aggregate([ {
+    $match: {
+      $and: [{userId:{ $eq: userId} },{adminAprove:{ $eq: "Rejected"} }],
+    },
+  },
+]);
+};
+
+
+
+
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyerId, updateRejectData, getallRejected};

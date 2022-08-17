@@ -49,6 +49,16 @@ const updateBuyer = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updateReject = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.updateRejectData(req.params.id, req.body);
+  res.send(data);
+});
+
+const getAllRejected = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.getallRejected(req.params.userId);
+  res.send(data);
+});
 
 
-module.exports = { createliveStream, getliveStreamId, getAllliveStriming, updatetoken, getAllliveStrimingapproved ,getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyer};
+
+module.exports = { createliveStream, getliveStreamId, getAllliveStriming, updatetoken, getAllliveStrimingapproved ,getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyer, updateReject, getAllRejected};
