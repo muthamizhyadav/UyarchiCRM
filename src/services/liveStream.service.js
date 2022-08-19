@@ -7,9 +7,10 @@ const { RequirementBuyer, RequirementSupplier } = require('../models/requirement
 
 const createLiveStream = async (userBody) => {
 
-  const appID = "50c7493877764c85aa44d921a68f2b38";
-  const appCertificate = "deb15b1b53e44c46abf51172bc552daa";
-
+  // const appID = "50c7493877764c85aa44d921a68f2b38";
+  // const appCertificate = "deb15b1b53e44c46abf51172bc552daa";
+  const appID = "7af69a3a15a84d229c036e3b94073cc6";
+  const appCertificate = "dc665b23e79142fe8c3328ecf06d91a1";
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
   const expirationTimeInSeconds = 3600;
@@ -20,7 +21,7 @@ const createLiveStream = async (userBody) => {
 };
 
 const getliveStream = async (id) => {
- 
+
   const data = await liveStream.aggregate([
     {
       $match: {
@@ -162,7 +163,7 @@ const getBuyerWatch = async (id) => {
   const data = await liveStream.aggregate([
     {
       $match: {
-        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $eq:true } }]
+        $and: [{ adminAprove: { $eq: "Approved" } }, { streaming: { $eq: "Online" } }, { expiry: { $eq: true } }]
       },
     },
     {
@@ -216,7 +217,7 @@ const getBuyerWatch = async (id) => {
         streaming: 1,
         expiry: 1,
         _id: 1,
-        confirm:1,
+        confirm: 1,
       }
     }
   ]);
@@ -369,7 +370,7 @@ const updateBuyerId = async (id, updateBody) => {
   if (!Manage) {
     throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
   }
-  Manage = await liveStream.findByIdAndUpdate({ _id: id },  { $push: { confirm: updateBody.confirm } }, { new: true });
+  Manage = await liveStream.findByIdAndUpdate({ _id: id }, { $push: { confirm: updateBody.confirm } }, { new: true });
   return Manage;
 };
 
@@ -381,15 +382,15 @@ const updateRejectData = async (id, updateBody) => {
   if (!Manage) {
     throw new ApiError(httpStatus.NOT_FOUND, 'livestreamData not found');
   }
-  Manage = await liveStream.findByIdAndUpdate({ _id: id },  {rejectDate: serverdate, rejectTime: time, adminAprove:updateBody.adminAprove, reason:updateBody.reason}, { new: true });
+  Manage = await liveStream.findByIdAndUpdate({ _id: id }, { rejectDate: serverdate, rejectTime: time, adminAprove: updateBody.adminAprove, reason: updateBody.reason }, { new: true });
   return Manage;
 };
 
 
 const getallRejected = async (userId) => {
-  return liveStream.aggregate([ {
+  return liveStream.aggregate([{
     $match: {
-      $and: [{userId:{ $eq: userId} },{adminAprove:{ $eq: "Rejected"} }],
+      $and: [{ userId: { $eq: userId } }, { adminAprove: { $eq: "Rejected" } }],
     },
   },
   {
@@ -404,22 +405,22 @@ const getallRejected = async (userId) => {
   {
     $project: {
       product: "$requirementsuppliersData.product",
-      adminAprove:1,
-      streaming:1,
-      expiry:1,
-      token:1,
-      confirm:1,
-      userId:1,
-      requirementId:1,
-      rejectDate:1,
-      rejectTime:1,
-      reason:1,
+      adminAprove: 1,
+      streaming: 1,
+      expiry: 1,
+      token: 1,
+      confirm: 1,
+      userId: 1,
+      requirementId: 1,
+      rejectDate: 1,
+      rejectTime: 1,
+      reason: 1,
     }
   }
-]);
+  ]);
 };
 
 
 
 
-module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyerId, updateRejectData, getallRejected};
+module.exports = { createLiveStream, getliveStream, getAllliveStriming, updatetoken, getAllliveStrimingapproved, getBuyerWatch, getAllBuyerMatch, getAllSUpplierMatch, updateBuyerId, updateRejectData, getallRejected };
