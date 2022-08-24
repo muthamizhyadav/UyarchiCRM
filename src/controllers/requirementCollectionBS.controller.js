@@ -220,6 +220,12 @@ const getAllLiveStreamApprovedData = catchAsync (async (req, res)=>{
   res.send(data)
 })
 
+const createArrayData = catchAsync(async (req, res)=>{
+  const streamData = await requirementCollectionService.createArrayData(req.body);
+  res.send(streamData)
+
+});
+
 module.exports = {
     createRequirementBuyerService,
     createRequirementSupplierService,
@@ -249,4 +255,6 @@ module.exports = {
     getAllLiveStreamRejectData,
     getAllLiveStreamApprovedData,
     getallApprovedLiveStreamService,
+
+    createArrayData,
 };

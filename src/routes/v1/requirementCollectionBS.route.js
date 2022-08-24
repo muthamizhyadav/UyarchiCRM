@@ -57,5 +57,7 @@ router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionCont
 
 //getAllBuyerLiveStatusApprovedData
 
-router.route('/BuyerData/liveApproved/SameProduct').get(requirementCollectionController.getallApprovedLiveStreamService)
+router.route('/BuyerData/liveApproved/SameProduct').get(requirementCollectionController.getallApprovedLiveStreamService);
+
+router.route('/StreamingData/createArrayData').post(requirementCollectionController.createArrayData);
 module.exports = router;

@@ -13,6 +13,7 @@ const axios = require('axios');
 const moment = require('moment');
 let currentDate = moment().format('DD-MM-YYYY');
 const liveStreamservice = require('../services/liveStream.service');
+const StreamingDataModel = require('../models/streamingDataCRM.model');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -1960,6 +1961,26 @@ const getdataLiveStreamApproved = async (userId) => {
   return data
 }
 
+
+// const createArrayData = async (StreamingData)=>{
+//   var datas = [];
+//   var supplierId ;
+//   // const { Orderdatass, _id } = pettyStockData;
+//   console.log(StreamingData);
+//   datas.forEach(async (e) => {
+//     await StreamingDataModel.findByIdAndUpdate({ _id: e._id }, { supplierId: supplierId })
+//   })
+//   const data = await StreamingDataModel.create(StreamingData)
+//   return "success";
+
+// }
+
+
+const createArrayData = async (body) => {
+  let sample = await StreamingDataModel.create(body)
+  return sample;
+}
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -1989,4 +2010,7 @@ module.exports = {
   getdataLiveStreamReject,
   getdataLiveStreamApproved,
   getallApprovedLiveStream,
+
+
+  createArrayData,
 };
