@@ -63,6 +63,10 @@ const liveStreamSchema = mongoose.Schema({
   rejectTime:{
     type:Number,
   },
+  expectedQnty:{
+    type: Number,
+  },
+
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
 module.exports = liveStream;

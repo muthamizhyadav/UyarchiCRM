@@ -31,6 +31,28 @@ const streamingDataCRMSchema = new mongoose.Schema({
     streamInterest: {
         type: Number,
     },
+    active: {
+        type: Boolean,
+        default: true,
+      },
+      archive: {
+        type: Boolean,
+        default: false,
+      },
+      date: {
+        type: String,
+        default: moment().utcOffset(330).format('DD-MM-yyy'),
+      },
+      time: {
+        type: String,
+        default: moment().utcOffset(330).format('h:mm a'),
+      },
+      productId: {
+        type: String,
+      },
+      productName: {
+        type: String,
+      },
     
 });
 const streamingDataCRMModel = mongoose.model('StreamingData',streamingDataCRMSchema );
