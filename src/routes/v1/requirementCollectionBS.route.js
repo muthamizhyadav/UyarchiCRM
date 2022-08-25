@@ -60,4 +60,8 @@ router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionCont
 router.route('/BuyerData/liveApproved/SameProduct').get(requirementCollectionController.getallApprovedLiveStreamService);
 
 router.route('/StreamingData/createArrayData').post(requirementCollectionController.createArrayData);
+
+router.route('/create/AddToCardDetails').post(requirementCollectionController.createAddToCardDetails);
+
+router.route('/create/AddToInterestDetails').post(requirementCollectionController.createAddToInterestDetails);
 module.exports = router;

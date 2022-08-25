@@ -14,6 +14,8 @@ const moment = require('moment');
 let currentDate = moment().format('DD-MM-YYYY');
 const liveStreamservice = require('../services/liveStream.service');
 const StreamingDataModel = require('../models/streamingDataCRM.model');
+const addInterestDetailsModel = require('../models/addInterestDetails.model');
+const addToCartDetailsModel = require('../models/addToCartDetails.model');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -1981,6 +1983,21 @@ const createArrayData = async (body) => {
   return sample;
 }
 
+
+const createAddToCardDetails = async (body)=>{
+  let details = await addToCartDetailsModel.create(body);
+  return details;
+}
+
+
+const createAddToInterestDetails = async (body)=>{
+  let details = await addInterestDetailsModel.create(body);
+  return details;
+}
+
+
+
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -2013,4 +2030,7 @@ module.exports = {
 
 
   createArrayData,
+  createAddToCardDetails,
+  createAddToInterestDetails,
+ 
 };

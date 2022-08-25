@@ -223,8 +223,20 @@ const getAllLiveStreamApprovedData = catchAsync (async (req, res)=>{
 const createArrayData = catchAsync(async (req, res)=>{
   const streamData = await requirementCollectionService.createArrayData(req.body);
   res.send(streamData)
-
 });
+
+const createAddToCardDetails = catchAsync(async (req, res)=>{
+  const streamData = await requirementCollectionService.createAddToCardDetails(req.body);
+  res.send(streamData)
+});
+
+const createAddToInterestDetails = catchAsync(async (req, res)=>{
+  const streamData = await requirementCollectionService.createAddToInterestDetails(req.body);
+  res.send(streamData)
+});
+
+
+
 
 module.exports = {
     createRequirementBuyerService,
@@ -232,7 +244,7 @@ module.exports = {
     getBuyerById,
     getSupplierById,
     getAllBuyer,
-    getAllSupplier,
+    getAllSupplier, 
     updateRequirementBuyerById,
     updateRequirementSupplierById,
     deleteRequirementBuyerById,
@@ -257,4 +269,7 @@ module.exports = {
     getallApprovedLiveStreamService,
 
     createArrayData,
+    createAddToCardDetails,
+    createAddToInterestDetails,
+
 };
