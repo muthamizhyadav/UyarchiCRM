@@ -19,18 +19,18 @@ const streamingDataCRMSchema = new mongoose.Schema({
         type: String,
 
     },
-    streamAddToCart: {
-        type: Number,
-    },
+    // streamAddToCart: {
+    //     type: Number,
+    // },
     streamFixedPrice: {
         type: Number,
     },
     streamFixedQuantity : {
         type: Number,
     },
-    streamInterest: {
-        type: Number,
-    },
+    // streamInterest: {
+    //     type: Number,
+    // },
     active: {
         type: Boolean,
         default: true,

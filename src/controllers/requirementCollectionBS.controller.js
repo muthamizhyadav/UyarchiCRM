@@ -255,6 +255,13 @@ const updateAddToCartDetails= catchAsync(async (req, res) => {
 });
 
 
+const getCalculatedQuantity= catchAsync(async (req, res) => {
+  const quantity = await requirementCollectionService.getCalculatedQuantity(req.params.id)
+  res.send(quantity)
+
+});
+
+
 
 
 module.exports = {
@@ -292,5 +299,6 @@ module.exports = {
     createAddToInterestDetails,
     updateAddToInterest,
     updateAddToCartDetails,
+    getCalculatedQuantity,
 
 };

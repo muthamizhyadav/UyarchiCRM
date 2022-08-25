@@ -16,6 +16,7 @@ const liveStreamservice = require('../services/liveStream.service');
 const StreamingDataModel = require('../models/streamingDataCRM.model');
 const addInterestDetailsModel = require('../models/addInterestDetails.model');
 const addToCartDetailsModel = require('../models/addToCartDetails.model');
+const liveStreamModel = require('../models/liveStream.model');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -2013,6 +2014,49 @@ const updateAddToCartDetails = async (id, updatebody) => {
   return sample
 }
 
+const getCalculatedQuantity = async (id)=>{
+  let values = await liveStreamModel.aggregate([
+    {
+      $match: {
+        $and: [{ requirementId: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'streamingdatas',
+        localField: 'requirementId',
+        foreignField: 'productId',
+        pipeline: [
+          { $group: { _id: null, Qty: { $sum: '$streamFixedQuantity' }, } },
+        ],
+        as: 'datas',
+      }
+    },
+    {
+      $unwind: '$datas'
+    },
+    {
+      $project: {
+        userId:1,
+        requirementId:1,
+        expectedQnty:1,
+        totalQuantity: "$datas.Qty",
+        BalanceStock: { 
+          $subtract: [ "$expectedQnty", "$totalQuantity" ] } } 
+  
+    },
+    {
+      $project: {
+        BalanceStock: { 
+          $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+      }
+    }
+  ]);
+
+  return values;
+
+}
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -2049,5 +2093,6 @@ module.exports = {
   createAddToInterestDetails,
   updateAddToInterest,
   updateAddToCartDetails,
+  getCalculatedQuantity,
  
 };
