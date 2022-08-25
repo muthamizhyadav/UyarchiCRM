@@ -2004,8 +2004,14 @@ const updateAddToInterest = async (id, updatebody) => {
   return sample
 }
 
-
-
+const updateAddToCartDetails = async (id, updatebody) => {
+  let sample = await addToCartDetailsModel.findById(id)
+  if (!sample) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Sample Not found')
+  }
+  sample = await addToCartDetailsModel.findByIdAndUpdate({ _id: id }, updatebody, { new: true })
+  return sample
+}
 
 module.exports = {
   createRequirementBuyer,
@@ -2042,5 +2048,6 @@ module.exports = {
   createAddToCardDetails,
   createAddToInterestDetails,
   updateAddToInterest,
+  updateAddToCartDetails,
  
 };

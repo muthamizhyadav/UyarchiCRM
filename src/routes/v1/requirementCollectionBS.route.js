@@ -66,4 +66,6 @@ router.route('/create/AddToCardDetails').post(requirementCollectionController.cr
 router.route('/create/AddToInterestDetails').post(requirementCollectionController.createAddToInterestDetails);
 
 router.route('/update/AddTo/Interest/:id').put(requirementCollectionController.updateAddToInterest);
+
+router.route('/update/AddTo/Cart/:id').put(requirementCollectionController.updateAddToCartDetails);
 module.exports = router;

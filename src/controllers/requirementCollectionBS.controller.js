@@ -246,7 +246,13 @@ const updateAddToInterest= catchAsync(async (req, res) => {
   const sample = await requirementCollectionService.updateAddToInterest(req.params.id, req.body)
   res.send(sample)
 
-})
+});
+
+const updateAddToCartDetails= catchAsync(async (req, res) => {
+  const sample = await requirementCollectionService.updateAddToCartDetails(req.params.id, req.body)
+  res.send(sample)
+
+});
 
 
 
@@ -285,5 +291,6 @@ module.exports = {
     createAddToCardDetails,
     createAddToInterestDetails,
     updateAddToInterest,
+    updateAddToCartDetails,
 
 };
