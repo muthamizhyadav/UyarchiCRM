@@ -64,4 +64,6 @@ router.route('/StreamingData/createArrayData').post(requirementCollectionControl
 router.route('/create/AddToCardDetails').post(requirementCollectionController.createAddToCardDetails);
 
 router.route('/create/AddToInterestDetails').post(requirementCollectionController.createAddToInterestDetails);
+
+router.route('/update/AddTo/Interest/:id').put(requirementCollectionController.updateAddToInterest);
 module.exports = router;

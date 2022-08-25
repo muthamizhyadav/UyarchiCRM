@@ -230,10 +230,23 @@ const createAddToCardDetails = catchAsync(async (req, res)=>{
   res.send(streamData)
 });
 
-const createAddToInterestDetails = catchAsync(async (req, res)=>{
+const createAddToInterestDetails = catchAsync(async (req, res, next)=>{
+  // const action = req.body.action;
+  //       const counter = action === 'Like' ? 1 : -1;
+  //       addinterestdetails.update({_id: req.params.id}, {$inc: {streamInterest: counter}}, {}, (err, numberAffected) => {
+  //           res.send('');
+  //       }); 
+
+
   const streamData = await requirementCollectionService.createAddToInterestDetails(req.body);
   res.send(streamData)
 });
+
+const updateAddToInterest= catchAsync(async (req, res) => {
+  const sample = await requirementCollectionService.updateAddToInterest(req.params.id, req.body)
+  res.send(sample)
+
+})
 
 
 
@@ -271,5 +284,6 @@ module.exports = {
     createArrayData,
     createAddToCardDetails,
     createAddToInterestDetails,
+    updateAddToInterest,
 
 };

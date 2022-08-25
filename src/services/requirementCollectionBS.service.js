@@ -1995,6 +1995,15 @@ const createAddToInterestDetails = async (body)=>{
   return details;
 }
 
+const updateAddToInterest = async (id, updatebody) => {
+  let sample = await addInterestDetailsModel.findById(id)
+  if (!sample) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Sample Not found')
+  }
+  sample = await addInterestDetailsModel.findByIdAndUpdate({ _id: id }, updatebody, { new: true })
+  return sample
+}
+
 
 
 
@@ -2032,5 +2041,6 @@ module.exports = {
   createArrayData,
   createAddToCardDetails,
   createAddToInterestDetails,
+  updateAddToInterest,
  
 };
