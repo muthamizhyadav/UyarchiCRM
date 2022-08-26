@@ -2021,6 +2021,17 @@ const getCalculatedQuantity = async (id)=>{
         $and: [{ _id: { $eq: id } }],
       },
     },
+      {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'requirementId',
+        foreignField: '_id',
+        as: 'sampleDatas',
+      }
+    },
+    {
+      $unwind: '$sampleDatas'
+    },
     {
       $lookup: {
         from: 'streamingdatas',
@@ -2032,38 +2043,28 @@ const getCalculatedQuantity = async (id)=>{
         as: 'datas',
       }
     },
-    {
-      $unwind: "$datas"
-    },
-    {
-      $lookup: {
-        from: 'requirementsuppliers',
-        localField: 'requirementId',
-        foreignField: '_id',
-        as: 'sampleDatas',
-      }
-    },
-    {
-      $unwind: '$sampleDatas'
-    },
-    
-    {
-      $project: {
-        userId:1,
-        requirementId:1,
-        expectedQnty:1,
-        totalQuantity: "$datas.Qty",
-        // BalanceStock: { 
-        //   $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
-      } 
+    // {
+    //   $unwind: "$datas"
+    // },
   
-    },
-    {
-      $project: {
-        BalanceStock: { 
-          $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
-      }
-    }
+    
+    // {
+    //   $project: {
+    //     userId:1,
+    //     requirementId:1,
+    //     expectedQnty:1,
+    //     totalQuantity: "$datas.Qty",
+    //     // BalanceStock: { 
+    //     //   $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+    //   } 
+  
+    // },
+    // {
+    //   $project: {
+    //     BalanceStock: { 
+    //       $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+    //   }
+    // }
   ]);
 
   return values;
