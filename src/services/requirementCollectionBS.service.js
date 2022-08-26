@@ -2018,7 +2018,7 @@ const getCalculatedQuantity = async (id)=>{
   let values = await liveStreamModel.aggregate([
     {
       $match: {
-        $and: [{ requirementId: { $eq: id } }],
+        $and: [{ _id: { $eq: id } }],
       },
     },
     {
@@ -2033,16 +2033,29 @@ const getCalculatedQuantity = async (id)=>{
       }
     },
     {
-      $unwind: '$datas'
+      $unwind: "$datas"
     },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'requirementId',
+        foreignField: '_id',
+        as: 'sampleDatas',
+      }
+    },
+    {
+      $unwind: '$sampleDatas'
+    },
+    
     {
       $project: {
         userId:1,
         requirementId:1,
         expectedQnty:1,
         totalQuantity: "$datas.Qty",
-        BalanceStock: { 
-          $subtract: [ "$expectedQnty", "$totalQuantity" ] } } 
+        // BalanceStock: { 
+        //   $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+      } 
   
     },
     {
@@ -2056,6 +2069,48 @@ const getCalculatedQuantity = async (id)=>{
   return values;
 
 }
+    
+  // let values = await RequirementSupplier.aggregate([
+  //   {
+  //     $match: {
+  //       $and: [{ _id: { $eq: id } }],
+  //     }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: 'streamingdatas',
+  //       localField: '_id',
+  //       foreignField: 'productId',
+  //       pipeline: [
+  //                 { $group: { _id: null, Qty: { $sum: '$streamFixedQuantity' }, } },
+  //               ],
+  //       as: 'datas',
+  //     }
+  //   },
+  //   {
+  //     $unwind: '$datas'
+  //   },
+  //     {
+  //     $project: {
+  //       userId:1,
+  //       requirementId:1,
+  //       expectedQnty:1,
+  //       totalQuantity: "$datas.Qty",
+  //       BalanceStock: { 
+  //         $subtract: [ "$expectedQnty", "$totalQuantity" ] } } 
+  
+  //   },
+  //   {
+  //     $project: {
+  //       BalanceStock: { 
+  //         $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+  //     }
+  //   }
+//   ]);
+
+//   return values;
+
+// }
 
 module.exports = {
   createRequirementBuyer,
