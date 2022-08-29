@@ -53,7 +53,6 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
-
 //default routes
 
 app.get('/', (req, res) => {
