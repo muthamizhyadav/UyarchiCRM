@@ -223,8 +223,52 @@ const getAllLiveStreamApprovedData = catchAsync (async (req, res)=>{
 const createArrayData = catchAsync(async (req, res)=>{
   const streamData = await requirementCollectionService.createArrayData(req.body);
   res.send(streamData)
+});
+
+const createAddToCardDetails = catchAsync(async (req, res)=>{
+  const streamData = await requirementCollectionService.createAddToCardDetails(req.body);
+  res.send(streamData)
+});
+
+const createAddToInterestDetails = catchAsync(async (req, res, next)=>{
+  // const action = req.body.action;
+  //       const counter = action === 'Like' ? 1 : -1;
+  //       addinterestdetails.update({_id: req.params.id}, {$inc: {streamInterest: counter}}, {}, (err, numberAffected) => {
+  //           res.send('');
+  //       }); 
+
+
+  const streamData = await requirementCollectionService.createAddToInterestDetails(req.body);
+  res.send(streamData)
+});
+
+const updateAddToInterest= catchAsync(async (req, res) => {
+  const sample = await requirementCollectionService.updateAddToInterest(req.params.id, req.body)
+  res.send(sample)
 
 });
+
+const updateAddToCartDetails= catchAsync(async (req, res) => {
+  const sample = await requirementCollectionService.updateAddToCartDetails(req.params.id, req.body)
+  res.send(sample)
+
+});
+
+
+const getCalculatedQuantity= catchAsync(async (req, res) => {
+  const quantity = await requirementCollectionService.getCalculatedQuantity(req.params.id)
+  res.send(quantity)
+
+});
+
+
+const supplierBuierDetails = catchAsync(async (req, res) => {
+  const values = await requirementCollectionService.supplierBuierDetails(req.params.id)
+  res.send(values);
+});
+
+
+
 
 module.exports = {
     createRequirementBuyerService,
@@ -232,7 +276,7 @@ module.exports = {
     getBuyerById,
     getSupplierById,
     getAllBuyer,
-    getAllSupplier,
+    getAllSupplier, 
     updateRequirementBuyerById,
     updateRequirementSupplierById,
     deleteRequirementBuyerById,
@@ -257,4 +301,11 @@ module.exports = {
     getallApprovedLiveStreamService,
 
     createArrayData,
+    createAddToCardDetails,
+    createAddToInterestDetails,
+    updateAddToInterest,
+    updateAddToCartDetails,
+    getCalculatedQuantity,
+    supplierBuierDetails,
+
 };

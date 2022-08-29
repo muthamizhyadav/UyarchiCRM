@@ -14,6 +14,9 @@ const moment = require('moment');
 let currentDate = moment().format('DD-MM-YYYY');
 const liveStreamservice = require('../services/liveStream.service');
 const StreamingDataModel = require('../models/streamingDataCRM.model');
+const addInterestDetailsModel = require('../models/addInterestDetails.model');
+const addToCartDetailsModel = require('../models/addToCartDetails.model');
+const liveStreamModel = require('../models/liveStream.model');
 
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
@@ -85,7 +88,7 @@ const createRequirementSupplier = async (supplierBody) => {
 
   let requirement = await RequirementSupplier.create(values);
   if (supplierBody.type == 'own') {
-    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id, })
+    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id, expectedQnty:requirement.expectedQnty  })
   }
   return requirement;
 };
@@ -1981,6 +1984,155 @@ const createArrayData = async (body) => {
   return sample;
 }
 
+
+const createAddToCardDetails = async (body)=>{
+  let details = await addToCartDetailsModel.create(body);
+  return details;
+}
+
+
+const createAddToInterestDetails = async (body)=>{
+  let details = await addInterestDetailsModel.create(body);
+  return details;
+}
+
+const updateAddToInterest = async (id, updatebody) => {
+  let sample = await addInterestDetailsModel.findById(id)
+  if (!sample) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Sample Not found')
+  }
+  sample = await addInterestDetailsModel.findByIdAndUpdate({ _id: id }, updatebody, { new: true })
+  return sample
+}
+
+const updateAddToCartDetails = async (id, updatebody) => {
+  let sample = await addToCartDetailsModel.findById(id)
+  if (!sample) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Sample Not found')
+  }
+  sample = await addToCartDetailsModel.findByIdAndUpdate({ _id: id }, updatebody, { new: true })
+  return sample
+}
+
+const getCalculatedQuantity = async (id)=>{
+  let values = await liveStreamModel.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+      
+    {
+      $lookup: {
+        from: 'streamingdatas',
+        localField: 'requirementId',
+        foreignField: 'productId',
+        pipeline: [
+          { $group: { _id: null, Qty: { $sum: '$streamFixedQuantity' }, } },
+        ],
+        as: 'datas',
+      }
+    },
+    {
+      $unwind: "$datas"
+    },
+    // {
+    //   $lookup: {
+    //     from: 'requirementsuppliers',
+    //     localField: 'requirementId',
+    //     foreignField: '_id',
+    //     as: 'sampleDatas',
+    //   }
+    // },
+    // {
+    //   $unwind: '$sampleDatas'
+    // },
+  
+    
+    {
+      $project: {
+        userId:1,
+        requirementId:1,
+        expectedQnty:1,
+        totalQuantity: "$datas.Qty",
+        // BalanceStock: { 
+        //   $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+      } 
+  
+    },
+    {
+      $project: {
+        BalanceStock: { 
+          $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+      }
+    }
+  ]);
+
+  return values;
+
+}
+    
+  // let values = await RequirementSupplier.aggregate([
+  //   {
+  //     $match: {
+  //       $and: [{ _id: { $eq: id } }],
+  //     }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: 'streamingdatas',
+  //       localField: '_id',
+  //       foreignField: 'productId',
+  //       pipeline: [
+  //                 { $group: { _id: null, Qty: { $sum: '$streamFixedQuantity' }, } },
+  //               ],
+  //       as: 'datas',
+  //     }
+  //   },
+  //   {
+  //     $unwind: '$datas'
+  //   },
+  //     {
+  //     $project: {
+  //       userId:1,
+  //       requirementId:1,
+  //       expectedQnty:1,
+  //       totalQuantity: "$datas.Qty",
+  //       BalanceStock: { 
+  //         $subtract: [ "$expectedQnty", "$totalQuantity" ] } } 
+  
+  //   },
+  //   {
+  //     $project: {
+  //       BalanceStock: { 
+  //         $subtract: [ "$expectedQnty", "$totalQuantity" ] } 
+  //     }
+  //   }
+//   ]);
+
+//   return values;
+
+// }
+
+const supplierBuierDetails = async (id)=>{
+  let values = await StreamingDataModel.aggregate([
+    {
+      $match: {
+        $and: [{ supplierId: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from : '',
+        localField: '',
+        foreignField: '',
+        as: ''
+      }
+    },
+  ]);
+  return values;
+}
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -2013,4 +2165,11 @@ module.exports = {
 
 
   createArrayData,
+  createAddToCardDetails,
+  createAddToInterestDetails,
+  updateAddToInterest,
+  updateAddToCartDetails,
+  getCalculatedQuantity,
+  supplierBuierDetails,
+ 
 };

@@ -6,6 +6,7 @@ const Agora = require("agora-access-token");
 const { RequirementBuyer, RequirementSupplier } = require('../models/requirementCollectionBS.model');
 
 const createLiveStream = async (userBody) => {
+  console.log(userBody)
 
   // const appID = "50c7493877764c85aa44d921a68f2b38";
   // const appCertificate = "deb15b1b53e44c46abf51172bc552daa";
@@ -17,7 +18,7 @@ const createLiveStream = async (userBody) => {
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
   const token = Agora.RtmTokenBuilder.buildToken(appID, appCertificate, userBody.requirementId, expirationTimestamp);
-  return liveStream.create({ token: token, userId: userBody.userId, requirementId: userBody.requirementId });
+  return liveStream.create({ token: token, userId: userBody.userId, requirementId: userBody.requirementId,expectedQnty: userBody.expectedQnty });
 };
 
 const getliveStream = async (id) => {
@@ -99,6 +100,7 @@ const getAllliveStriming = async () => {
         billId: "$requirementsuppliers.billId",
         userId: 1,
         secretName: "$suppliers.secretName",
+        SupplierName: "$suppliers.primaryContactName",
         adminAprove: 1,
         streaming: 1,
         expiry: 1,

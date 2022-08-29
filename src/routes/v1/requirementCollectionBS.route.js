@@ -60,4 +60,16 @@ router.route('/SupplierLiveApproved/data/:userId').get(requirementCollectionCont
 router.route('/BuyerData/liveApproved/SameProduct').get(requirementCollectionController.getallApprovedLiveStreamService);
 
 router.route('/StreamingData/createArrayData').post(requirementCollectionController.createArrayData);
+
+router.route('/create/AddToCardDetails').post(requirementCollectionController.createAddToCardDetails);
+
+router.route('/create/AddToInterestDetails').post(requirementCollectionController.createAddToInterestDetails);
+
+router.route('/update/AddTo/Interest/:id').put(requirementCollectionController.updateAddToInterest);
+
+router.route('/update/AddTo/Cart/:id').put(requirementCollectionController.updateAddToCartDetails);
+
+router.route('/get/quantityDetails/:id').get(requirementCollectionController.getCalculatedQuantity);
+
+router.route('/get/supplier/Buyer/details/:id').get(requirementCollectionController.supplierBuierDetails);
 module.exports = router;

@@ -232,10 +232,10 @@ const requirementSupplierSchema = new mongoose.Schema({
     type:String,
   },
   minimumlot:{
-    type:String,
+    type:Number,
   },
   maximumlot:{
-    type:String,
+    type:Number,
   },
   stockTakeFromDay:{
     type:String,

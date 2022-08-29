@@ -3,15 +3,12 @@ const { v4 } = require('uuid');
 const { toJSON, paginate } = require('./plugins');
 const moment = require('moment');
 
-const streamingDataCRMSchema = new mongoose.Schema({
+const addInterestDetailsSchema = new mongoose.Schema({
     _id: {
         type: String,
         default: v4,
     },
-    // StreamingData: {
-    //     type: Array,
-    //     default: [],
-    // },
+  
     supplierId: {
         type: String,
     },
@@ -19,18 +16,10 @@ const streamingDataCRMSchema = new mongoose.Schema({
         type: String,
 
     },
-    // streamAddToCart: {
-    //     type: Number,
-    // },
-    streamFixedPrice: {
+    streamInterest: {
         type: Number,
     },
-    streamFixedQuantity : {
-        type: Number,
-    },
-    // streamInterest: {
-    //     type: Number,
-    // },
+   
     active: {
         type: Boolean,
         default: true,
@@ -50,11 +39,9 @@ const streamingDataCRMSchema = new mongoose.Schema({
       productId: {
         type: String,
       },
-      productName: {
-        type: String,
-      },
+      
     
 });
-const streamingDataCRMModel = mongoose.model('StreamingData',streamingDataCRMSchema );
+const addInterestDetailsModel = mongoose.model('addInterestDetails',addInterestDetailsSchema );
 
-module.exports = streamingDataCRMModel;
+module.exports = addInterestDetailsModel;
