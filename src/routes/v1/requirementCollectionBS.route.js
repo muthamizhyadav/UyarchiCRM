@@ -70,4 +70,6 @@ router.route('/update/AddTo/Interest/:id').put(requirementCollectionController.u
 router.route('/update/AddTo/Cart/:id').put(requirementCollectionController.updateAddToCartDetails);
 
 router.route('/get/quantityDetails/:id').get(requirementCollectionController.getCalculatedQuantity);
+
+router.route('/get/supplier/Buyer/details/:id').get(requirementCollectionController.supplierBuierDetails);
 module.exports = router;

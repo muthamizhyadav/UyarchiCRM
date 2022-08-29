@@ -100,6 +100,7 @@ const getAllliveStriming = async () => {
         billId: "$requirementsuppliers.billId",
         userId: 1,
         secretName: "$suppliers.secretName",
+        SupplierName: "$suppliers.primaryContactName",
         adminAprove: 1,
         streaming: 1,
         expiry: 1,

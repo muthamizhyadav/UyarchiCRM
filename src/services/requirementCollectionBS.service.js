@@ -2114,6 +2114,25 @@ const getCalculatedQuantity = async (id)=>{
 
 // }
 
+const supplierBuierDetails = async (id)=>{
+  let values = await StreamingDataModel.aggregate([
+    {
+      $match: {
+        $and: [{ supplierId: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from : '',
+        localField: '',
+        foreignField: '',
+        as: ''
+      }
+    },
+  ]);
+  return values;
+}
+
 module.exports = {
   createRequirementBuyer,
   createRequirementSupplier,
@@ -2151,5 +2170,6 @@ module.exports = {
   updateAddToInterest,
   updateAddToCartDetails,
   getCalculatedQuantity,
+  supplierBuierDetails,
  
 };

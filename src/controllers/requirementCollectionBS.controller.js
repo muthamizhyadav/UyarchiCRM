@@ -262,6 +262,12 @@ const getCalculatedQuantity= catchAsync(async (req, res) => {
 });
 
 
+const supplierBuierDetails = catchAsync(async (req, res) => {
+  const values = await requirementCollectionService.supplierBuierDetails(req.params.id)
+  res.send(values);
+});
+
+
 
 
 module.exports = {
@@ -300,5 +306,6 @@ module.exports = {
     updateAddToInterest,
     updateAddToCartDetails,
     getCalculatedQuantity,
+    supplierBuierDetails,
 
 };
