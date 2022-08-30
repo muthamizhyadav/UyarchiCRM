@@ -17,5 +17,5 @@ router.route('/forgot/password').post(supplierController.forgetPassword);
 router.route('/otpVerification/password-change').post(supplierController.otpVerification);
 router.route('/updatePassword/afterOtp/:id').put(supplierController.updatePasswordByIdSupplierId);
 router.route('/changePassword/data/:supplierId').put(supplierController.changePasswordSupplierByIdService);
-router.route('/getbuyer/data/:id').get(supplierController.getSupplierDetails)
+router.route('/getbuyer/data/:supplierId/:productId').get(supplierController.getSupplierDetails)
 module.exports = router;

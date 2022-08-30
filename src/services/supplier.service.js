@@ -121,10 +121,15 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
 
 // data retrive from streaming data table
 
-const getSupplierDetails = async (id) => {
+const getSupplierDetails = async (supplierId, productId) => {
   let values = await StreaminData.aggregate([
     {
-      $match: { supplierId: id },
+      $match: {
+        $and: [
+          { supplierId: supplierId },
+          { productId: productId }
+        ]
+      }
     },
     {
       $lookup: {
@@ -138,13 +143,13 @@ const getSupplierDetails = async (id) => {
       $unwind: '$buyerData',
     },
     {
-      $project:{
-        streamFixedPrice:1,
-        streamFixedQuantity:1,
-        streamAddToCart:1,
-        streamInterest:1,
-        buyerName:'$buyerData.primaryContactName',
-        date:1,
+      $project: {
+        streamFixedPrice: 1,
+        streamFixedQuantity: 1,
+        streamAddToCart: 1,
+        streamInterest: 1,
+        buyerName: '$buyerData.primaryContactName',
+        date: 1,
         time: 1,
         secretName: '$buyerData.secretName',
       }

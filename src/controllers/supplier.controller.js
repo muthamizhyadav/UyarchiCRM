@@ -112,7 +112,7 @@ const updatePasswordByIdSupplierId = catchAsync(async (req, res) => {
 });
 
 const getSupplierDetails = catchAsync(async (req, res) => {
-  const supplier = await supplierService.getSupplierDetails(req.params.id);
+  const supplier = await supplierService.getSupplierDetails(req.params.supplierId, req.params.productId);
   res.send(supplier);
 });
 
