@@ -1994,25 +1994,12 @@ const getCalculatedQuantity = async (id) => {
     {
       $unwind: '$datas',
     },
-    // {
-    //   $lookup: {
-    //     from: 'requirementsuppliers',
-    //     localField: 'requirementId',
-    //     foreignField: '_id',
-    //     as: 'sampleDatas',
-    //   }
-    // },
-    // {
-    //   $unwind: '$sampleDatas'
-    // },
     {
       $project: {
         userId: 1,
         requirementId: 1,
         expectedQnty: 1,
         totalQuantity: '$datas.Qty',
-        // BalanceStock: {
-        //   $subtract: [ "$expectedQnty", "$totalQuantity" ] }
       },
     },
     {
