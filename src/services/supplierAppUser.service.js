@@ -6,6 +6,7 @@ const supplierAppUser = require('../models/supplierAppUser.model')
 const createSupplierAppUser = async (supplierAppUserBody) => {
   return supplierAppUser.create(supplierAppUserBody);
 };
+
 const getSupplierAppUserById = async (supplierAppUserId) => {
   return supplierAppUser.findById(supplierAppUserId);
 };
@@ -13,7 +14,6 @@ const getSupplierAppUserById = async (supplierAppUserId) => {
 const getAllSupplierAppUser = async () => {
   return supplierAppUser.find({ active: 'true' });
 }
-
 
 const getAllSupplierAppUserResponce = async (id) => {
   return supplierAppUser.aggregate([
@@ -102,6 +102,7 @@ const deleteSupplierAppUserById = async (supplierAppUserId) => {
   (Manage.active = false), (Manage.archive = true), await Manage.save();
   return Manage;
 };
+
 module.exports = {
   createSupplierAppUser,
   getAllSupplierAppUser,
