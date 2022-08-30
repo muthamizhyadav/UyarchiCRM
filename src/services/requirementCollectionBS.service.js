@@ -13,7 +13,7 @@ const axios = require('axios');
 const moment = require('moment');
 let currentDate = moment().format('DD-MM-YYYY');
 const liveStreamservice = require('../services/liveStream.service');
-
+const StreamingDataModel = require('../models/streamingDataCRM.model');
 const createRequirementBuyer = async (buyerBody) => {
   const { userId } = buyerBody;
   let supp = await supplier.findById(userId);
@@ -1965,10 +1965,8 @@ const getdataLiveStreamApproved = async (userId) => {
         liveStreamTime: 1,
         liveStreamStatus: 1,
         liveStreamReason: 1,
-
       },
     },
-
   ])
   return data
 }
