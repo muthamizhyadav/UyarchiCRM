@@ -49,13 +49,17 @@ const createRequirementBuyer = async (buyerBody) => {
 };
 
 const getProductDateByProductName = async (userId, name) => {
-  let productname = await RequirementSupplier.find({ userId: userId, product:name })
+  let productname = await RequirementSupplier.find({ userId: userId, product: name })
   if (!productname) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product Name Does not Match')
   }
   return productname
 }
 
+const createArrayData = async (body) => {
+  let sample = await StreamingDataModel.create(body)
+  return sample;
+}
 
 const createRequirementSupplier = async (supplierBody) => {
   const { userId } = supplierBody;
@@ -1999,4 +2003,5 @@ module.exports = {
   getdataLiveStreamApproved,
   getallApprovedLiveStream,
   getProductDateByProductName,
+  createArrayData
 };
