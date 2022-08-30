@@ -12,7 +12,7 @@ router
   .put(slotSubmitController.updateslotService)
   .delete(slotSubmitController.deleteslotService);
 
-  router
+router
   .route('/slotSubmit/:slotSubmitId')
   .get(slotSubmitController.getslotSubmitServiceById)
   .put(slotSubmitController.updateslotSubmitService)
