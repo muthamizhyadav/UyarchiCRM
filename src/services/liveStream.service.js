@@ -16,6 +16,7 @@ const createLiveStream = async (userBody) => {
   // const role = Agora.RtmRole.Rtm_User;
   const expirationTimeInSeconds = 3600;
   const currentTimestamp = Math.floor(Date.now() / 1000);
+  console.log(currentTimestamp)
   const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
   const token = Agora.RtmTokenBuilder.buildToken(appID, appCertificate, userBody.requirementId, expirationTimestamp);
   return liveStream.create({ token: token, userId: userBody.userId, requirementId: userBody.requirementId,expectedQnty: userBody.expectedQnty });
