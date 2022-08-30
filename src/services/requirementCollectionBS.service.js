@@ -48,6 +48,14 @@ const createRequirementBuyer = async (buyerBody) => {
   return RequirementBuyer.create(values)
 };
 
+const getProductDateByProductName = async (userId, name) => {
+  let productname = await RequirementSupplier.find({ userId: userId, product:name })
+  if (!productname) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product Name Does not Match')
+  }
+  return productname
+}
+
 
 const createRequirementSupplier = async (supplierBody) => {
   const { userId } = supplierBody;
@@ -84,8 +92,8 @@ const createRequirementSupplier = async (supplierBody) => {
 
   let requirement = await RequirementSupplier.create(values);
   if (supplierBody.type == 'own') {
-    
-    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id,  })
+
+    await liveStreamservice.createLiveStream({ userId: supp._id, requirementId: requirement._id, })
   }
   return requirement;
 };
@@ -1990,4 +1998,5 @@ module.exports = {
   getdataLiveStreamReject,
   getdataLiveStreamApproved,
   getallApprovedLiveStream,
+  getProductDateByProductName,
 };

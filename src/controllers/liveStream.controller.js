@@ -11,6 +11,7 @@ const createliveStream = catchAsync(async (req, res) => {
 
 const getliveStreamId = catchAsync(async (req, res) => {
   const data = await liveStreamservice.getliveStream(req.params.id);
+  console.log(data)
   if (data.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Token Not Available');
   }
