@@ -66,6 +66,10 @@ const liveStreamSchema = mongoose.Schema({
   expectedQnty:{
     type: Number,
   },
+  liveConfirm: {
+    type: Boolean,
+    default: false,
+  },
 
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
