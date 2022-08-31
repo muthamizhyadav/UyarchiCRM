@@ -256,7 +256,7 @@ const requirementSupplierSchema = new mongoose.Schema({
     type:String,
   },
   liveStreamTime:{
-    type:Number,
+    type:String,
   },
   liveStreamStatus:{
     type:String,

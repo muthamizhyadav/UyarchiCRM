@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const { supplier } = require('../models');
 const TextLocal = require('../config/OTP');
 const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
+const StreaminData = require('../models/streamingDataCRM.model');
 const bcrypt = require('bcryptjs');
 
 const createSupplier = async (supplierBody) => {
@@ -118,6 +119,45 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
   return suppliers;
 };
 
+// data retrive from streaming data table
+
+const getSupplierDetails = async (supplierId, productId) => {
+  let values = await StreaminData.aggregate([
+    {
+      $match: {
+        $and: [
+          { supplierId: supplierId },
+          { productId: productId }
+        ]
+      }
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'BuyierId',
+        foreignField: '_id',
+        as: 'buyerData',
+      },
+    },
+    {
+      $unwind: '$buyerData',
+    },
+    {
+      $project: {
+        streamFixedPrice: 1,
+        streamFixedQuantity: 1,
+        streamAddToCart: 1,
+        streamInterest: 1,
+        buyerName: '$buyerData.primaryContactName',
+        date: 1,
+        time: 1,
+        secretName: '$buyerData.secretName',
+      }
+    }
+  ]);
+  return values;
+};
+
 module.exports = {
   createSupplier,
   getAllSupplier,
@@ -131,4 +171,5 @@ module.exports = {
   otpVerification,
   updatePasswordByIdSupplierId,
   updateSupplierChangeById,
+  getSupplierDetails,
 };

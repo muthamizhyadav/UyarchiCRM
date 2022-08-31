@@ -9,37 +9,37 @@ router
   .put(requirementCollectionController.updateRequirementBuyerById)
   .delete(requirementCollectionController.deleteRequirementBuyerById);
 
-  router
+router
   .route('/Supplier/:supplierId')
   .get(requirementCollectionController.getSupplierById)
   .put(requirementCollectionController.updateRequirementSupplierById)
   .delete(requirementCollectionController.deleteRequirementSupplierById);
 
-  // updateData
-  router.route('/Supplier/UpdataData/:id').get(requirementCollectionController.getUpdateDataQnty)
-  router.route('/Buyer/UpdataData/:id').get(requirementCollectionController.getUpdateDataBuyerQnty)
-  router.route('/Supplier/UpdateModerate/:id').get(requirementCollectionController.getModerateData)
+// updateData
+router.route('/Supplier/UpdataData/:id').get(requirementCollectionController.getUpdateDataQnty)
+router.route('/Buyer/UpdataData/:id').get(requirementCollectionController.getUpdateDataBuyerQnty)
+router.route('/Supplier/UpdateModerate/:id').get(requirementCollectionController.getModerateData)
 
-  // BuyerNotDead
-  router.route('/Buyer/Live/all').get(requirementCollectionController.getAllBuyerNotDead)
-  router.route('/Buyer/SameProduct/all/:id').get(requirementCollectionController.getAllBuyerProductSame)
-  router.route('/Buyer/SameProduct/short/all/:id').get(requirementCollectionController.getShortclickById)
-  router.route('/Buyer/SameProduct/fixed/all/:id').get(requirementCollectionController.getfixedclickById)
-  router.route('/Buyer/SameProduct/fixed/only/all/:id').get(requirementCollectionController.getfixedOnlyById)
-  
-  //moderateHistory
-  router.route('/supplier/moderateHistory/all/:id').get(requirementCollectionController.getModerateDataHistory)
+// BuyerNotDead
+router.route('/Buyer/Live/all').get(requirementCollectionController.getAllBuyerNotDead)
+router.route('/Buyer/SameProduct/all/:id').get(requirementCollectionController.getAllBuyerProductSame)
+router.route('/Buyer/SameProduct/short/all/:id').get(requirementCollectionController.getShortclickById)
+router.route('/Buyer/SameProduct/fixed/all/:id').get(requirementCollectionController.getfixedclickById)
+router.route('/Buyer/SameProduct/fixed/only/all/:id').get(requirementCollectionController.getfixedOnlyById)
 
-  //paymentHistory
+//moderateHistory
+router.route('/supplier/moderateHistory/all/:id').get(requirementCollectionController.getModerateDataHistory)
 
-  router.route('/Buyer/paymentdataHistory/all/data/:id').get(requirementCollectionController.getpaymentData)
+//paymentHistory
 
- //supplierSameProduct
- router.route('/Supplier/sameProduct/all/data/:id').get(requirementCollectionController.getsupplierSameProduct)
- router.route('/Supplier/interestData/:id').get(requirementCollectionController.getsupplierBuyerInterestData)
+router.route('/Buyer/paymentdataHistory/all/data/:id').get(requirementCollectionController.getpaymentData)
 
- // getAllSupplierProduct
- router.route('/Supplier/product/data/:userId').get(requirementCollectionController.getProductAllSupplier)
+//supplierSameProduct
+router.route('/Supplier/sameProduct/all/data/:id').get(requirementCollectionController.getsupplierSameProduct)
+router.route('/Supplier/interestData/:id').get(requirementCollectionController.getsupplierBuyerInterestData)
+
+// getAllSupplierProduct
+router.route('/Supplier/product/data/:userId').get(requirementCollectionController.getProductAllSupplier)
 
 // getAllBuyerProuctData
 router.route('/Buyer/product/data/:userId').get(requirementCollectionController.getBuyerProductApi)
@@ -72,4 +72,7 @@ router.route('/update/AddTo/Cart/:id').put(requirementCollectionController.updat
 router.route('/get/quantityDetails/:id').get(requirementCollectionController.getCalculatedQuantity);
 
 router.route('/get/supplier/Buyer/details/:id').get(requirementCollectionController.supplierBuierDetails);
+
+router.route('/getProduct/date/:userId/:name').get(requirementCollectionController.getProductDateByProductName)
+
 module.exports = router;

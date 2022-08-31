@@ -111,6 +111,11 @@ const updatePasswordByIdSupplierId = catchAsync(async (req, res) => {
   res.send(changePwd);
 });
 
+const getSupplierDetails = catchAsync(async (req, res) => {
+  const supplier = await supplierService.getSupplierDetails(req.params.supplierId, req.params.productId);
+  res.send(supplier);
+});
+
 module.exports = {
   createSupplierService,
   getAllSupplierService,
@@ -124,4 +129,5 @@ module.exports = {
   otpVerification,
   updatePasswordByIdSupplierId,
   changePasswordSupplierByIdService,
+  getSupplierDetails,
 };

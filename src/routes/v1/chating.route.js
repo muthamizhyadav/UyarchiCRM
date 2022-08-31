@@ -3,10 +3,10 @@ const router = express.Router();
 const conversationModel = require('../../models/conversation.model');
 const MessageModel = require('../../models/message.model');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(server);
+// const http = require('http');
+// const server = http.createServer(app);
+// const { Server } = require('socket.io');
+// const io = new Server(server);
 
 // <........... conversation flow ...........>
 
