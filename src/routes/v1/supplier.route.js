@@ -2,7 +2,7 @@ const express = require('express');
 const supplierController = require('../../controllers/supplier.controller');
 const router = express.Router();
 router.route('/').post(supplierController.createSupplierService).get(supplierController.getAllSupplierService);
-router.route('/allData').get(supplierController.getAllSupplierDeleteService);
+router.route('/allData/:page').get(supplierController.getAllSupplierDeleteService);
 router
   .route('/:supplierId')
   .post(supplierController.createSupplierService)
@@ -17,5 +17,5 @@ router.route('/forgot/password').post(supplierController.forgetPassword);
 router.route('/otpVerification/password-change').post(supplierController.otpVerification);
 router.route('/updatePassword/afterOtp/:id').put(supplierController.updatePasswordByIdSupplierId);
 router.route('/changePassword/data/:supplierId').put(supplierController.changePasswordSupplierByIdService);
-router.route('/getbuyer/data/:supplierId/:productId').get(supplierController.getSupplierDetails)
+router.route('/getbuyer/data/:supplierId/:productId/:page').get(supplierController.getSupplierDetails)
 module.exports = router;

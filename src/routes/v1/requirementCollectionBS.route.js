@@ -1,8 +1,10 @@
 const express = require('express');
 const requirementCollectionController = require('../../controllers/requirementCollectionBS.controller');
 const router = express.Router();
-router.route('/Buyer').post(requirementCollectionController.createRequirementBuyerService).get(requirementCollectionController.getAllBuyer)
-router.route('/Supplier').post(requirementCollectionController.createRequirementSupplierService).get(requirementCollectionController.getAllSupplier)
+router.route('/Buyer').post(requirementCollectionController.createRequirementBuyerService)
+router.route('/Buyer/:page').get(requirementCollectionController.getAllBuyer)
+router.route('/Supplier').post(requirementCollectionController.createRequirementSupplierService)
+router.route('/Supplier/:page').get(requirementCollectionController.getAllSupplier)
 router
   .route('/Buyer/:buyerId')
   .get(requirementCollectionController.getBuyerById)
@@ -21,10 +23,10 @@ router.route('/Buyer/UpdataData/:id').get(requirementCollectionController.getUpd
 router.route('/Supplier/UpdateModerate/:id').get(requirementCollectionController.getModerateData)
 
 // BuyerNotDead
-router.route('/Buyer/Live/all').get(requirementCollectionController.getAllBuyerNotDead)
-router.route('/Buyer/SameProduct/all/:id').get(requirementCollectionController.getAllBuyerProductSame)
-router.route('/Buyer/SameProduct/short/all/:id').get(requirementCollectionController.getShortclickById)
-router.route('/Buyer/SameProduct/fixed/all/:id').get(requirementCollectionController.getfixedclickById)
+router.route('/Buyer/Live/all/:page').get(requirementCollectionController.getAllBuyerNotDead)
+router.route('/Buyer/SameProduct/all/:id/:page').get(requirementCollectionController.getAllBuyerProductSame)
+router.route('/Buyer/SameProduct/short/all/:id/:page').get(requirementCollectionController.getShortclickById)
+router.route('/Buyer/SameProduct/fixed/all/:id/:page').get(requirementCollectionController.getfixedclickById)
 router.route('/Buyer/SameProduct/fixed/only/all/:id').get(requirementCollectionController.getfixedOnlyById)
 
 //moderateHistory

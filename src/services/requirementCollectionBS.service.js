@@ -238,8 +238,8 @@ const getByIdSupplier = async (supplierId) => {
   ]);
 };
 
-const getByIdBuyerAll = async () => {
-  return RequirementBuyer.aggregate([
+const getByIdBuyerAll = async (page) => {
+  let value = await RequirementBuyer.aggregate([
     {
       $match: {
         $and: [{ active: { $eq: true } }],
@@ -290,11 +290,32 @@ const getByIdBuyerAll = async () => {
         confirmCallStatusTime: 1,
       },
     },
+    { $skip: 10 * page },
+    { $limit: 10 },
   ]);
+  let total = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ active: { $eq: true } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'suppliersData',
+      },
+    },
+    {
+      $unwind: '$suppliersData',
+    },
+  ]);
+  return { value: value, total: total.length };
 };
 
-const getByIdSupplierAll = async () => {
-  return RequirementSupplier.aggregate([
+const getByIdSupplierAll = async (page) => {
+  let value = await RequirementSupplier.aggregate([
     {
       $match: {
         $and: [{ active: { $eq: true } }],
@@ -377,7 +398,61 @@ const getByIdSupplierAll = async () => {
         moderateStatus: 1,
       },
     },
+    { $skip: 10 * page },
+    { $limit: 10 },
   ]);
+  let total = await RequirementSupplier.aggregate([
+    {
+      $match: {
+        $and: [{ active: { $eq: true } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'suppliersData',
+      },
+    },
+    {
+      $unwind: '$suppliersData',
+    },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'supplierReqId',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ active: { $eq: true } }],
+            },
+          },
+        ],
+        as: 'supplierinterestsData',
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementbuyers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ active: { $eq: true } }],
+            },
+          },
+        ],
+        as: 'requirementbuyersData',
+      },
+    },
+    // {
+    //   $unwind: '$supplierinterestsData',
+    // },
+  ]);
+  return { value: value, total: total.length };
 };
 
 // supplier matches
@@ -603,7 +678,7 @@ const getPaymentHistory = async (id) => {
 
 // product match Buyer
 
-const getBuyerSameProduct = async (id) => {
+const getBuyerSameProduct = async (id, page) => {
   let match = [{ matchedBuyerId: { $eq: id }, active: { $eq: true } }];
   const data = await RequirementBuyer.aggregate([
     {
@@ -676,9 +751,62 @@ const getBuyerSameProduct = async (id) => {
         id: '$requirementsuppliersData._id',
       },
     },
+    { $skip: 10 * page },
+    { $limit: 10 },
   ]);
+  let total = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
 
-  return data;
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline: [
+                {
+                  $match: {
+                    $and: match,
+                  },
+                },
+              ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+  ]);
+  return { value: data, total: total.length };
 };
 
 // getallApprovedLiveStream
@@ -772,8 +900,8 @@ const getallApprovedLiveStream = async () => {
 };
 
 // Buyer all live
-const getBuyerAlive = async () => {
-  return RequirementBuyer.aggregate([
+const getBuyerAlive = async (page) => {
+  let value = await RequirementBuyer.aggregate([
     {
       $match: {
         $and: [{ active: { $eq: true } }, { statusAccept: { $ne: 'Requirement dead' } }],
@@ -866,12 +994,63 @@ const getBuyerAlive = async () => {
         paymentConfirmCallStatus: 1,
       },
     },
+    { $skip: 10 * page },
+    { $limit: 10 },
   ]);
+  let total = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ active: { $eq: true } }, { statusAccept: { $ne: 'Requirement dead' } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'suppliersData',
+      },
+    },
+    {
+      $unwind: '$suppliersData',
+    },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'matchedBuyerId',
+        pipeline: [{ $match: { $and: [{ active: { $eq: true } }] } }],
+        as: 'supplierReqId',
+      },
+    },
+    // {
+    //   $unwind: '$supplierReqId',
+    // },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'matchedBuyerId',
+        pipeline: [{ $match: { $and: [{ shortlistStatus: { $eq: 'shortlist' }, active: { $eq: true } }] } }],
+        as: 'supplierShort',
+      },
+    },
+    {
+      $lookup: {
+        from: 'supplierinterests',
+        localField: '_id',
+        foreignField: 'matchedBuyerId',
+        pipeline: [{ $match: { $and: [{ fixStatus: { $eq: 'fixed' }, active: { $eq: true } }] } }],
+        as: 'supplierFixed',
+      },
+    },
+  ]);
+  return { value: value, total: total.length };
 };
 
 // shortlist
 
-const getBuyerShortList = async (id) => {
+const getBuyerShortList = async (id, page) => {
   const data = await RequirementBuyer.aggregate([
     {
       $match: {
@@ -1020,14 +1199,92 @@ const getBuyerShortList = async (id) => {
         id: '$requirementsuppliersData._id',
       },
     },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  let total = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField:'_id',
+          //     foreignField: 'supplierReqId',
+          //     pipeline:[
+          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+
+          //          ],
+          //     as: 'shortlist',
+          //   },
+          // },
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline: [
+                {
+                  $match: {
+                    $or: [
+                      { interestStatus: { $eq: 'interest' }, active: { $eq: true } },
+                      { shortlistStatus: { $eq: 'shortlist' }, active: { $eq: true } },
+                    ],
+                  },
+                },
+              ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $unwind: '$supplierReqId',
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+    {
+      $match: { $and: [{ 'requirementsuppliersData.supplierReqId.matchedBuyerId': { $eq: id } }] },
+    },
   ]);
 
-  return data;
+  return { value: data, total: total.length };
 };
 
 // fixed
 
-const getBuyerFixedList = async (id) => {
+const getBuyerFixedList = async (id, page) => {
   const data = await RequirementBuyer.aggregate([
     {
       $match: {
@@ -1128,9 +1385,87 @@ const getBuyerFixedList = async (id) => {
         id: '$requirementsuppliersData._id',
       },
     },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  let total = await RequirementBuyer.aggregate([
+    {
+      $match: {
+        $and: [{ _id: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'requirementsuppliers',
+        localField: 'product',
+        foreignField: 'product',
+        pipeline: [
+          {
+            $match: {
+              $and: [{ moderateStatus: { $eq: 'Moderated' } }],
+            },
+          },
+          // {
+          //   $lookup: {
+          //     from: 'supplierinterests',
+          //     localField:'_id',
+          //     foreignField: 'supplierReqId',
+          //     pipeline:[
+          //              {$match:{$and:[{interestStatus:{$eq:"shortlist"}}]}},
+
+          //          ],
+          //     as: 'shortlist',
+          //   },
+          // },
+          {
+            $lookup: {
+              from: 'supplierinterests',
+              localField: '_id',
+              foreignField: 'supplierReqId',
+              pipeline: [
+                {
+                  $match: {
+                    $or: [
+                      { shortlistStatus: { $eq: 'shortlist' }, active: { $eq: true } },
+                      { fixStatus: { $eq: 'fixed' }, active: { $eq: true } },
+                    ],
+                  },
+                },
+              ],
+              as: 'supplierReqId',
+            },
+          },
+          {
+            $unwind: '$supplierReqId',
+          },
+          {
+            $lookup: {
+              from: 'suppliers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'suppliersData',
+            },
+          },
+          {
+            $unwind: '$suppliersData',
+          },
+        ],
+        as: 'requirementsuppliersData',
+      },
+    },
+    {
+      $unwind: '$requirementsuppliersData',
+    },
+    {
+      $match: { $and: [{ 'requirementsuppliersData.supplierReqId.matchedBuyerId': { $eq: id } }] },
+    },
   ]);
 
-  return data;
+  return { value: data, total: total.length };
 };
 
 // fixed only

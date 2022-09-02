@@ -38,8 +38,10 @@ const createSupplierwithType = async (type) => {
   return values;
 };
 
-const getAllSupplierDelete = async () => {
-  return supplier.find();
+const getAllSupplierDelete = async (page) => {
+  let value = await supplier.aggregate([{ $skip: 10 * page }, { $limit: 10 }]);
+  let total = await supplier.find().count();
+  return { value: value, total: total };
 };
 
 const getSupplierById = async (id) => {
@@ -121,15 +123,12 @@ const updatePasswordByIdSupplierId = async (id, updateBody) => {
 
 // data retrive from streaming data table
 
-const getSupplierDetails = async (supplierId, productId) => {
+const getSupplierDetails = async (supplierId, productId, page) => {
   let values = await StreaminData.aggregate([
     {
       $match: {
-        $and: [
-          { supplierId: supplierId },
-          { productId: productId }
-        ]
-      }
+        $and: [{ supplierId: supplierId }, { productId: productId }],
+      },
     },
     {
       $lookup: {
@@ -152,10 +151,47 @@ const getSupplierDetails = async (supplierId, productId) => {
         date: 1,
         time: 1,
         secretName: '$buyerData.secretName',
-      }
-    }
+      },
+    },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
   ]);
-  return values;
+  let total = await StreaminData.aggregate([
+    {
+      $match: {
+        $and: [{ supplierId: supplierId }, { productId: productId }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'suppliers',
+        localField: 'BuyierId',
+        foreignField: '_id',
+        as: 'buyerData',
+      },
+    },
+    {
+      $unwind: '$buyerData',
+    },
+    {
+      $project: {
+        streamFixedPrice: 1,
+        streamFixedQuantity: 1,
+        streamAddToCart: 1,
+        streamInterest: 1,
+        buyerName: '$buyerData.primaryContactName',
+        date: 1,
+        time: 1,
+        secretName: '$buyerData.secretName',
+      },
+    },
+  ]);
+
+  return { value: values, total: total.length };
 };
 
 module.exports = {
