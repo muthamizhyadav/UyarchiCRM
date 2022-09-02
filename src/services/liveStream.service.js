@@ -65,7 +65,9 @@ const getliveStream = async (id) => {
         adminAprove: 1,
         streaming: 1,
         expiry: 1,
-        token: 1
+        token: 1,
+        liveConfirm:1,
+
       }
     }
   ])
