@@ -70,9 +70,11 @@ const getliveStream = async (id) => {
         streaming: 1,
         expiry: 1,
         token: 1,
+        liveConfirm: 1,
       },
     },
   ]);
+
   return data;
 };
 const getAllliveStriming = async (page) => {
