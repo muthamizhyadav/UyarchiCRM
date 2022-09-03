@@ -10,8 +10,8 @@ const createLiveStream = async (userBody) => {
 
   // const appID = "50c7493877764c85aa44d921a68f2b38";
   // const appCertificate = "deb15b1b53e44c46abf51172bc552daa";
-  const appID = "7af69a3a15a84d229c036e3b94073cc6";
-  const appCertificate = "dc665b23e79142fe8c3328ecf06d91a1";
+  const appID = "30049c51e0434f49b2554b2c77db41a8";
+  const appCertificate = "69e46f53d86c4caf8e14cb56434c3cb3";
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
   const expirationTimeInSeconds = 3600;
