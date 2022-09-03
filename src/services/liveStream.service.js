@@ -9,8 +9,8 @@ const createLiveStream = async (userBody) => {
   console.log(userBody);
 
  
-  const appID = "30049c51e0434f49b2554b2c77db41a8";
-  const appCertificate = "69e46f53d86c4caf8e14cb56434c3cb3";
+  const appID = "ca6623e754e244a89f86eeb0bda8eb93";
+  const appCertificate = "1ded1caf4a604b58834ff3c6b12b12bd";
 
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
