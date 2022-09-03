@@ -82,7 +82,7 @@ const getSupplierById = catchAsync(async (req, res) => {
 });
 
 const getShortclickById = catchAsync(async (req, res) => {
-  const data = await requirementCollectionService.getBuyerShortList(req.params.id);
+  const data = await requirementCollectionService.getBuyerShortList(req.params.id, req.params.page);
   if (!data || data.active == false) {
     throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
   }
@@ -120,7 +120,7 @@ const getBuyerProductApi = catchAsync(async (req, res) => {
 });
 
 const getfixedclickById = catchAsync(async (req, res) => {
-  const data = await requirementCollectionService.getBuyerFixedList(req.params.id);
+  const data = await requirementCollectionService.getBuyerFixedList(req.params.id, req.params.page);
   if (!data || data.active == false) {
     throw new ApiError(httpStatus.NOT_FOUND, 'RequirementSupplier Not Found');
   }
@@ -136,12 +136,12 @@ const getfixedOnlyById = catchAsync(async (req, res) => {
 });
 
 const getAllBuyer = catchAsync(async (req, res) => {
-  const buyer = await requirementCollectionService.getByIdBuyerAll(req.params);
+  const buyer = await requirementCollectionService.getByIdBuyerAll(req.params.page);
   res.send(buyer);
 });
 
 const getAllSupplier = catchAsync(async (req, res) => {
-  const data = await requirementCollectionService.getByIdSupplierAll(req.params);
+  const data = await requirementCollectionService.getByIdSupplierAll(req.params.page);
   res.send(data);
 });
 
@@ -184,12 +184,12 @@ const deleteRequirementSupplierById = catchAsync(async (req, res) => {
 // get buyer requirement dead
 
 const getAllBuyerNotDead = catchAsync(async (req, res) => {
-  const buyer = await requirementCollectionService.getBuyerAlive(req.params);
+  const buyer = await requirementCollectionService.getBuyerAlive(req.params.page);
   res.send(buyer);
 });
 
 const getAllBuyerProductSame = catchAsync(async (req, res) => {
-  const buyer = await requirementCollectionService.getBuyerSameProduct(req.params.id);
+  const buyer = await requirementCollectionService.getBuyerSameProduct(req.params.id, req.params.page);
   res.send(buyer);
 });
 

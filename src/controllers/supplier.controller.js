@@ -66,7 +66,7 @@ const getAllSupplierService = catchAsync(async (req, res) => {
 });
 
 const getAllSupplierDeleteService = catchAsync(async (req, res) => {
-  const supplier = await supplierService.getAllSupplierDelete();
+  const supplier = await supplierService.getAllSupplierDelete(req.params.page);
   res.send(supplier);
 });
 
@@ -112,7 +112,7 @@ const updatePasswordByIdSupplierId = catchAsync(async (req, res) => {
 });
 
 const getSupplierDetails = catchAsync(async (req, res) => {
-  const supplier = await supplierService.getSupplierDetails(req.params.supplierId, req.params.productId);
+  const supplier = await supplierService.getSupplierDetails(req.params.supplierId, req.params.productId, req.params.page);
   res.send(supplier);
 });
 
