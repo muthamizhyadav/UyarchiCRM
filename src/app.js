@@ -27,16 +27,11 @@ const io = require('socket.io')(httpServer, {
   },
 });
 
-io.on('connection', (socket) => {
-  console.log(`Socket Connected => ${socket.id}`);
-  io.on('connection', (userdata) => {
-    socket.join(userdata._id);
-    socket.emit('connected');
-  });
-  socket.on('join chat', (room) => {
-    socket.join(room);
-    console.log('User Joined Room');
-  });
+io.on('connection', socket => {
+  socket.on('message', ({ name, message }) => {
+    io.emit('message', { name, message })
+  })
+  console.log(`socket connected :: ${socket.id}`)
 });
 
 // Socket Message Api's
