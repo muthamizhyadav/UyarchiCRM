@@ -26,17 +26,17 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const connection = () => {
+const connection = (req, res) => {
   io.on('connection', (socket) => {
-    console.log(`User Connected => ${socket.id}`);
+    return `User Connected => ${socket.id}`;
   });
 };
-app.get('/chat/app', connection);
+// app.get('/chat/app', connection);
 
-if (config.env !== 'test') {
-  app.use(morgan.successHandler);
-  app.use(morgan.errorHandler);
-}
+// if (config.env !== 'test') {
+//   app.use(morgan.successHandler);
+//   app.use(morgan.errorHandler);
+// }
 
 // set security HTTP headers
 app.use(helmet());
