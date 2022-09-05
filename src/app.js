@@ -9,7 +9,6 @@ const httpStatus = require('http-status');
 const config = require('./config/config');
 // const config = require('./config/config');
 const logger = require('./config/logger');
-
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
@@ -18,32 +17,40 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const app = express();
 const mongoose = require('mongoose');
-
 const http = require('http');
-const httpServer = http.createServer();
+const MessageRoute = require('./routes/v1/message.route');
+const httpServer = http.createServer(app);
+
 const io = require('socket.io')(httpServer, {
   cors: {
     origin: '*',
   },
 });
-const connection = (req, res) => {
-  io.on('connection', (socket) => {
-    return `User Connected => ${socket.id}`;
+
+io.on('connection', (socket) => {
+  console.log(`Socket Connected => ${socket.id}`);
+  io.on('connection', (userdata) => {
+    socket.join(userdata._id);
+    socket.emit('connected');
   });
-};
-// app.get('/chat/app', connection);
+  socket.on('join chat', (room) => {
+    socket.join(room);
+    console.log('User Joined Room');
+  });
+});
 
-// if (config.env !== 'test') {
-//   app.use(morgan.successHandler);
-//   app.use(morgan.errorHandler);
-// }
+// Socket Message Api's
+app.use('/meesageRoute', MessageRoute);
 
+if (config.env !== 'test') {
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
+}
 // set security HTTP headers
 app.use(helmet());
 
 // parse json request body
 app.use(express.json());
-
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
@@ -102,7 +109,7 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
 });
 // server connection
-app.listen(config.port, () => {
+httpServer.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
 

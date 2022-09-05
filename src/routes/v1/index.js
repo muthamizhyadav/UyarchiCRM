@@ -15,12 +15,17 @@ const liveStreamRoute = require('./liveStream.route');
 const paymentDataRoute = require('./paymentData.route');
 const adminRegistrationRoute = require('./adminRegistration.route');
 const chattingRoute = require('./chating.route');
+const messageRoute = require('./message.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/message',
+    route: messageRoute,
   },
   {
     path: '/chating',

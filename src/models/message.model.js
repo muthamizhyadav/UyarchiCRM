@@ -1,27 +1,30 @@
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
 
-const messageSchema = new mongoose.Schema(
-  {
-    _id: {
-      type: String,
-      default: v4,
-    },
-    conversationId: {
-      type: String,
-    },
-    text: {
-      type: String,
-    },
-    senderId: {
-      type: String,
-    },
+const messageSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
   },
-  {
-    timestamps: true,
-  }
-);
+  sender: {
+    type: String,
+  },
+  content: {
+    type: String,
+    trime: true,
+  },
+  // chat: {
+  //   type: String,
+  //   ref: 'chat',
+  // },
+  created: {
+    type: Date,
+  },
+  date: {
+    type: String,
+  },
+});
 
-const messages = mongoose.model('Message', messageSchema);
+const Messages = mongoose.model('Message', messageSchema);
 
-module.exports = messages;
+module.exports = { Messages };

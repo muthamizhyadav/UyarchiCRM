@@ -64,5 +64,4 @@ router.get('/message/:conversationId', async (req, res) => {
   }
 });
 
-
 module.exports = router;
