@@ -7,6 +7,9 @@ const cors = require('cors');
 const passport = require('passport');
 const httpStatus = require('http-status');
 const config = require('./config/config');
+// const config = require('./config/config');
+const logger = require('./config/logger');
+
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
@@ -14,6 +17,21 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const app = express();
+const mongoose = require('mongoose');
+
+const http = require('http');
+const httpServer = http.createServer();
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: '*',
+  },
+});
+const connection = () => {
+  io.on('connection', (socket) => {
+    console.log(`User Connected => ${socket.id}`);
+  });
+};
+app.get('/chat/app', connection);
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -78,5 +96,14 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
+// mongoose connection
+mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
+  logger.info('Connected to MongoDB');
+});
+// server connection
+httpServer.listen(config.port, () => {
+  logger.info(`Listening to port ${config.port}`);
+});
 
 module.exports = app;
