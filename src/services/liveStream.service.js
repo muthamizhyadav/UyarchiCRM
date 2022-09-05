@@ -8,10 +8,10 @@ const { RequirementBuyer, RequirementSupplier } = require('../models/requirement
 const createLiveStream = async (userBody) => {
   console.log(userBody);
 
-  // const appID = "50c7493877764c85aa44d921a68f2b38";
-  // const appCertificate = "deb15b1b53e44c46abf51172bc552daa";
-  const appID = '7af69a3a15a84d229c036e3b94073cc6';
-  const appCertificate = 'dc665b23e79142fe8c3328ecf06d91a1';
+ 
+  const appID = "ca6623e754e244a89f86eeb0bda8eb93";
+  const appCertificate = "1ded1caf4a604b58834ff3c6b12b12bd";
+
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
   const expirationTimeInSeconds = 3600;
