@@ -8,9 +8,8 @@ const { RequirementBuyer, RequirementSupplier } = require('../models/requirement
 const createLiveStream = async (userBody) => {
   console.log(userBody);
 
- 
-  const appID = "ca6623e754e244a89f86eeb0bda8eb93";
-  const appCertificate = "1ded1caf4a604b58834ff3c6b12b12bd";
+  const appID = 'ca6623e754e244a89f86eeb0bda8eb93';
+  const appCertificate = '1ded1caf4a604b58834ff3c6b12b12bd';
 
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
@@ -68,6 +67,7 @@ const getliveStream = async (id) => {
         secretName: '$suppliers.secretName',
         adminAprove: 1,
         streaming: 1,
+        confirm: 1,
         expiry: 1,
         token: 1,
         liveConfirm: 1,
