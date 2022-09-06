@@ -14,7 +14,6 @@ const getliveStreamId = catchAsync(async (req, res) => {
   if (data.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Token Not Available');
   }
-
   res.send(data[0]);
 });
 const getAllliveStriming = catchAsync(async (req, res) => {
