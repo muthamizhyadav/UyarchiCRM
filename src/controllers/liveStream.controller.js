@@ -60,6 +60,16 @@ const getAllRejected = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const remove_specific_buyer = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.remove_specific_buyer(req.params.id, req.body);
+  res.send(data);
+});
+
+const send_Active_Buyer = catchAsync(async (req, res) => {
+  const data = await liveStreamservice.send_Active_Buyer(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createliveStream,
   getliveStreamId,
@@ -72,4 +82,6 @@ module.exports = {
   updateBuyer,
   updateReject,
   getAllRejected,
+  remove_specific_buyer,
+  send_Active_Buyer,
 };

@@ -453,6 +453,28 @@ const getallRejected = async (userId) => {
   ]);
 };
 
+const remove_specific_buyer = async (id, body) => {
+  const { buyerId } = body;
+  let liveStreams = await liveStream.findById(id);
+  if (!liveStreams) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+  await liveStream.update({ _id: id }, { $pull: { active_Buyer: buyerId } });
+  let afterUpdate = await liveStream.findById(id);
+  return afterUpdate;
+};
+
+const send_Active_Buyer = async (id, body) => {
+  const { active_Buyer } = body;
+  let liveStreams = await liveStream.findById(id);
+  if (!liveStreams) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+  }
+  await liveStream.update({ _id: id }, { $push: { active_Buyer: active_Buyer } });
+  let afterupdate = await liveStream.findById(id);
+  return afterupdate;
+};
+
 module.exports = {
   createLiveStream,
   getliveStream,
@@ -465,4 +487,6 @@ module.exports = {
   updateBuyerId,
   updateRejectData,
   getallRejected,
+  remove_specific_buyer,
+  send_Active_Buyer,
 };

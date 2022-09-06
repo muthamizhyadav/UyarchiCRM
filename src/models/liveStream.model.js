@@ -54,23 +54,26 @@ const liveStreamSchema = mongoose.Schema({
   reason: {
     type: String,
   },
-  confirm:{
-    type:Array,
+  confirm: {
+    type: Array,
   },
-  rejectDate:{
-    type:String,
+  rejectDate: {
+    type: String,
   },
-  rejectTime:{
-    type:Number,
+  rejectTime: {
+    type: Number,
   },
-  expectedQnty:{
+  active_Buyer: {
+    type: Array,
+    default: [],
+  },
+  expectedQnty: {
     type: Number,
   },
   liveConfirm: {
     type: Boolean,
     default: false,
   },
-
 });
 const liveStream = mongoose.model('liveStream', liveStreamSchema);
 module.exports = liveStream;
