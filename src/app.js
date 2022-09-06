@@ -27,11 +27,10 @@ const io = require('socket.io')(httpServer, {
   },
 });
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   socket.on('message', ({ name, message }) => {
-    io.emit('message', { name, message })
-  })
-  console.log(`socket connected :: ${socket.id}`)
+    io.emit('message', { name, message });
+  });
 });
 
 // Socket Message Api's
