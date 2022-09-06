@@ -67,6 +67,7 @@ const getliveStream = async (id) => {
         secretName: '$suppliers.secretName',
         adminAprove: 1,
         streaming: 1,
+        active_Buyer: 1,
         confirm: 1,
         expiry: 1,
         token: 1,
