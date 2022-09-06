@@ -12,7 +12,7 @@ router
   .delete(requirementCollectionController.deleteRequirementBuyerById);
 
 router
-  .route('/Supplier/:supplierId')
+  .route('/Supplier/specific/:supplierId')
   .get(requirementCollectionController.getSupplierById)
   .put(requirementCollectionController.updateRequirementSupplierById)
   .delete(requirementCollectionController.deleteRequirementSupplierById);
