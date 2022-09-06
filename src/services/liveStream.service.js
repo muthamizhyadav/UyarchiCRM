@@ -443,6 +443,7 @@ const getallRejected = async (userId) => {
         expiry: 1,
         token: 1,
         confirm: 1,
+        active_Buyer: 1,
         userId: 1,
         requirementId: 1,
         rejectDate: 1,
@@ -459,7 +460,7 @@ const remove_specific_buyer = async (id, body) => {
   if (!liveStreams) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }
-   await liveStream.update({ _id: id }, { $pull: { active_Buyer: buyerId } }, { new: true });
+  await liveStream.update({ _id: id }, { $pull: { active_Buyer: buyerId } }, { new: true });
   let afterupdate = await liveStream.findById(id);
   return afterupdate;
 };
