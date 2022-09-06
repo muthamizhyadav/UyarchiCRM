@@ -459,18 +459,18 @@ const remove_specific_buyer = async (id, body) => {
   if (!liveStreams) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }
-  await liveStream.update({ _id: id }, { $pull: { active_Buyer: buyerId } });
-  let afterUpdate = await liveStream.findById(id);
-  return afterUpdate;
+   await liveStream.update({ _id: id }, { $pull: { active_Buyer: buyerId } }, { new: true });
+  let afterupdate = await liveStream.findById(id);
+  return afterupdate;
 };
 
 const send_Active_Buyer = async (id, body) => {
-  const { active_Buyer } = body;
+  const { buyerId } = body;
   let liveStreams = await liveStream.findById(id);
   if (!liveStreams) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  await liveStream.update({ _id: id }, { $push: { active_Buyer: active_Buyer } });
+  await liveStream.update({ _id: id }, { $push: { active_Buyer: buyerId } });
   let afterupdate = await liveStream.findById(id);
   return afterupdate;
 };
