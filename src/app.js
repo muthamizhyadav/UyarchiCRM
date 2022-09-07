@@ -28,8 +28,10 @@ const io = require('socket.io')(httpServer, {
 });
 
 io.on('connection', (socket) => {
+  const { roomId } = socket.handshake.query;
+  socket.join(roomId);
   socket.on('message', ({ name, message }) => {
-    io.emit('message', { name, message });
+    io.in(roomId).emit('message', { name, message });
   });
 });
 
