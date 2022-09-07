@@ -178,6 +178,7 @@ const getAllliveStrimingapproved = async (id) => {
         liveStreamDate: '$requirementsuppliers.liveStreamDate',
         requirementID: '$requirementsuppliers._id',
         liveStreamTime: '$requirementsuppliers.liveStreamTime',
+        liveStream_To_Time: '$requirementsuppliers.liveStream_To_Time',
         date: '$requirementsuppliers.date',
         product: '$requirementsuppliers.product',
         expectedPrice: '$requirementsuppliers.expectedPrice',
