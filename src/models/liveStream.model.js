@@ -9,12 +9,10 @@ const { toJSON, paginate } = require('./plugins');
 const liveStreamSchema = mongoose.Schema({
   _id: {
     type: String,
-
     default: v4,
   },
   token: {
     type: String,
-
     default: v4,
   },
   token: {
