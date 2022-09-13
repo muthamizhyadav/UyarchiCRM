@@ -6,8 +6,8 @@ const { Messages } = require('../models/message.model');
 
 const createMessage = catchAsync(async (req, res) => {
   let currendDate = moment().format('YYYY-MM-DD');
-  const { userId, message } = req.body;
-  let values = { date: currendDate, created: moment(), sender: userId, content: message };
+  const { userId, message, roomId } = req.body;
+  let values = { date: currendDate, created: moment(), userId: userId, message: message, roomId: roomId };
   let save = await Messages.create(values);
   await save.save();
   return res.send(save);

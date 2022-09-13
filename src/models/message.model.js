@@ -6,17 +6,16 @@ const messageSchema = new mongoose.Schema({
     type: String,
     default: v4,
   },
-  sender: {
+  userId: {
     type: String,
   },
-  content: {
+  message: {
     type: String,
     trime: true,
   },
-  // chat: {
-  //   type: String,
-  //   ref: 'chat',
-  // },
+  roomId: {
+    type: String,
+  },
   created: {
     type: Date,
   },
