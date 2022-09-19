@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const moment = require('moment');
 const { Messages } = require('../models/message.model');
+const messageService = require('../services/message.service');
 
 const createMessage = catchAsync(async (req, res) => {
   let currendDate = moment().format('YYYY-MM-DD');
@@ -44,7 +45,13 @@ const getmessages = catchAsync(async (req, res) => {
   return res.send(values);
 });
 
+const getchtting_message = catchAsync(async (req, res) => {
+  const data = await messageService.getchtting_message(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createMessage,
   getmessages,
+  getchtting_message,
 };
