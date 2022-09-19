@@ -21,6 +21,7 @@ const http = require('http');
 const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
 const { Messages } = require('../src/models/message.model');
+const moment = require('moment');
 
 const io = require('socket.io')(httpServer, {
   cors: {
@@ -33,7 +34,7 @@ io.on('connection', (socket) => {
   socket.join(roomId);
   socket.on('message', async ({ userId, message }) => {
     io.in(roomId).emit('message', { userId, message });
-    await Messages.create({ userId: userId, message: message, roomId: roomId });
+    await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
   });
 });
 
