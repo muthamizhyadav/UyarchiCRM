@@ -20,6 +20,7 @@ const mongoose = require('mongoose');
 const http = require('http');
 const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
+const { Messages } = require('../src/models/message.model');
 
 const io = require('socket.io')(httpServer, {
   cors: {
@@ -30,8 +31,9 @@ const io = require('socket.io')(httpServer, {
 io.on('connection', (socket) => {
   const { roomId } = socket.handshake.query;
   socket.join(roomId);
-  socket.on('message', ({ name, message }) => {
-    io.in(roomId).emit('message', { name, message });
+  socket.on('message', async ({ userId, message }) => {
+    io.in(roomId).emit('message', { userId, message });
+    await Messages.create({ userId: userId, message: message, roomId: roomId });
   });
 });
 
