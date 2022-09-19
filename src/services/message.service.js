@@ -4,7 +4,6 @@ const moment = require('moment');
 const { Messages } = require('../models/message.model');
 
 const getchtting_message = async (id) => {
-  console.log(id);
   let values = await Messages.aggregate([
     {
       $match: {
