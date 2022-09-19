@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
   socket.on('message', async ({ userId, message }) => {
     io.in(roomId).emit('message', { userId, message });
     await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
+    console.log(userId, message, roomId)
   });
 });
 
