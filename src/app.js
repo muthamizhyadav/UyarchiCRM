@@ -47,8 +47,9 @@ io.on('connection', (socket) => {
     console.log('updateMyMedia');
     socket.broadcast.emit('updateUserMedia', { type, currentMediaStatus });
   });
-  socket.on('msgUser', ({ name, to, msg, sender }) => {
+  socket.on('msgUser', async ({ name, to, msg, sender }) => {
     io.to(to).emit('msgRcv', { name, msg, sender });
+    await Messages.create({ userId: name, message: msg, created: moment() });
   });
   socket.on('answerCall', (data) => {
     socket.broadcast.emit('updateUserMedia', {
