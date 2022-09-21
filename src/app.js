@@ -34,30 +34,33 @@ io.on('connection', (socket) => {
   //   io.in(roomId).emit('message', { userId, message });
   //   await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
   //   console.log(userId, message, roomId);
-    socket.emit("me", socket.id)
-    console.log(socket.id)
-    socket.on('callUser', ({ userToCall, signalData, from, name }) => {
-      io.to(userToCall).emit('callUser', {
-        signal: signalData,
-        from,
-        name,
-      });
-    });
-    socket.on('updateMyMedia', ({ type, currentMediaStatus }) => {
-      console.log('updateMyMedia');
-      socket.broadcast.emit('updateUserMedia', { type, currentMediaStatus });
-    });
-    socket.on('answerCall', (data) => {
-      socket.broadcast.emit('updateUserMedia', {
-        type: data.type,
-        currentMediaStatus: data.myMediaStatus,
-      });
-      io.to(data.to).emit('callAccepted', data);
-    });
-    socket.on('endCall', ({ id }) => {
-      io.to(id).emit('endCall');
+  socket.emit('me', socket.id);
+  console.log(socket.id);
+  socket.on('callUser', ({ userToCall, signalData, from, name }) => {
+    io.to(userToCall).emit('callUser', {
+      signal: signalData,
+      from,
+      name,
     });
   });
+  socket.on('updateMyMedia', ({ type, currentMediaStatus }) => {
+    console.log('updateMyMedia');
+    socket.broadcast.emit('updateUserMedia', { type, currentMediaStatus });
+  });
+  socket.on('msgUser', ({ name, to, msg, sender }) => {
+    io.to(to).emit('msgRcv', { name, msg, sender });
+  });
+  socket.on('answerCall', (data) => {
+    socket.broadcast.emit('updateUserMedia', {
+      type: data.type,
+      currentMediaStatus: data.myMediaStatus,
+    });
+    io.to(data.to).emit('callAccepted', data);
+  });
+  socket.on('endCall', ({ id }) => {
+    io.to(id).emit('endCall');
+  });
+});
 // });
 // Socket Message Api's
 app.use('/meesageRoute', MessageRoute);
