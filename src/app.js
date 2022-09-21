@@ -28,14 +28,13 @@ const io = require('socket.io')(httpServer, {
   },
 });
 io.on('connection', (socket) => {
-  const { roomId } = socket.handshake.query;
-  console.log('sadkfu', socket.id)
-  socket.join(roomId);
-  socket.on('message', async ({ userId, message }) => {
-    io.in(roomId).emit('message', { userId, message });
-    await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
-    console.log(userId, message, roomId);
-
+  // const { roomId } = socket.handshake.query;
+  // socket.join(roomId);
+  // socket.on('message', async ({ userId, message }) => {
+  //   io.in(roomId).emit('message', { userId, message });
+  //   await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
+  //   console.log(userId, message, roomId);
+    socket.emit("me", socket.id)
     socket.on('callUser', ({ userToCall, signalData, from, name }) => {
       io.to(userToCall).emit('callUser', {
         signal: signalData,
@@ -58,7 +57,7 @@ io.on('connection', (socket) => {
       io.to(id).emit('endCall');
     });
   });
-});
+// });
 // Socket Message Api's
 app.use('/meesageRoute', MessageRoute);
 if (config.env !== 'test') {
