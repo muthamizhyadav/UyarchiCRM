@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
   });
   socket.on('msgUser', async ({ name, to, msg, sender }) => {
     io.to(to).emit('msgRcv', { name, msg, sender });
-    await Messages.create({ userId: name, message: msg, created: moment() });
+    await Messages.create({ userId: name, message: msg, roomId: socket.id, created: moment() });
   });
   socket.on('answerCall', (data) => {
     socket.broadcast.emit('updateUserMedia', {
