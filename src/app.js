@@ -29,6 +29,7 @@ const io = require('socket.io')(httpServer, {
 });
 io.on('connection', (socket) => {
   const { roomId } = socket.handshake.query;
+  console.log('sadkfu', socket.id)
   socket.join(roomId);
   socket.on('message', async ({ userId, message }) => {
     io.in(roomId).emit('message', { userId, message });
