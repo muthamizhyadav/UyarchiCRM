@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
   //   await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
   //   console.log(userId, message, roomId);
     socket.emit("me", socket.id)
+    console.log(socket.id)
     socket.on('callUser', ({ userToCall, signalData, from, name }) => {
       io.to(userToCall).emit('callUser', {
         signal: signalData,
