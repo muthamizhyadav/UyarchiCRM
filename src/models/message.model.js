@@ -22,6 +22,9 @@ const messageSchema = new mongoose.Schema({
   date: {
     type: String,
   },
+  socketId: {
+    type: String,
+  },
 });
 
 const Messages = mongoose.model('Message', messageSchema);

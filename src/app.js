@@ -28,7 +28,7 @@ const io = require('socket.io')(httpServer, {
   },
 });
 io.on('connection', (socket) => {
-  // const { roomId } = socket.handshake.query;
+  const { roomId } = socket.handshake.query;
   // socket.join(roomId);
   // socket.on('message', async ({ userId, message }) => {
   //   io.in(roomId).emit('message', { userId, message });
@@ -48,8 +48,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('updateUserMedia', { type, currentMediaStatus });
   });
   socket.on('msgUser', async ({ name, to, msg, sender }) => {
-    io.to(to).emit('msgRcv', { name, msg, sender });
-    await Messages.create({ userId: name, message: msg, roomId: socket.id, created: moment() });
+    io.to(roomId).emit('msgRcv', { name, msg, sender });
+    await Messages.create({ userId: name, message: msg, socketId: socket.id, roomId: roomId, created: moment() });
   });
   socket.on('answerCall', (data) => {
     socket.broadcast.emit('updateUserMedia', {
