@@ -1,4 +1,3 @@
-
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -23,11 +22,11 @@ const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
 const { Messages } = require('../src/models/message.model');
 const moment = require('moment');
-const io = require('socket.io')(httpServer, {
-  cors: {
-    origin: '*',
-  },
-});
+// const io = require('socket.io')(httpServer, {
+//   cors: {
+//     origin: '*',
+//   },
+// });
 // io.on('connection', (socket) => {
 // const { roomId } = socket.handshake.query;
 // socket.join(roomId);
@@ -65,15 +64,57 @@ const io = require('socket.io')(httpServer, {
 // });
 // });
 // Socket Message Api's
+
+// const server = http.createServer(app);
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['my-custom-header'],
+    credentials: true,
+  },
+});
+const { addUser, removeUser } = require('./user');
+// const PORT = 5000;
 io.on('connection', (socket) => {
-  const { roomId } = socket.handshake.query;
-  socket.join(roomId);
-  socket.on('message', async ({ userId, message }) => {
-    io.in(roomId).emit('message', { userId, message });
-    await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
-    console.log(userId, message, roomId);
+  socket.on('join', ({ name, room }, callBack) => {
+    const { user, error } = addUser({ id: socket.id, name, room });
+    if (error) return callBack(error);
+    socket.join(user.room);
+    socket.emit('message', {
+      user: 'Admin',
+      text: `Welocome to ${user.room}`,
+    });
+    socket.broadcast.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has joined!` });
+    callBack(null);
+    socket.on('sendMessage', ({ message }) => {
+      io.to(user.room).emit('message', {
+        user: user.name,
+        text: message,
+      });
+    });
+  });
+  socket.on('disconnect', () => {
+    const user = removeUser(socket.id);
+    console.log(user);
+    io.to(user.room).emit('message', {
+      user: 'Admin',
+      text: `${user.name} just left the room`,
+    });
+    console.log('A disconnection has been made');
   });
 });
+// server.listen(PORT, () => console.log(`Server is Quannected to Port ${PORT}`));
+
+// io.on('connection', (socket) => {
+//   const { roomId } = socket.handshake.query;
+//   socket.join(roomId);
+//   socket.on('message', async ({ userId, message }) => {
+//     io.in(roomId).emit('message', { userId, message });
+//     await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
+//     console.log(userId, message, roomId);
+//   });
+// });
 app.use('/meesageRoute', MessageRoute);
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
