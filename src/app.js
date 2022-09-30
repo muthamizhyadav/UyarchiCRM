@@ -94,15 +94,15 @@ io.on('connection', (socket) => {
       });
     });
   });
-  socket.on('disconnect', () => {
-    const user = removeUser(socket.id);
-    console.log(user);
-    io.to(user.room).emit('message', {
-      user: 'Admin',
-      text: `${user.name} just left the room`,
-    });
-    console.log('A disconnection has been made');
-  });
+  // socket.on('disconnect', () => {
+  //   const user = removeUser(socket.id);
+  //   console.log(user);
+  //   io.to(user.room).emit('message', {
+  //     user: 'Admin',
+  //     text: `${user.name} just left the room`,
+  //   });
+  //   console.log('A disconnection has been made');
+  // });
 });
 // server.listen(PORT, () => console.log(`Server is Quannected to Port ${PORT}`));
 
