@@ -68,7 +68,7 @@ const moment = require('moment');
 // const server = http.createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST'],
     allowedHeaders: ['my-custom-header'],
     credentials: true,
