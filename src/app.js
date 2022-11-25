@@ -145,7 +145,7 @@ if (config.env === 'production') {
 app.use('/v1', routes);
 //default routes
 app.get('/', (req, res) => {
-  res.sendStatus(200);
+  res.sendStatus(200)
 });
 // default v1 route
 app.get('/v1', (req, res) => {
