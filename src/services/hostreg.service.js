@@ -54,6 +54,11 @@ const hostAll = async () => {
   return data;
 };
 
+const getAll = async () => {
+  const data = await Host.find();
+  return data;
+};
+
 const RecipentAll = async () => {
   const data = await Host.find({category:"recipient"});
   return data;
@@ -188,4 +193,4 @@ const getAllLiveStremingDatas = async () =>{
   }
 
 
-module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame, getAllproductById, RecipentAll, getAllStreaming, getAllStreamingToken};
+module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame, getAllproductById, RecipentAll, getAllStreaming, getAllStreamingToken, getAll};

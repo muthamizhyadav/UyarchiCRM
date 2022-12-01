@@ -66,6 +66,11 @@ const getAllHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAll = catchAsync(async (req, res) => {
+  const data = await hostregService.getAll();
+  res.send(data);
+});
+
 const RecipentAll = catchAsync(async (req, res) => {
   const data = await hostregService.RecipentAll();
   res.send(data);
@@ -108,4 +113,5 @@ module.exports = {
     RecipentAll,
     getAllStreamingId,
     getAllStreamingToken,
+    getAll,
   };
