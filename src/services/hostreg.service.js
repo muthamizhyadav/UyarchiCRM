@@ -147,6 +147,7 @@ const getAllLiveStremingDatas = async () =>{
           selectProduct:"$hoststreamings.selectProduct",
           stremingDate:"$hoststreamings.stremingDate",
           selectHost:"$hoststreamings.selectHost",
+          _id1:"$hoststreamings._id",
           startTime:"$hoststreamings.startTime",
           endTime:"$hoststreamings.endTime",
           participantAllowed:"$hoststreamings.participantAllowed",
