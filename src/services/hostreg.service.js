@@ -165,4 +165,16 @@ const getAllLiveStremingDatas = async () =>{
   }
 
 
-module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame, getAllproductById, RecipentAll};
+  const getAllStreaming = async (id) =>{
+    const data = await HostStreaming.aggregate([
+      {
+        $match: {
+          $and: [{ selectHost: { $eq: id } }],
+        },
+      },
+    ])
+    return data
+  }
+
+
+module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame, getAllproductById, RecipentAll, getAllStreaming};
