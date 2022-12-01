@@ -146,13 +146,16 @@ const getAllLiveStremingDatas = async () =>{
           hostName:"$hosts.name",
           selectProduct:"$hoststreamings.selectProduct",
           stremingDate:"$hoststreamings.stremingDate",
+          selectHost:"$hoststreamings.selectHost",
           startTime:"$hoststreamings.startTime",
           endTime:"$hoststreamings.endTime",
           participantAllowed:"$hoststreamings.participantAllowed",
           allowChat:"$hoststreamings.allowChat",
           token:"$hoststreamings.token",
+          efr:"$hostproducts.product"
         }
-      }
+      },
+
 
     ])
     return data;
