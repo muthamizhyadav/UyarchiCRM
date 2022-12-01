@@ -16,6 +16,7 @@ const paymentDataRoute = require('./paymentData.route');
 const adminRegistrationRoute = require('./adminRegistration.route');
 const chattingRoute = require('./chating.route');
 const messageRoute = require('./message.route');
+const hostregRoute = require('./hostreg.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -78,6 +79,10 @@ const defaultRoutes = [
   {
     path: '/adminRegistration',
     route: adminRegistrationRoute,
+  },
+  {
+    path: '/hostreg',
+    route: hostregRoute,
   },
 ];
 
