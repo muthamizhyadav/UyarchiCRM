@@ -16,4 +16,5 @@ router.route('/getAllLiveStremingDatas').get(hostregController.getAllLiveStremin
 router.route('/getAllLiveStremingDatasSame/:id').get(hostregController.getAllLiveStremingDatasSame)
 router.route('/getAllproductById/:id').get(hostregController.getAllproductById)
 router.route('/getAllStreamingId/:id').get(hostregController.getAllStreamingId)
+router.route('/getAllStreamingToken/:id').get(hostregController.getAllStreamingToken)
 module.exports = router;
