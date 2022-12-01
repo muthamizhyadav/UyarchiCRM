@@ -134,6 +134,7 @@ const getAllLiveStremingDatas = async () =>{
       { $unwind: '$hoststreamings' },
       {
         $project:{
+          hostName:"$hosts.name",
           selectProduct:"$hoststreamings.selectProduct",
           stremingDate:"$hoststreamings.stremingDate",
           startTime:"$hoststreamings.startTime",
@@ -147,6 +148,17 @@ const getAllLiveStremingDatas = async () =>{
     ])
     return data;
   };
-  
 
-module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame};
+  const getAllproductById = async (id) =>{
+    const data = await HostProduct.aggregate([
+      {
+        $match: {
+          $and: [{ uid: { $eq: id } }],
+        },
+      },
+    ])
+    return data
+  }
+
+
+module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame, getAllproductById};

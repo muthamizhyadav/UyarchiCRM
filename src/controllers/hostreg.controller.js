@@ -76,6 +76,11 @@ const getAllLiveStremingDatasSame = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAllproductById = catchAsync(async (req, res) => {
+  const data = await hostregService.getAllproductById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
     createhostService,
     login,
@@ -84,4 +89,5 @@ module.exports = {
     getAllHost,
     getAllLiveStremingDatas,
     getAllLiveStremingDatasSame,
+    getAllproductById,
   };
