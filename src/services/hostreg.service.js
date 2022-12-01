@@ -22,13 +22,6 @@ const loginhostEmailAndPassword = async (email, mobileNumber) => {
     return data;
   };
 
-  const ManageId = async (id) => {
-    const Manage = await manageTelecaller.findById(id);
-    return Manage;
-  };
-
-
-  
 const createHostProduct = async (body) => {
   const data = await Host.findById(body.uid)
   if(!data){
@@ -57,36 +50,103 @@ const createHostStreaming = async (userBody) => {
 
   
 const hostAll = async () => {
-  const data = await Host.find();
+  const data = await Host.find({category:"host"});
   return data;
 };
 
 
+const getAllLiveStremingDatas = async () =>{
+  const data = await HostStreaming.aggregate([
+    {
+      $lookup: {
+        from: 'hosts',
+        localField: 'selectHost',
+        pipeline:[
+          {
+            $match: {
+              $and: [{ category: { $eq: "host" } }],
+            },
+          },
+        ],
+        foreignField: '_id',
+        as: 'hosts',
+      },
+    },
+    { $unwind: '$hosts' },
+    {
+      $project:{
+        hostname:"$hosts.name",
+        token:1,
+        allowChat:1,
+        participantAllowed:1,
+        endTime:1,
+        startTime:1,
+        stremingDate:1,
+        selectProduct:1,
+        selectHost:1,
+      }
+    }
+  ])
+  return data
+}
+
   
-  const ManageAll = async () => {
-    const data = await manageTelecaller.find();
+  const getAllLiveStremingDatasSame = async (id) => {
+    const data = await HostProduct.aggregate([
+      {
+        $match: {
+          $and: [{ uid: { $eq: id } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'hostproducts',
+          localField: 'product',
+          foreignField: 'product',
+          as: 'hostproducts',
+        },
+      },
+      { $unwind: '$hostproducts' },
+      {
+        $lookup: {
+          from: 'hosts',
+          localField: 'hostproducts.uid',
+          pipeline:[
+            {
+              $match: {
+                $and: [{ category: { $eq: "host" } }],
+              },
+            },
+          ],
+          foreignField: '_id',
+          as: 'hosts',
+        },
+      },
+      { $unwind: '$hosts' },
+      {
+        $lookup: {
+          from: 'hoststreamings',
+          localField: 'hosts._id',
+          foreignField: 'selectHost',
+          as: 'hoststreamings',
+        },
+      },
+      { $unwind: '$hoststreamings' },
+      {
+        $project:{
+          selectProduct:"$hoststreamings.selectProduct",
+          stremingDate:"$hoststreamings.stremingDate",
+          startTime:"$hoststreamings.startTime",
+          endTime:"$hoststreamings.endTime",
+          participantAllowed:"$hoststreamings.participantAllowed",
+          allowChat:"$hoststreamings.allowChat",
+          token:"$hoststreamings.token",
+        }
+      }
+
+    ])
     return data;
   };
-
-
-  const updatemanageAttendance = async (id, updateBody) => {
-    let users = await manageTelecaller.findById(id);
-    if (!users) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'manageAttendance not Found');
-    }
-    users = await manageTelecaller.findByIdAndUpdate({ _id: id }, updateBody, { new: true });
-    return users;
-  };
   
-  const deletemanageAttendance = async (id) => {
-    let users = await manageTelecaller.findById(id);
-    if (!users) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'manageAttendance Not Found');
-    }
-    (users.active = false), (users.archive = true);
-    await users.save();
-  };
 
-
-
-module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll};
+module.exports = { createHost, loginhostEmailAndPassword, createHostProduct, createHostStreaming, hostAll, getAllLiveStremingDatas,getAllLiveStremingDatasSame};

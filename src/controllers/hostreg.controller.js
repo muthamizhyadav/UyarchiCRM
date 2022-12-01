@@ -66,33 +66,15 @@ const getAllHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
-const getmanageTeleServiceById = catchAsync(async (req, res) => {
-  const data = await manageTelecallerService.ManageId(req.params.id);
-  if (!data) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'manageTelecaller not found');
-  }
+const getAllLiveStremingDatas = catchAsync(async (req, res) => {
+  const data = await hostregService.getAllLiveStremingDatas();
   res.send(data);
 });
 
-const getmanageTeleServiceAll = catchAsync(async (req, res) => {
-  const data = await manageTelecallerService.ManageAll(req.params);
-  if (!data) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'manageTelecaller not found');
-  }
+const getAllLiveStremingDatasSame = catchAsync(async (req, res) => {
+  const data = await hostregService.getAllLiveStremingDatasSame(req.params.id);
   res.send(data);
 });
-
-
-const deletemanageAttendanceService = catchAsync(async (req, res) => {
-    await manageTelecallerService.deletemanageAttendance(req.params.id);
-    res.status(httpStatus.NO_CONTENT).send();
-  });
-
-  const updateManageAttendance = catchAsync(async (req, res) => {
-    const manageIssues = await manageTelecallerService.updatemanageAttendance(req.params.id, req.body);
-    res.send(manageIssues);
-  });
-
 
 module.exports = {
     createhostService,
@@ -100,4 +82,6 @@ module.exports = {
     createhostProductService,
     createHostStremingService,
     getAllHost,
+    getAllLiveStremingDatas,
+    getAllLiveStremingDatasSame,
   };

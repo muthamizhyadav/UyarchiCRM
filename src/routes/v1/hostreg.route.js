@@ -11,4 +11,6 @@ router.route('/login').post(hostregController.login)
 router.route('/product').post(hostImage.array('image'), hostregController.createhostProductService)
 router.route('/Streamingtime').post(hostregController.createHostStremingService)
 router.route('/getAllHost').get(hostregController.getAllHost)
+router.route('/getAllLiveStremingDatas').get(hostregController.getAllLiveStremingDatas)
+router.route('/getAllLiveStremingDatasSame/:id').get(hostregController.getAllLiveStremingDatasSame)
 module.exports = router;
