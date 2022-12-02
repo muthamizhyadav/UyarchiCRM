@@ -185,6 +185,33 @@ const getAllStreaming = async (id) => {
         $and: [{ selectHost: { $eq: id } }],
       },
     },
+    {
+      $lookup: {
+        from: 'hostproducts',
+        localField: 'selectProduct',
+        foreignField: '_id',
+        as: 'product',
+      },
+    },
+    { $unwind: '$product' },
+    {
+      $project: {
+        _id: 1,
+        date: 1,
+        time: 1,
+        selectHost: 1,
+        selectProduct: 1,
+        stremingDate: 1,
+        startTime: 1,
+        endTime: 1,
+        allowChat: 1,
+        participantAllowed: 1,
+        token: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        productName: '$product.product',
+      },
+    },
   ]);
   return data;
 };
