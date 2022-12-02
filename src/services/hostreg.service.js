@@ -160,7 +160,7 @@ const getAllLiveStremingDatasSame = async (id) => {
         participantAllowed: '$hoststreamings.participantAllowed',
         allowChat: '$hoststreamings.allowChat',
         token: '$hoststreamings.token',
-        efr: '$hostproducts.product',
+        product: '$hostproducts.product',
       },
     },
   ]);
