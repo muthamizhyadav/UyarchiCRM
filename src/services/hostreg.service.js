@@ -100,6 +100,7 @@ const getliveProduct = async () => {
         token: 1,
         hostId: '$host._id',
         hostName: '$host.name',
+        liveStatus: 1,
       },
     },
   ]);
