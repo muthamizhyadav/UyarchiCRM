@@ -72,7 +72,37 @@ const getliveProduct = async () => {
   //     },
   //   },
   // ]);
-  const data = await HostStreaming.find();
+  const data = await HostStreaming.aggregate([
+    {
+      $lookup: {
+        from: 'hosts',
+        localField: 'selectHost',
+        foreignField: '_id',
+        // pipeline: [{ $match: { uid: userid } }],
+        as: 'host',
+      },
+    },
+    {
+      $unwind: '$host',
+    },
+    {
+      $project: {
+        _id: 1,
+        date: 1,
+        time: 1,
+        selectHost: 1,
+        selectProduct: 1,
+        stremingDate: 1,
+        startTime: 1,
+        endTime: 1,
+        participantAllowed: 1,
+        allowChat: 1,
+        token: 1,
+        hostId: '$host._id',
+        hostName: '$host.name',
+      },
+    },
+  ]);
   return data;
 };
 
