@@ -60,6 +60,22 @@ const RecipentAll = async () => {
   return data;
 };
 
+const getliveProduct = async () => {
+  // const data = await HostStreaming.aggregate([
+  //   {
+  //     $lookup: {
+  //       from: 'hostproducts',
+  //       localField: 'selectProduct',
+  //       foreignField: 'product',
+  //       // pipeline: [{ $match: { uid: userid } }],
+  //       as: 'hostproducts',
+  //     },
+  //   },
+  // ]);
+  const data = await HostStreaming.find();
+  return data;
+};
+
 const getAllLiveStremingDatas = async (userid) => {
   const data = await HostStreaming.aggregate([
     {
@@ -88,7 +104,7 @@ const getAllLiveStremingDatas = async (userid) => {
       },
     },
     {
-      $unwind: '$hostproducts',
+      $unwind: { preserveNullAndEmptyArrays: true, path: '$hostproducts' },
     },
     {
       $project: {
@@ -258,4 +274,5 @@ module.exports = {
   getAllStreaming,
   getAllStreamingToken,
   getAll,
+  getliveProduct,
 };

@@ -99,6 +99,12 @@ const getAllStreamingToken = catchAsync(async (req, res) => {
   const data = await hostregService.getAllStreamingToken(req.params.id);
   res.send(data);
 });
+
+const getliveProduct = catchAsync(async (req, res) => {
+  const data = await hostregService.getliveProduct(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createhostService,
   login,
@@ -112,4 +118,5 @@ module.exports = {
   getAllStreamingId,
   getAllStreamingToken,
   getAll,
+  getliveProduct,
 };
