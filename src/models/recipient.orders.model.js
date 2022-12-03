@@ -22,6 +22,9 @@ const RecipentOrdersSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  product: {
+    type: String,
+  },
   created: {
     type: Date,
   },
