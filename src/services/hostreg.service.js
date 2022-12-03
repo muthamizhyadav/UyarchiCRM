@@ -156,6 +156,25 @@ const getAllLiveStremingDatas = async (userid) => {
 };
 const { generateApiKey } = require('generate-api-key');
 
+const getUserProductLive = async (id) => {
+  const data = await HostProduct.aggregate([
+    {
+      $match: {
+        $and: [{ uid: { $eq: id } }],
+      },
+    },
+    {
+      $lookup: {
+        from: 'hoststreamings',
+        localField: 'product',
+        foreignField: 'selectProduct',
+        as: 'hoststreamings',
+      },
+    }
+  ]);
+  return data;
+};
+
 const getAllLiveStremingDatasSame = async (id) => {
   console.log(generateApiKey());
   const data = await HostProduct.aggregate([
@@ -316,4 +335,5 @@ module.exports = {
   getAll,
   getliveProduct,
   liveUpdations,
+  getUserProductLive,
 };
