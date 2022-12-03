@@ -17,6 +17,8 @@ const adminRegistrationRoute = require('./adminRegistration.route');
 const chattingRoute = require('./chating.route');
 const messageRoute = require('./message.route');
 const hostregRoute = require('./hostreg.route');
+const RecipientOrderRoute = require('./recipients.order.route');
+
 const router = express.Router();
 
 const defaultRoutes = [
@@ -27,6 +29,10 @@ const defaultRoutes = [
   {
     path: '/message',
     route: messageRoute,
+  },
+  {
+    path: '/RecipientOrder',
+    route: RecipientOrderRoute,
   },
   {
     path: '/chating',

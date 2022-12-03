@@ -23,7 +23,7 @@ const RecipentOrdersSchema = new mongoose.Schema({
     default: true,
   },
   created: {
-    type: date,
+    type: Date,
   },
   date: {
     type: String,
@@ -35,6 +35,4 @@ const RecipentOrdersSchema = new mongoose.Schema({
 
 const RecipentOrders = mongoose.model('recipientOrders', RecipentOrdersSchema);
 
-module.exports = {
-  RecipentOrders,
-};
+module.exports = RecipentOrders;
