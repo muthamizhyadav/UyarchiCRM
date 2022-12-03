@@ -292,6 +292,15 @@ const getAllStreamingToken = async (id) => {
   return data;
 };
 
+const liveUpdations = async (id, body) => {
+  let values = await HostStreaming.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Live not Available');
+  }
+  values = await HostStreaming.findByIdAndUpdate({ _id: id }, { liveStatus: body.liveStatus }, { new: true });
+  return values;
+};
+
 module.exports = {
   createHost,
   loginhostEmailAndPassword,
@@ -306,4 +315,5 @@ module.exports = {
   getAllStreamingToken,
   getAll,
   getliveProduct,
+  liveUpdations,
 };
