@@ -206,7 +206,8 @@ const getAllStreaming = async (id) => {
       $lookup: {
         from: 'hostproducts',
         localField: 'selectProduct',
-        foreignField: '_id',
+        foreignField: 'product',
+        pipeline: [{ $match: { uid: id } }],
         as: 'product',
       },
     },
