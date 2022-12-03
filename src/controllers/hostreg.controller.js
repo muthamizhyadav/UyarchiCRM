@@ -117,6 +117,11 @@ const getUserProductLive = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getproductById = catchAsync(async (req, res) => {
+  const data = await hostregService.getproductById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createhostService,
   login,
@@ -133,4 +138,5 @@ module.exports = {
   getliveProduct,
   liveUpdations,
   getUserProductLive,
+  getproductById,
 };

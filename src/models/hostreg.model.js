@@ -166,6 +166,12 @@ const hostStreamingSchema = new mongoose.Schema(
       type: String,
       default: time,
     },
+    priceperKg: {
+      type: Number,
+    },
+    stock: {
+      type: Number,
+    },
     liveStatus: {
       type: String,
       default: 'UpComming',

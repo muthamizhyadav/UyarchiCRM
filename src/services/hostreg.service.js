@@ -371,6 +371,8 @@ const getAllStreamingToken = async (id) => {
         updatedAt: 1,
         hostName: '$host.name',
         image: '$host.image',
+        stock: 1,
+        priceperKg: 1,
       },
     },
   ]);
@@ -383,6 +385,11 @@ const liveUpdations = async (id, body) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Live not Available');
   }
   values = await HostStreaming.findByIdAndUpdate({ _id: id }, { liveStatus: body.liveStatus }, { new: true });
+  return values;
+};
+
+const getproductById = async (id) => {
+  let values = await HostProduct.findById(id);
   return values;
 };
 
@@ -402,4 +409,5 @@ module.exports = {
   getliveProduct,
   liveUpdations,
   getUserProductLive,
+  getproductById,
 };

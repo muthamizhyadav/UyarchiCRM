@@ -23,4 +23,5 @@ router.route('/getAllStreamingToken/:id').get(hostregController.getAllStreamingT
 router.route('/getlive/Product').get(hostregController.getliveProduct);
 router.route('/live/updation/:id').put(hostregController.liveUpdations);
 router.route('/user/product/live').get(authorization, hostregController.getUserProductLive);
+router.route('/get/product/:id').get(hostregController.getproductById);
 module.exports = router;
