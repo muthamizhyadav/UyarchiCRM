@@ -60,7 +60,7 @@ const RecipentAll = async () => {
   return data;
 };
 
-const getAllLiveStremingDatas = async () => {
+const getAllLiveStremingDatas = async (userid) => {
   const data = await HostStreaming.aggregate([
     {
       $lookup: {
@@ -82,7 +82,8 @@ const getAllLiveStremingDatas = async () => {
       $lookup: {
         from: 'hostproducts',
         localField: 'selectProduct',
-        foreignField: '_id',
+        foreignField: 'product',
+        pipeline: [{ $match: { uid: userid } }],
         as: 'hostproducts',
       },
     },
@@ -106,8 +107,10 @@ const getAllLiveStremingDatas = async () => {
   ]);
   return data;
 };
+const { generateApiKey } = require('generate-api-key');
 
 const getAllLiveStremingDatasSame = async (id) => {
+  console.log(generateApiKey());
   const data = await HostProduct.aggregate([
     {
       $match: {
@@ -116,53 +119,67 @@ const getAllLiveStremingDatasSame = async (id) => {
     },
     {
       $lookup: {
-        from: 'hostproducts',
-        localField: 'product',
-        foreignField: 'product',
-        as: 'hostproducts',
-      },
-    },
-    { $unwind: '$hostproducts' },
-    {
-      $lookup: {
-        from: 'hosts',
-        localField: 'hostproducts.uid',
-        pipeline: [
-          {
-            $match: {
-              $and: [{ category: { $eq: 'host' } }],
-            },
-          },
-        ],
-        foreignField: '_id',
-        as: 'hosts',
-      },
-    },
-    { $unwind: '$hosts' },
-    {
-      $lookup: {
         from: 'hoststreamings',
-        localField: 'hosts._id',
+        localField: 'product',
         foreignField: 'selectHost',
         as: 'hoststreamings',
       },
     },
     { $unwind: '$hoststreamings' },
-    {
-      $project: {
-        hostName: '$hosts.name',
-        selectProduct: '$hoststreamings.selectProduct',
-        stremingDate: '$hoststreamings.stremingDate',
-        selectHost: '$hoststreamings.selectHost',
-        _id1: '$hoststreamings._id',
-        startTime: '$hoststreamings.startTime',
-        endTime: '$hoststreamings.endTime',
-        participantAllowed: '$hoststreamings.participantAllowed',
-        allowChat: '$hoststreamings.allowChat',
-        token: '$hoststreamings.token',
-        product: '$hostproducts.product',
-      },
-    },
+
+    // {
+    //   $match: {
+    //     $and: [{ uid: { $eq: id } }],
+    //   },
+    // },
+    // {
+    //   $lookup: {
+    //     from: 'hostproducts',
+    //     localField: 'product',
+    //     foreignField: 'product',
+    //     as: 'hostproducts',
+    //   },
+    // },
+    // { $unwind: '$hostproducts' },
+    // {
+    //   $lookup: {
+    //     from: 'hosts',
+    //     localField: 'hostproducts.uid',
+    //     pipeline: [
+    //       {
+    //         $match: {
+    //           $and: [{ category: { $eq: 'host' } }],
+    //         },
+    //       },
+    //     ],
+    //     foreignField: '_id',
+    //     as: 'hosts',
+    //   },
+    // },
+    // { $unwind: '$hosts' },
+    // {
+    //   $lookup: {
+    //     from: 'hoststreamings',
+    //     localField: 'hosts._id',
+    //     foreignField: 'selectHost',
+    //     as: 'hoststreamings',
+    //   },
+    // },
+    // { $unwind: '$hoststreamings' },
+    // {
+    //   $project: {
+    //     hostName: '$hosts.name',
+    //     selectProduct: '$hoststreamings.selectProduct',
+    //     stremingDate: '$hoststreamings.stremingDate',
+    //     selectHost: '$hoststreamings.selectHost',
+    //     _id1: '$hoststreamings._id',
+    //     startTime: '$hoststreamings.startTime',
+    //     endTime: '$hoststreamings.endTime',
+    //     participantAllowed: '$hoststreamings.participantAllowed',
+    //     allowChat: '$hoststreamings.allowChat',
+    //     token: '$hoststreamings.token',
+    //   },
+    // },
   ]);
   return data;
 };

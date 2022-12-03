@@ -8,10 +8,10 @@ const { v4 } = require('uuid');
 let serverdate = moment().format('yyy-MM-DD');
 let time = moment().format('hh:mm a');
 const hostSchema = mongoose.Schema({
-    _id :{
-        type : String,
-        default:v4
-      },
+  _id: {
+    type: String,
+    default: v4,
+  },
   name: {
     type: String,
     required: true,
@@ -42,14 +42,14 @@ const hostSchema = mongoose.Schema({
   image: {
     type: String,
   },
-  date:{
-    type:String,
-    default:serverdate
+  date: {
+    type: String,
+    default: serverdate,
   },
-  time:{
-    type:String,
-    default:time
-  }
+  time: {
+    type: String,
+    default: time,
+  },
 });
 
 // add plugin that converts mongoose to json
@@ -104,23 +104,23 @@ const hostProductSchema = new mongoose.Schema(
     priceperKg: {
       type: Number,
     },
-     stock: {
+    stock: {
       type: Number,
     },
-    uid:{
-      type:String,
+    uid: {
+      type: String,
     },
     image: {
       type: String,
     },
-    date:{
-      type:String,
-      default:serverdate
+    date: {
+      type: String,
+      default: serverdate,
     },
-    time:{
-      type:String,
-      default:time
-    }
+    time: {
+      type: String,
+      default: time,
+    },
   },
   {
     timestamps: true,
@@ -146,26 +146,29 @@ const hostStreamingSchema = new mongoose.Schema(
     startTime: {
       type: String,
     },
-    endTime:{
-      type:String,
+    endTime: {
+      type: String,
     },
     participantAllowed: {
       type: String,
     },
-    allowChat:{
-      type:String,
+    allowChat: {
+      type: String,
     },
-    token:{
-      type:String,
+    token: {
+      type: String,
     },
-    date:{
-      type:String,
-      default:serverdate
+    date: {
+      type: String,
+      default: serverdate,
     },
-    time:{
-      type:String,
-      default:time
-    }
+    time: {
+      type: String,
+      default: time,
+    },
+    roomId: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -174,4 +177,4 @@ const hostStreamingSchema = new mongoose.Schema(
 
 const HostStreaming = mongoose.model('hostStreaming', hostStreamingSchema);
 
-module.exports = {Host, HostProduct, HostStreaming };
+module.exports = { Host, HostProduct, HostStreaming };
