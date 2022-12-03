@@ -15,6 +15,9 @@ const RecipentOrdersSchema = new mongoose.Schema({
   orderedQty: {
     type: Number,
   },
+  streamingId: {
+    type: String,
+  },
   orderedPrice: {
     type: Number,
   },
