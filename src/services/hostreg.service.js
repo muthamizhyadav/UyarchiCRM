@@ -342,6 +342,37 @@ const getAllStreamingToken = async (id) => {
         $and: [{ _id: { $eq: id } }],
       },
     },
+    {
+      $lookup: {
+        from: 'hosts',
+        localField: 'selectHost',
+        foreignField: '_id',
+        as: 'host',
+      },
+    },
+    {
+      $unwind: '$host',
+    },
+    {
+      $project: {
+        _id: 1,
+        date: 1,
+        time: 1,
+        liveStatus: 1,
+        selectHost: 1,
+        selectProduct: 1,
+        stremingDate: 1,
+        endTime: 1,
+        startTime: 1,
+        participantAllowed: 1,
+        allowChat: 1,
+        token: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        hostName: '$host.name',
+        image: '$host.image',
+      },
+    },
   ]);
   return data;
 };

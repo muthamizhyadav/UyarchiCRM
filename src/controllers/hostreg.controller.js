@@ -96,6 +96,7 @@ const getAllStreamingId = catchAsync(async (req, res) => {
 });
 
 const getAllStreamingToken = catchAsync(async (req, res) => {
+  let userid = req.userId;
   const data = await hostregService.getAllStreamingToken(req.params.id);
   res.send(data);
 });
