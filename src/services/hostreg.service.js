@@ -46,7 +46,7 @@ const createHostStreaming = async (userBody) => {
 };
 
 const hostAll = async () => {
-  const data = await Host.find({ category: 'host' });
+  const data = await Host.find();
   return data;
 };
 
