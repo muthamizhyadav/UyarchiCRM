@@ -9,6 +9,14 @@ const createRecipientsOrders = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getRecipientOrdered_data = catchAsync(async (req, res) => {
+  let userid = req.userId;
+  console.log(userid)
+  const data = await RecipentOrdersService.getRecipientOrdered_data(req.params.id, userid);
+  res.send(data);
+});
+
 module.exports = {
   createRecipientsOrders,
+  getRecipientOrdered_data,
 };

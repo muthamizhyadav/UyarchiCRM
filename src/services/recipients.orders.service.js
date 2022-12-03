@@ -9,5 +9,12 @@ const createRecipientsOrders = async (body) => {
   return create;
 };
 
+const getRecipientOrdered_data = async (streamingId, userid) => {
+  let values = await RecipentOrdes.findOne({ streamingId: streamingId, RecipentId: userid });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Orderd not Found');
+  }
+  return values;
+};
 
-module.exports = { createRecipientsOrders };
+module.exports = { createRecipientsOrders, getRecipientOrdered_data };
