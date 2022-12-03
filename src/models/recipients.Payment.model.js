@@ -4,6 +4,7 @@ const { v4 } = require('uuid');
 const RecipentPaymentSchema = new mongoose.Schema({
   _id: {
     type: String,
+    default: v4,
   },
   streamingId: {
     type: String,
@@ -28,6 +29,9 @@ const RecipentPaymentSchema = new mongoose.Schema({
     type: Date,
   },
   date: {
+    type: String,
+  },
+  recipientId: {
     type: String,
   },
   time: {
