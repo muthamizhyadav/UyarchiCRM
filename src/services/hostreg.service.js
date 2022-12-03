@@ -168,9 +168,44 @@ const getUserProductLive = async (id) => {
         from: 'hoststreamings',
         localField: 'product',
         foreignField: 'selectProduct',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'hosts',
+              localField: 'selectHost',
+              foreignField: '_id',
+              as: 'hosts',
+            },
+          },
+          {
+            $unwind: {
+              preserveNullAndEmptyArrays: true,
+              path: '$hosts',
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              date: 1,
+              time: 1,
+              liveStatus: 1,
+              selectHost: 1,
+              selectProduct: 1,
+              stremingDate: 1,
+              startTime: 1,
+              endTime: 1,
+              participantAllowed: 1,
+              allowChat: 1,
+              token: 1,
+              createdAt: 1,
+              updatedAt: 1,
+              hostName: '$hosts.name',
+            },
+          },
+        ],
         as: 'hoststreamings',
       },
-    }
+    },
   ]);
   return data;
 };
