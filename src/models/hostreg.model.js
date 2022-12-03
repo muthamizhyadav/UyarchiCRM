@@ -168,6 +168,7 @@ const hostStreamingSchema = new mongoose.Schema(
     },
     liveStatus: {
       type: String,
+      default: 'UpComming',
     },
     roomId: {
       type: String,
