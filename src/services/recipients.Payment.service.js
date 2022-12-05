@@ -23,6 +23,7 @@ const createPayment = async (body, userid) => {
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       time: moment().format('HH:MM'),
+      status: 'Paid',
       streamingId: streaming._id,
     },
   };
