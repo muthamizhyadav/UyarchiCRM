@@ -17,4 +17,13 @@ const getRecipientOrdered_data = async (streamingId, userid) => {
   return values;
 };
 
-module.exports = { createRecipientsOrders, getRecipientOrdered_data };
+const getRecipientOrdered_data_Delete = async (userid) => {
+  let values = await RecipentOrdes.deleteOne({RecipentId: userid });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Orderd not Found');
+  }
+
+  return values;
+};
+
+module.exports = { createRecipientsOrders, getRecipientOrdered_data, getRecipientOrdered_data_Delete};

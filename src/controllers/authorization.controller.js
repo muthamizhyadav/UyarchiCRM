@@ -10,6 +10,7 @@ const { Host } = require('../models/hostreg.model');
 
 const authorization = async (req, res, next) => {
   const token = req.headers.auth;
+  // console.log(token)
   // console.log(token);
   // console.log(req.headers.auth);
   // console.log(req.headers['auth']);

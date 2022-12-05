@@ -16,7 +16,15 @@ const getRecipientOrdered_data = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getRecipientOrdered_data_delete = catchAsync(async (req, res) => {
+  let userid = req.userId;
+  console.log(userid)
+  const data = await RecipentOrdersService.getRecipientOrdered_data_Delete(userid);
+  res.send(data);
+});
+
 module.exports = {
   createRecipientsOrders,
   getRecipientOrdered_data,
+  getRecipientOrdered_data_delete,
 };
