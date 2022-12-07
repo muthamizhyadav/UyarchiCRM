@@ -8,10 +8,9 @@ const createHost = async (body) => {
 };
 
 const loginhostEmailAndPassword = async (email, mobileNumber) => {
-  const data = await Host.find({ email: email });
-  let number = data[0].mobileNumber;
-  if (data != '') {
-    if (number == mobileNumber) {
+  const data = await Host.findOne({ email: email });
+  if (data != null) {
+    if (data.mobileNumber == mobileNumber) {
     } else {
       throw new ApiError(httpStatus.NOT_FOUND, 'mobileNumber not Match');
     }
