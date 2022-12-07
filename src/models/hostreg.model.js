@@ -192,6 +192,7 @@ const hostStreamingSchema = new mongoose.Schema(
     },
     recipient:{
       type:Array,
+      default: [],
     },
     stock: {
       type: Number,
