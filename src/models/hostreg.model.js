@@ -190,6 +190,9 @@ const hostStreamingSchema = new mongoose.Schema(
     priceperKg: {
       type: Number,
     },
+    recipient:{
+      type:Array,
+    },
     stock: {
       type: Number,
     },
