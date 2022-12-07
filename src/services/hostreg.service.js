@@ -200,6 +200,7 @@ const getUserProductLive = async (id) => {
               createdAt: 1,
               updatedAt: 1,
               hostName: '$hosts.name',
+              recipient:1,
             },
           },
         ],
