@@ -373,6 +373,7 @@ const getAllStreamingToken = async (id) => {
         image: '$host.image',
         stock: 1,
         priceperKg: 1,
+        recipient:1,
       },
     },
   ]);
