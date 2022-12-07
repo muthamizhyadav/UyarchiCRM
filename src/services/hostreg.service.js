@@ -328,6 +328,7 @@ const getAllStreaming = async (id) => {
         token: 1,
         createdAt: 1,
         updatedAt: 1,
+        liveStatus: 1,
         productName: '$product.product',
       },
     },
