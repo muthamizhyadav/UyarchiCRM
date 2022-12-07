@@ -200,6 +200,7 @@ const getUserProductLive = async (id) => {
               createdAt: 1,
               updatedAt: 1,
               hostName: '$hosts.name',
+              recipient:1,
             },
           },
         ],
@@ -374,6 +375,7 @@ const getAllStreamingToken = async (id) => {
         image: '$host.image',
         stock: 1,
         priceperKg: 1,
+        recipient:1,
       },
     },
   ]);
@@ -394,6 +396,33 @@ const getproductById = async (id) => {
   return values;
 };
 
+const getcloud = async (id) => {
+  let values = await HostProduct.findById(id);
+  return values;
+};
+
+
+const recipientAdd = async (id, body) => {
+  const { recipient } = body;
+  let liveStreams = await HostStreaming.findById(id);
+  if (!liveStreams) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+  }
+ await HostStreaming.update({ _id: id }, { $push: { recipient: recipient } }, { new: true });
+  let afterupdate = await HostStreaming.findById(id);
+  return afterupdate;
+};
+
+const recipientRemove = async (id, body) => {
+  const { recipient } = body;
+  let liveStreams = await HostStreaming.findById(id);
+  if (!liveStreams) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+  await HostStreaming.update({ _id: id }, { $pull: { recipient: recipient } }, { new: true });
+ let afterupdate = await HostStreaming.findById(id);
+  return afterupdate;
+};
 module.exports = {
   createHost,
   loginhostEmailAndPassword,
@@ -411,4 +440,6 @@ module.exports = {
   liveUpdations,
   getUserProductLive,
   getproductById,
+  recipientAdd,
+  recipientRemove,
 };

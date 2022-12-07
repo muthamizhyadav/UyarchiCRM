@@ -107,6 +107,27 @@ const hostProductSchema = new mongoose.Schema(
     stock: {
       type: Number,
     },
+    quantityRangeMax:{
+      type:Number,
+    },
+    quantityRangeMin:{
+      type:Number,
+    },
+    productPriceMin:{
+      type:Number,
+    },
+    productPriceMax:{
+      type:Number,
+    },
+    deliveryLocation:{
+      type:String,
+    },
+    deliveryDate:{
+      type:String,
+    },
+    deliveryTime:{
+      type:String,
+    },
     uid: {
       type: String,
     },
@@ -168,6 +189,10 @@ const hostStreamingSchema = new mongoose.Schema(
     },
     priceperKg: {
       type: Number,
+    },
+    recipient:{
+      type:Array,
+      default: [],
     },
     stock: {
       type: Number,

@@ -14,7 +14,7 @@ const createhostService = catchAsync(async (req, res) => {
   if (req.files) {
     let path = '';
     req.files.forEach(function (files, index, arr) {
-      path = 'resumes/host/' + files.filename;
+      path = 'resumes/host/'+ files.filename;
       // console.log(files.filename)
     });
 
@@ -43,8 +43,8 @@ const createhostProductService = catchAsync(async (req, res) => {
   if (req.files) {
     let path = '';
     req.files.forEach(function (files, index, arr) {
-      path = 'resumes/hostProduct/' + files.filename;
-      // console.log(files.filename)
+      path = 'images/hostProduct/'+ files.filename;
+      console.log(files.filename)
     });
 
     attach.image = path;
@@ -122,6 +122,16 @@ const getproductById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const recipientAdd = catchAsync(async (req, res) => {
+  const data = await hostregService.recipientAdd(req.params.id, req.body);
+  res.send(data);
+});
+
+const recipientRemove = catchAsync(async (req, res) => {
+  const data = await hostregService.recipientRemove(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createhostService,
   login,
@@ -139,4 +149,6 @@ module.exports = {
   liveUpdations,
   getUserProductLive,
   getproductById,
+  recipientAdd,
+  recipientRemove,
 };
