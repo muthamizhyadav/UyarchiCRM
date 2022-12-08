@@ -17,6 +17,15 @@ const getRecipientOrdered_data = async (streamingId, userid) => {
   return values;
 };
 
+const deleteOrder = async (streamingId, body) => {
+  let data = await RecipentOrdes.findOne({streamingId:streamingId, RecipentId:body.RecipentId})
+  if(!data){
+    throw new ApiError(httpStatus.NOT_FOUND, 'Orderd not Found');
+  }
+  let values = await RecipentOrdes.findOneAndDelete({ streamingId: streamingId, RecipentId: body.RecipentId });
+  return values;
+};
+
 const getRecipientOrdered_data_Delete = async (userid) => {
   let values = await RecipentOrdes.deleteOne({RecipentId: userid });
   if (!values) {
@@ -26,4 +35,4 @@ const getRecipientOrdered_data_Delete = async (userid) => {
   return values;
 };
 
-module.exports = { createRecipientsOrders, getRecipientOrdered_data, getRecipientOrdered_data_Delete};
+module.exports = { createRecipientsOrders, getRecipientOrdered_data, getRecipientOrdered_data_Delete, deleteOrder};
