@@ -204,6 +204,9 @@ const hostStreamingSchema = new mongoose.Schema(
     roomId: {
       type: String,
     },
+    online:{
+      type:String,
+    },
   },
   {
     timestamps: true,

@@ -386,7 +386,7 @@ const liveUpdations = async (id, body) => {
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Live not Available');
   }
-  values = await HostStreaming.findByIdAndUpdate({ _id: id }, { liveStatus: body.liveStatus }, { new: true });
+  values = await HostStreaming.findByIdAndUpdate({ _id: id }, body, { new: true });
   return values;
 };
 
