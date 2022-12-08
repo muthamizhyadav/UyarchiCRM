@@ -206,6 +206,7 @@ const hostStreamingSchema = new mongoose.Schema(
     },
     online:{
       type:String,
+      default: 'ON',
     },
   },
   {
