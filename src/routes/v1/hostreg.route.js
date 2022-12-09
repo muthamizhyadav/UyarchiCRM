@@ -25,5 +25,5 @@ router.route('/live/updation/:id').put(hostregController.liveUpdations);
 router.route('/user/product/live').get(authorization, hostregController.getUserProductLive);
 router.route('/get/product/:id').get(hostregController.getproductById);
 router.route('/remove/:id').put(hostregController.recipientRemove);
-router.route('/add/:id').put(hostregController.recipientAdd);
+router.route('/getsubStreamingData').get(authorization, hostregController.getsubStreamingData);
 module.exports = router;

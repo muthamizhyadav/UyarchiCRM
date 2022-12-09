@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
-const { Host, HostProduct, HostStreaming } = require('../models/hostreg.model');
+const { Host, HostProduct, HostStreaming} = require('../models/hostreg.model');
 const ApiError = require('../utils/ApiError');
 const Agora = require('agora-access-token');
+const moment = require('moment');
 
 const createHost = async (body) => {
   return Host.create(body);
@@ -422,6 +423,37 @@ const recipientRemove = async (id, body) => {
  let afterupdate = await HostStreaming.findById(id);
   return afterupdate;
 };
+
+const getsubStreamingData = async (userid) => {
+let data = await Host.aggregate([
+  {
+    $match: {
+      $and: [{ _id: { $eq: userid } }],
+    },
+  },
+  {
+    $lookup: {
+      from: 'hoststreamings',
+      localField: 'hostId',
+      foreignField: 'selectHost',
+      pipeline:[
+        {
+          $match: {
+            $and: [{ liveStatus: { $ne: "LiveFinished" } }],
+          },
+        },
+      ],
+      as: 'hoststreamings',
+    },
+  },
+  {
+    $unwind: '$hoststreamings',
+  },
+ 
+])
+  return data;
+};
+
 module.exports = {
   createHost,
   loginhostEmailAndPassword,
@@ -441,4 +473,5 @@ module.exports = {
   getproductById,
   recipientAdd,
   recipientRemove,
+  getsubStreamingData,
 };
