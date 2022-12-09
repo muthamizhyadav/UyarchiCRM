@@ -449,6 +449,26 @@ let data = await Host.aggregate([
   {
     $unwind: '$hoststreamings',
   },
+  {
+    $project:{
+      name:1,
+      streamid:"$hoststreamings._id",
+      date:"$hoststreamings.date",
+      time:"$hoststreamings.time",
+      recipient:"$hoststreamings.recipient",
+      liveStatus:"$hoststreamings.liveStatus",
+      selectHost:"$hoststreamings.selectHost",
+      selectProduct:"$hoststreamings.selectProduct",
+      stremingDate:"$hoststreamings.stremingDate",
+      startTime:"$hoststreamings.startTime",
+      endTime:"$hoststreamings.endTime",
+      participantAllowed:"$hoststreamings.participantAllowed",
+      allowChat:"$hoststreamings.allowChat",
+      stock:"$hoststreamings.stock",
+      priceperKg:"$hoststreamings.priceperKg",
+      token:"$hoststreamings.token",
+    }
+  }
  
 ])
   return data;
