@@ -153,8 +153,7 @@ app.post('/videoupload', (req, res) => {
     region: 'ap-south-1',
   });
   const s3 = new AWS.S3();
-  console.log(req.files.image, "asdsdaf")
-  const fileContent = Buffer.from(req.files.image.data, 'binary');
+  const fileContent = Buffer.from(req.files.image.data);
   
   const params = {
     Bucket: 'streamingupload',
