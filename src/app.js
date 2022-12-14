@@ -138,7 +138,7 @@ app.use(compression());
 // enable cors
 app.use(cors());
 app.options('*', cors());
-app.use(fileUpload())
+app.use(fileUpload());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
@@ -153,8 +153,8 @@ app.post('/videoupload', (req, res) => {
     region: 'ap-south-1',
   });
   const s3 = new AWS.S3();
-  const fileContent = Buffer.from(req.files.image.data);
-  
+  const fileContent = req.files.image.data
+
   const params = {
     Bucket: 'streamingupload',
     Key: req.files.image.name,
@@ -197,9 +197,6 @@ app.use(errorHandler);
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
 });
-
-
-
 
 // server connection
 httpServer.listen(config.port, () => {
