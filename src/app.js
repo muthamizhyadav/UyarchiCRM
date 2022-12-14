@@ -157,7 +157,7 @@ app.post('/videoupload', (req, res) => {
   const fileContent = Buffer.from(req.files.image.data, 'binary');
   
   const params = {
-    Bucket: 'liveupload',
+    Bucket: 'streamingupload',
     Key: req.files.image.name,
     Body: fileContent,
   };
