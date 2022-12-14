@@ -1,17 +1,17 @@
 const httpStatus = require('http-status');
-const { Host, HostProduct, HostStreaming } = require('../models/hostreg.model');
+const { Host, HostProduct, HostStreaming} = require('../models/hostreg.model');
 const ApiError = require('../utils/ApiError');
 const Agora = require('agora-access-token');
+const moment = require('moment');
 
 const createHost = async (body) => {
   return Host.create(body);
 };
 
 const loginhostEmailAndPassword = async (email, mobileNumber) => {
-  const data = await Host.find({ email: email });
-  let number = data[0].mobileNumber;
-  if (data != '') {
-    if (number == mobileNumber) {
+  const data = await Host.findOne({ email: email });
+  if (data != null) {
+    if (data.mobileNumber == mobileNumber) {
     } else {
       throw new ApiError(httpStatus.NOT_FOUND, 'mobileNumber not Match');
     }
@@ -387,7 +387,7 @@ const liveUpdations = async (id, body) => {
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Live not Available');
   }
-  values = await HostStreaming.findByIdAndUpdate({ _id: id }, { liveStatus: body.liveStatus }, { new: true });
+  values = await HostStreaming.findByIdAndUpdate({ _id: id }, body, { new: true });
   return values;
 };
 
@@ -423,6 +423,57 @@ const recipientRemove = async (id, body) => {
  let afterupdate = await HostStreaming.findById(id);
   return afterupdate;
 };
+
+const getsubStreamingData = async (userid) => {
+let data = await Host.aggregate([
+  {
+    $match: {
+      $and: [{ _id: { $eq: userid } }],
+    },
+  },
+  {
+    $lookup: {
+      from: 'hoststreamings',
+      localField: 'hostId',
+      foreignField: 'selectHost',
+      pipeline:[
+        {
+          $match: {
+            $and: [{ liveStatus: { $ne: "LiveFinished" } }],
+          },
+        },
+      ],
+      as: 'hoststreamings',
+    },
+  },
+  {
+    $unwind: '$hoststreamings',
+  },
+  {
+    $project:{
+      name:1,
+      streamid:"$hoststreamings._id",
+      date:"$hoststreamings.date",
+      time:"$hoststreamings.time",
+      recipient:"$hoststreamings.recipient",
+      liveStatus:"$hoststreamings.liveStatus",
+      selectHost:"$hoststreamings.selectHost",
+      selectProduct:"$hoststreamings.selectProduct",
+      stremingDate:"$hoststreamings.stremingDate",
+      startTime:"$hoststreamings.startTime",
+      endTime:"$hoststreamings.endTime",
+      participantAllowed:"$hoststreamings.participantAllowed",
+      allowChat:"$hoststreamings.allowChat",
+      stock:"$hoststreamings.stock",
+      priceperKg:"$hoststreamings.priceperKg",
+      token:"$hoststreamings.token",
+    }
+  }
+ 
+])
+  return data;
+};
+
 module.exports = {
   createHost,
   loginhostEmailAndPassword,
@@ -442,4 +493,5 @@ module.exports = {
   getproductById,
   recipientAdd,
   recipientRemove,
+  getsubStreamingData,
 };

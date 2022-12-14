@@ -27,7 +27,7 @@ const createhostService = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, mobileNumber } = req.body;
   const data = await hostregService.loginhostEmailAndPassword(email, mobileNumber);
-  const tokens = await tokenService.generateAuthTokens(data[0]);
+  const tokens = await tokenService.generateAuthTokens(data);
   let options = {
     httpOnly: true,
   };
@@ -132,6 +132,11 @@ const recipientRemove = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getsubStreamingData = catchAsync(async (req, res) => {
+  const userId = req.userId;
+  const data = await hostregService.getsubStreamingData(userId, req.body);
+  res.send(data);
+});
 module.exports = {
   createhostService,
   login,
@@ -151,4 +156,5 @@ module.exports = {
   getproductById,
   recipientAdd,
   recipientRemove,
+  getsubStreamingData,
 };

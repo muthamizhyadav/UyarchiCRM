@@ -42,6 +42,9 @@ const hostSchema = mongoose.Schema({
   image: {
     type: String,
   },
+  hostId:{
+    type:String,
+  },
   date: {
     type: String,
     default: serverdate,
@@ -204,6 +207,10 @@ const hostStreamingSchema = new mongoose.Schema(
     roomId: {
       type: String,
     },
+    online:{
+      type:String,
+      default: 'ON',
+    },
   },
   {
     timestamps: true,
@@ -211,5 +218,4 @@ const hostStreamingSchema = new mongoose.Schema(
 );
 
 const HostStreaming = mongoose.model('hostStreaming', hostStreamingSchema);
-
-module.exports = { Host, HostProduct, HostStreaming };
+module.exports = { Host, HostProduct, HostStreaming};
