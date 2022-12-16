@@ -31,8 +31,8 @@ const createHostProduct = async (body) => {
 };
 
 const createHostStreaming = async (userBody) => {
-  const appID = 'dd80ee642fa84a36a365f560c3741929';
-  const appCertificate = '7861826a7d6547238a845836b0442d8e';
+  const appID = 'ca6623e754e244a89f86eeb0bda8eb93';
+  const appCertificate = '1ded1caf4a604b58834ff3c6b12b12bd';
 
   // const user = req.body.user;
   // const role = Agora.RtmRole.Rtm_User;
