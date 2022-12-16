@@ -22,6 +22,9 @@ const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
 const { Messages } = require('../src/models/message.model');
 const moment = require('moment');
+const fileUpload = require('express-fileupload');
+const AWS = require('aws-sdk');
+
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
@@ -75,6 +78,7 @@ const io = require('socket.io')(httpServer, {
   },
 });
 const { addUser, removeUser } = require('./user');
+const { S3 } = require('aws-sdk');
 // const PORT = 5000;
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callBack) => {
@@ -134,6 +138,7 @@ app.use(compression());
 // enable cors
 app.use(cors());
 app.options('*', cors());
+app.use(fileUpload());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
@@ -141,11 +146,36 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
+app.post('/videoupload', (req, res) => {
+  AWS.config.update({
+    accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+    secretAccessKey: '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',
+    region: 'ap-south-1',
+  });
+  const s3 = new AWS.S3();
+  const fileContent = req.files.image.data
+
+  const params = {
+    Bucket: 'streamingupload',
+    Key: req.files.image.name,
+    Body: fileContent,
+  };
+  s3.upload(params, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.send({
+      response_code: 200,
+      response_message: 'Sucsess',
+      response_data: data,
+    });
+  });
+});
 // v1 api routes
 app.use('/v1', routes);
 //default routes
 app.get('/', (req, res) => {
-  res.sendStatus(200)
+  res.sendStatus(200);
 });
 // default v1 route
 app.get('/v1', (req, res) => {
@@ -167,6 +197,7 @@ app.use(errorHandler);
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
 });
+
 // server connection
 httpServer.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
