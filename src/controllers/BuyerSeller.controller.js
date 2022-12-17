@@ -1,0 +1,49 @@
+const httpStatus = require('http-status');
+const ApiError = require('../utils/ApiError');
+const catchAsync = require('../utils/catchAsync');
+const buyersellerService = require('../services/BuyerSeller.service');
+const mailService = require('../services/email.service');
+const { BuyerSeller, BuyerSellerOTP } = require('../models/BuyerSeller.model');
+const tokenService = require('../services/token.service');
+
+const createBuyerSeller = catchAsync(async (req, res) => {
+  const { email, mobile } = req.body;
+  const checkemail = await BuyerSeller.findOne({ email: email });
+  if (checkemail) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
+  }
+  const checkmobile = await BuyerSeller.findOne({ mobile: mobile });
+  if (checkmobile) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
+  }
+  let values = await mailService.sendEmail(req.body.email);
+  const data = await buyersellerService.createBuyerSeller(req.body, values.otp);
+  res.send(data);
+});
+
+const verifyOtp = catchAsync(async (req, res) => {
+  const data = await buyersellerService.verifyOtp(req.body);
+  const tokens = await tokenService.generateAuthTokens(data);
+  res.send({ data: data, tokens: tokens });
+});
+
+const createSellerPost = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  console.log(userId);
+  const data = await buyersellerService.createSellerPost(req.body, userId);
+  if (req.files) {
+    let path = '';
+    req.files.forEach(function (files, index, arr) {
+      path = 'images/buyrSeller/' + files.filename;
+    });
+    data.image = path;
+  }
+  res.status(httpStatus.CREATED).send(data);
+  await data.save();
+});
+
+module.exports = {
+  createBuyerSeller,
+  verifyOtp,
+  createSellerPost,
+};

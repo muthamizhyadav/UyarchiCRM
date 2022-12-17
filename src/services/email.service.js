@@ -18,9 +18,27 @@ if (config.env !== 'test') {
  * @param {string} text
  * @returns {Promise}
  */
+const generateOTP = () => {
+  digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+};
+
+// const sendEmail = async (to, subject, text) => {
+//   const msg = { from: config.email.from, to, subject, text };
+//   await transport.sendMail(msg);
+// };
+
 const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+  subject = "Don't share your otp";
+  let otp = generateOTP();
+  text = `Thank you For Register With Uyarchi, Your Otp : ${otp}`;
+  let msg = { from: config.email.from, to, subject, text, otp };
   await transport.sendMail(msg);
+  return msg;
 };
 
 /**

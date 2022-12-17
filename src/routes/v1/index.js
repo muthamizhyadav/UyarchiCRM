@@ -19,13 +19,17 @@ const messageRoute = require('./message.route');
 const hostregRoute = require('./hostreg.route');
 const RecipientOrderRoute = require('./recipients.order.route');
 const RecipientsPaymentRoute = require('./recipients.payment.route');
-
+const BuyerSellerRoute = require('./BuyerSeller.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/BuyerSeller',
+    route: BuyerSellerRoute,
   },
   {
     path: '/message',

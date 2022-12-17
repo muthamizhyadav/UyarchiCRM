@@ -22,9 +22,9 @@ const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
 const { Messages } = require('../src/models/message.model');
 const moment = require('moment');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const AWS = require('aws-sdk');
-
+var bodyParser = require('body-parser');
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
@@ -67,7 +67,7 @@ const AWS = require('aws-sdk');
 // });
 // });
 // Socket Message Api's
-
+app.use(express.static('public'));
 // const server = http.createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
@@ -118,6 +118,11 @@ io.on('connection', (socket) => {
 //     await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
 //     console.log(userId, message, roomId);
 //   });
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 // });
 app.use('/meesageRoute', MessageRoute);
 if (config.env !== 'test') {
@@ -138,7 +143,7 @@ app.use(compression());
 // enable cors
 app.use(cors());
 app.options('*', cors());
-app.use(fileUpload());
+// app.use(fileUpload());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
@@ -146,31 +151,32 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
-app.post('/videoupload', (req, res) => {
-  AWS.config.update({
-    accessKeyId: 'AKIA3323XNN7Y2RU77UG',
-    secretAccessKey: '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',
-    region: 'ap-south-1',
-  });
-  const s3 = new AWS.S3();
-  const fileContent = req.files.image.data
+// app.post('/videoupload', (req, res) => {
+//   AWS.config.update({
+//     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+//     secretAccessKey: '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',
+//     region: 'ap-south-1',
+//   });
+//   const s3 = new AWS.S3();
+//   const fileContent = req.files.image.data;
+//   console.log(fileContent);
 
-  const params = {
-    Bucket: 'streamingupload',
-    Key: req.files.image.name,
-    Body: fileContent,
-  };
-  s3.upload(params, (err, data) => {
-    if (err) {
-      throw err;
-    }
-    res.send({
-      response_code: 200,
-      response_message: 'Sucsess',
-      response_data: data,
-    });
-  });
-});
+//   const params = {
+//     Bucket: 'streamingupload',
+//     Key: req.files.image.name,
+//     Body: fileContent,
+//   };
+//   s3.upload(params, (err, data) => {
+//     if (err) {
+//       throw err;
+//     }
+//     res.send({
+//       response_code: 200,
+//       response_message: 'Sucsess',
+//       response_data: data,
+//     });
+//   });
+// });
 // v1 api routes
 app.use('/v1', routes);
 //default routes
