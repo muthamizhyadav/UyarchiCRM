@@ -36,8 +36,16 @@ const createSellerPost = async (body, userId) => {
   return sellerPost;
 };
 
+const LoginWithmail = async (body, otp) => {
+  const { email } = body;
+  let values = { ...body, ...{ Otp: otp } };
+  let OTP = await BuyerSellerOTP.create(values);
+  return OTP;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
   createSellerPost,
+  LoginWithmail,
 };

@@ -9,4 +9,5 @@ router.route('/verify').post(BuyerSellerController.verifyOtp);
 router
   .route('/createSellerPost')
   .post(SellerBuyerAuth, sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
+router.route('/login').post(BuyerSellerController.LoginWithmail);
 module.exports = router;

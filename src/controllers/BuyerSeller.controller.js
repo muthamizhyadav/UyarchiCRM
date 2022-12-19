@@ -42,8 +42,20 @@ const createSellerPost = catchAsync(async (req, res) => {
   await data.save();
 });
 
+const LoginWithmail = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  let val = await BuyerSeller.findOne({ email: email, verified: true });
+  if (!val) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Email Not Registered');
+  }
+  let values = await mailService.sendEmail(email);
+  const data = await buyersellerService.LoginWithmail(req.body, values.otp);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
   createSellerPost,
+  LoginWithmail,
 };
