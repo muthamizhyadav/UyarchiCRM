@@ -91,6 +91,21 @@ const sellerPostSchema = new mongoose.Schema({
   propertType: {
     type: String,
   },
+  HouseOrCommercialType: {
+    type: String,
+  },
+  MonthlyRent: {
+    type: Number,
+  },
+  RentPrefer: {
+    type: String,
+  },
+  IfCommercial: {
+    type: String,
+  },
+  Negociable: {
+    type: String,
+  },
   propertStatus: {
     type: String,
   },

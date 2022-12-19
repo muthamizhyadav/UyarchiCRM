@@ -11,4 +11,5 @@ router
   .post(SellerBuyerAuth, sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
 router.route('/login').post(BuyerSellerController.LoginWithmail);
 router.route('/buyer/render').post(SellerBuyerAuth, BuyerSellerController.createBuyerRentiee);
+router.route('/SearchHouse').get(SellerBuyerAuth, BuyerSellerController.SearchHouseFlatByBuyer_Or_Rentiee);
 module.exports = router;

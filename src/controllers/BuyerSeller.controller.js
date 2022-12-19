@@ -59,10 +59,18 @@ const createBuyerRentiee = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const SearchHouseFlatByBuyer_Or_Rentiee = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  let type = req.type;
+  const data = await buyersellerService.SearchHouseFlatByBuyer_Or_Rentiee(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
   createSellerPost,
   LoginWithmail,
   createBuyerRentiee,
+  SearchHouseFlatByBuyer_Or_Rentiee,
 };

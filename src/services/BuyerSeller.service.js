@@ -52,10 +52,20 @@ const createBuyerRentiee = async (body, userId) => {
   return BR;
 };
 
+// search House Or Flat for BuyerRentie
+
+const SearchHouseFlatByBuyer_Or_Rentiee = async (id) => {
+  let area = { active: true };
+
+  let values = await SellerPost.aggregate([{}]);
+  return id;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
   createSellerPost,
   LoginWithmail,
   createBuyerRentiee,
+  SearchHouseFlatByBuyer_Or_Rentiee,
 };
