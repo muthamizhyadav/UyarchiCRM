@@ -53,9 +53,16 @@ const LoginWithmail = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createBuyerRentiee = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.createBuyerRentiee(req.body, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
   createSellerPost,
   LoginWithmail,
+  createBuyerRentiee,
 };

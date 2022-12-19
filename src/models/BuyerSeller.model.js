@@ -1,3 +1,4 @@
+const { boolean } = require('joi');
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
 
@@ -145,8 +146,71 @@ const sellerPostSchema = new mongoose.Schema({
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
+const BuyerRentieSchema = mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  Type: {
+    // like Buye or Rentiee
+    type: String,
+  },
+  TyoesOfProperty: {
+    type: String,
+  },
+  HouseOrCommercialType: {
+    type: String,
+  },
+  PropertyStatus: {
+    type: String,
+  },
+  PrefferedState: {
+    type: String,
+  },
+  PrefferedCities: {
+    type: String,
+  },
+  Area: {
+    type: String,
+  },
+  BHKType: {
+    type: String,
+  },
+  userId: {
+    type: String,
+  },
+  FromPrice: {
+    type: Number,
+  },
+  ToPrice: {
+    type: Number,
+  },
+  ParkingPreference: {
+    type: String,
+  },
+  FurnishingStatus: {
+    type: String,
+  },
+  PreferenceList: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  created: {
+    type: Date,
+  },
+  date: {
+    type: String,
+  },
+});
+
+const BuyerRentie = mongoose.model('buyerrentie', BuyerRentieSchema);
+
 module.exports = {
   BuyerSeller,
   BuyerSellerOTP,
   SellerPost,
+  BuyerRentie,
 };

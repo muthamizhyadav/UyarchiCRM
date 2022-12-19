@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { BuyerSeller, BuyerSellerOTP, SellerPost } = require('../models/BuyerSeller.model');
+const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie } = require('../models/BuyerSeller.model');
 const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 
@@ -10,6 +10,14 @@ const createBuyerSeller = async (body, otp) => {
   const buyerSeller = await BuyerSeller.create(values);
   await BuyerSellerOTP.create(values1);
   return buyerSeller;
+};
+
+// Login With Mail
+
+const LoginWithmail = async (body, otp) => {
+  let values = { ...body, ...{ Otp: otp, created: moment() } };
+  let OTP = await BuyerSellerOTP.create(values);
+  return OTP;
 };
 
 const verifyOtp = async (body) => {
@@ -36,10 +44,12 @@ const createSellerPost = async (body, userId) => {
   return sellerPost;
 };
 
-const LoginWithmail = async (body, otp) => {
-  let values = { ...body, ...{ Otp: otp, created: moment() } };
-  let OTP = await BuyerSellerOTP.create(values);
-  return OTP;
+// create BuyerRentiee
+
+const createBuyerRentiee = async (body, userId) => {
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
+  let BR = await BuyerRentie.create(values);
+  return BR;
 };
 
 module.exports = {
@@ -47,4 +57,5 @@ module.exports = {
   verifyOtp,
   createSellerPost,
   LoginWithmail,
+  createBuyerRentiee,
 };

@@ -10,4 +10,5 @@ router
   .route('/createSellerPost')
   .post(SellerBuyerAuth, sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
 router.route('/login').post(BuyerSellerController.LoginWithmail);
+router.route('/buyer/render').post(SellerBuyerAuth, BuyerSellerController.createBuyerRentiee);
 module.exports = router;
