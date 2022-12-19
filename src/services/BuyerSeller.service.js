@@ -13,12 +13,12 @@ const createBuyerSeller = async (body, otp) => {
 };
 
 const verifyOtp = async (body) => {
-  const { mobile, otp } = body;
-  let check = await BuyerSeller.findOne({ mobile: mobile });
+  const { email, otp } = body;
+  let check = await BuyerSeller.findOne({ email: email });
   if (!check) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Number Not Registered');
   }
-  let otpCheck = await BuyerSellerOTP.findOne({ mobile: mobile, Otp: otp, active: true });
+  let otpCheck = await BuyerSellerOTP.findOne({ email: email, Otp: otp, active: true });
   if (!otpCheck) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
   }
@@ -37,8 +37,7 @@ const createSellerPost = async (body, userId) => {
 };
 
 const LoginWithmail = async (body, otp) => {
-  const { email } = body;
-  let values = { ...body, ...{ Otp: otp } };
+  let values = { ...body, ...{ Otp: otp, created: moment() } };
   let OTP = await BuyerSellerOTP.create(values);
   return OTP;
 };

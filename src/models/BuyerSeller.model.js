@@ -60,6 +60,9 @@ const BuyerSellerOTPSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  created: {
+    type: Date,
+  },
   active: {
     type: Boolean,
     default: true,
