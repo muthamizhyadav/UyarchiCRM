@@ -18,7 +18,7 @@ const verifyOtp = async (body) => {
   if (!check) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Number Not Registered');
   }
-  let otpCheck = await BuyerSellerOTP.findOne({ email: email, Otp: otp, active: true });
+  let otpCheck = await BuyerSellerOTP.findOne({ email: email, Otp: otp, active: true }).sort({ created: -1 });
   if (!otpCheck) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
   }
