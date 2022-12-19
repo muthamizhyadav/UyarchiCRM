@@ -115,7 +115,10 @@ const sellerPostSchema = new mongoose.Schema({
   userId: {
     type: String,
   },
-  home: {
+  homeOrflat: {
+    type: String,
+  },
+  homeFlatType: {
     type: String,
   },
   flat: {
