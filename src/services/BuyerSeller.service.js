@@ -61,6 +61,27 @@ const SearchHouseFlatByBuyer_Or_Rentiee = async (id) => {
   return id;
 };
 
+const DisplayAvailable_HouseOr_Flat = async (query) => {
+  console.log(query);
+  let location = { active: true };
+  let loc = query.location;
+  if (loc != null && loc != '') {
+    location = { location: { $eq: loc } };
+  }
+  let values = await SellerPost.aggregate([
+    { $match: { pineCode: { $ne: null } } },
+    {
+      $match: { $and: [location] },
+    },
+  ]);
+  return values;
+};
+
+const AutoMatches_ForBuyer_rentiee = async () => {
+  let values = await BuyerRentie.aggregate([{ $match: { _id: { $ne: null } } }]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -68,4 +89,6 @@ module.exports = {
   LoginWithmail,
   createBuyerRentiee,
   SearchHouseFlatByBuyer_Or_Rentiee,
+  DisplayAvailable_HouseOr_Flat,
+  AutoMatches_ForBuyer_rentiee,
 };

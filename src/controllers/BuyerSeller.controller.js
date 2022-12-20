@@ -66,6 +66,17 @@ const SearchHouseFlatByBuyer_Or_Rentiee = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const DisplayAvailable_HouseOr_Flat = catchAsync(async (req, res) => {
+  let querydata = req.query;
+  const data = await buyersellerService.DisplayAvailable_HouseOr_Flat(querydata);
+  res.send(data);
+});
+
+const AutoMatches_ForBuyer_rentiee = catchAsync(async (req, res) => {
+  const data = await buyersellerService.AutoMatches_ForBuyer_rentiee();
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -73,4 +84,6 @@ module.exports = {
   LoginWithmail,
   createBuyerRentiee,
   SearchHouseFlatByBuyer_Or_Rentiee,
+  DisplayAvailable_HouseOr_Flat,
+  AutoMatches_ForBuyer_rentiee,
 };

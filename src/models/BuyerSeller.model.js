@@ -160,6 +160,25 @@ const sellerPostSchema = new mongoose.Schema({
   date: {
     type: String,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  BHKType: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  floorNo: {
+    type: Number,
+  },
+  noOfFloor: {
+    type: Number,
+  },
+  udsArea: {
+    type: String,
+  },
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
