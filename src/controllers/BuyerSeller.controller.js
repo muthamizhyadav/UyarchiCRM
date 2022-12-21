@@ -99,6 +99,19 @@ const createBuyer = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+// create Admin
+
+const createAdmin = catchAsync(async (req, res) => {
+  const data = await buyersellerService.createAdmin(req.body);
+  res.send(data);
+});
+
+// admin Login
+
+const AdminLogin = catchAsync(async (req, res) => {
+  const data = await buyersellerService.AdminLogin(req.body);
+  res.send(data);
+});
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -110,4 +123,6 @@ module.exports = {
   AutoMatches_ForBuyer_rentiee,
   createBuyer,
   verifyOtpBuyer,
+  createAdmin,
+  AdminLogin,
 };

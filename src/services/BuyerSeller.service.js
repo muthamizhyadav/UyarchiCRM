@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie, Buyer } = require('../models/BuyerSeller.model');
 const moment = require('moment');
 const ApiError = require('../utils/ApiError');
-
+const Admin = require('../models/RealEstate.Admin.model');
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
@@ -118,6 +118,23 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
   return values;
 };
 
+// create Admin Register
+
+const createAdmin = async (body) => {
+  let values = { ...body, ...{ created: moment() } };
+  const create = await Admin.create(values);
+  return create;
+};
+
+const AdminLogin = async (body) => {
+  let { mobileNumber } = body;
+  let values = await Admin.findOne({ mobileNumber: mobileNumber });
+  if (!values) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Not Registered');
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -129,4 +146,6 @@ module.exports = {
   AutoMatches_ForBuyer_rentiee,
   createBuyer,
   verifyOtpBuyer,
+  createAdmin,
+  AdminLogin,
 };

@@ -16,4 +16,6 @@ router.route('/DisplayAvailable/HouseOr/Flat').get(BuyerSellerController.Display
 router.route('/AutoMatches/ForBuyer/rentiee').get(SellerBuyerAuth, BuyerSellerController.AutoMatches_ForBuyer_rentiee);
 router.route('/createBuyer').post(BuyerSellerController.createBuyer);
 router.route('/verifyOtpBuyer').post(BuyerSellerController.verifyOtpBuyer);
+router.route('/createAdmin').post(BuyerSellerController.createAdmin);
+router.route('/AdminLogin').post(BuyerSellerController.AdminLogin);
 module.exports = router;
