@@ -122,6 +122,10 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
 
 const createAdmin = async (body) => {
   let values = { ...body, ...{ created: moment() } };
+  const values1 = await Admin.findOne({ mobileNumber: body.mobileNumber });
+  if (values1) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Already Registered');
+  }
   const create = await Admin.create(values);
   return create;
 };
