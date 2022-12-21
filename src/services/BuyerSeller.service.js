@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie } = require('../models/BuyerSeller.model');
+const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie, Buyer } = require('../models/BuyerSeller.model');
 const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 
@@ -8,6 +8,15 @@ const createBuyerSeller = async (body, otp) => {
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
   let values1 = { Otp: otp, email: email, mobile: mobile };
   const buyerSeller = await BuyerSeller.create(values);
+  await BuyerSellerOTP.create(values1);
+  return buyerSeller;
+};
+
+const createBuyer = async (body, otp) => {
+  const { email, mobile } = body;
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
+  let values1 = { Otp: otp, email: email, mobile: mobile };
+  const buyerSeller = await Buyer.create(values);
   await BuyerSellerOTP.create(values1);
   return buyerSeller;
 };
@@ -31,6 +40,21 @@ const verifyOtp = async (body) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
   }
   check = await BuyerSeller.findByIdAndUpdate({ _id: check._id }, { verified: true }, { new: true });
+  otpCheck = await BuyerSellerOTP.findByIdAndUpdate({ _id: otpCheck._id }, { active: false }, { new: true });
+  return check;
+};
+
+const verifyOtpBuyer = async (body) => {
+  const { email, otp } = body;
+  let check = await Buyer.findOne({ email: email });
+  if (!check) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Number Not Registered');
+  }
+  let otpCheck = await BuyerSellerOTP.findOne({ email: email, Otp: otp, active: true }).sort({ created: -1 });
+  if (!otpCheck) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
+  }
+  check = await Buyer.findByIdAndUpdate({ _id: check._id }, { verified: true }, { new: true });
   otpCheck = await BuyerSellerOTP.findByIdAndUpdate({ _id: otpCheck._id }, { active: false }, { new: true });
   return check;
 };
@@ -77,8 +101,20 @@ const DisplayAvailable_HouseOr_Flat = async (query) => {
   return values;
 };
 
-const AutoMatches_ForBuyer_rentiee = async () => {
-  let values = await BuyerRentie.aggregate([{ $match: { _id: { $ne: null } } }]);
+const AutoMatches_ForBuyer_rentiee = async (userId) => {
+  console.log(userId);
+  let values = await BuyerRentie.aggregate([
+    { $match: { userId: { $eq: userId } } },
+
+    {
+      $lookup: {
+        from: 'sellerposts',
+        let: { locations: '$PrefferedCities' },
+        pipeline: [{ $match: { $expr: { $or: [{ $eq: ['$location', '$$locations'] }] } } }],
+        as: 'sellerPost',
+      },
+    },
+  ]);
   return values;
 };
 
@@ -91,4 +127,6 @@ module.exports = {
   SearchHouseFlatByBuyer_Or_Rentiee,
   DisplayAvailable_HouseOr_Flat,
   AutoMatches_ForBuyer_rentiee,
+  createBuyer,
+  verifyOtpBuyer,
 };

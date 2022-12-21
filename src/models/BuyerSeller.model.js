@@ -4,6 +4,47 @@ const { v4 } = require('uuid');
 
 // seller and buyer register Schema
 
+const BuyerSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  userName: {
+    type: String,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  mobile: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  Type: {
+    type: String,
+  },
+  active: {
+    type: String,
+  },
+  created: {
+    type: Date,
+  },
+  date: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+});
+
+const Buyer = mongoose.model('buyers', BuyerSchema);
+
 const BuyerSellerSchema = new mongoose.Schema({
   _id: {
     type: String,
@@ -43,7 +84,7 @@ const BuyerSellerSchema = new mongoose.Schema({
   },
 });
 
-const BuyerSeller = mongoose.model('buyerseller', BuyerSellerSchema);
+const BuyerSeller = mongoose.model('buyer', BuyerSellerSchema);
 
 // seller and buyer Otp Schema
 
@@ -250,4 +291,5 @@ module.exports = {
   BuyerSellerOTP,
   SellerPost,
   BuyerRentie,
+  Buyer,
 };

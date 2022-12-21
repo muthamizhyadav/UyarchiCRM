@@ -3,7 +3,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const buyersellerService = require('../services/BuyerSeller.service');
 const mailService = require('../services/email.service');
-const { BuyerSeller, BuyerSellerOTP } = require('../models/BuyerSeller.model');
+const { BuyerSeller, BuyerSellerOTP, Buyer } = require('../models/BuyerSeller.model');
 const tokenService = require('../services/token.service');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
@@ -25,6 +25,12 @@ const verifyOtp = catchAsync(async (req, res) => {
   const data = await buyersellerService.verifyOtp(req.body);
   const tokens = await tokenService.generateAuthTokens(data);
   res.send({ data: data, tokens: tokens });
+});
+
+const verifyOtpBuyer = catchAsync(async (req, res) => {
+  const data = await buyersellerService.verifyOtpBuyer(req.body);
+  const token = await tokenService.generateAuthTokens(data);
+  res.send({ data: data, tokens: token });
 });
 
 const createSellerPost = catchAsync(async (req, res) => {
@@ -73,7 +79,23 @@ const DisplayAvailable_HouseOr_Flat = catchAsync(async (req, res) => {
 });
 
 const AutoMatches_ForBuyer_rentiee = catchAsync(async (req, res) => {
-  const data = await buyersellerService.AutoMatches_ForBuyer_rentiee();
+  let userId = req.userId;
+  const data = await buyersellerService.AutoMatches_ForBuyer_rentiee(userId);
+  res.send(data);
+});
+
+const createBuyer = catchAsync(async (req, res) => {
+  const { email, mobile } = req.body;
+  const checkemail = await Buyer.findOne({ email: email });
+  if (checkemail) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
+  }
+  const checkmobile = await Buyer.findOne({ mobile: mobile });
+  if (checkmobile) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
+  }
+  let values = await mailService.sendEmail(req.body.email);
+  const data = await buyersellerService.createBuyer(req.body, values.otp);
   res.send(data);
 });
 
@@ -86,4 +108,6 @@ module.exports = {
   SearchHouseFlatByBuyer_Or_Rentiee,
   DisplayAvailable_HouseOr_Flat,
   AutoMatches_ForBuyer_rentiee,
+  createBuyer,
+  verifyOtpBuyer,
 };
