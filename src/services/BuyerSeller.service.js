@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie, Buyer } = require('../models/BuyerSeller.model');
+const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie, Buyer, PropertLikes } = require('../models/BuyerSeller.model');
 const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
@@ -207,8 +207,13 @@ const BuyerLike_Property = async (id, userId) => {
   if (!like) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Property Not Found');
   }
-  like = await SellerPost.updateMany({ _id: id }, { $push: { like: userId } });
-  return { like: 'Like Submited' };
+  let likes = await PropertLikes.findOne({ userId: userId, propertyId: id });
+  if (likes) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Already Like Submitted');
+  }
+  let data = { userId: userId, propertyId: id, created: moment(), status: 'Liked' };
+  let values = await PropertLikes.create(data);
+  return values;
 };
 
 module.exports = {

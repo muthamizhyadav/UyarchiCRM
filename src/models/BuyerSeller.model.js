@@ -297,10 +297,36 @@ const BuyerRentieSchema = mongoose.Schema({
 
 const BuyerRentie = mongoose.model('buyerrentie', BuyerRentieSchema);
 
+const PropertLikesSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  userId: {
+    type: String,
+  },
+  propertyId: {
+    type: String,
+  },
+  status: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  created: {
+    type: Date,
+  },
+});
+
+const PropertLikes = mongoose.model('propertylikes', PropertLikesSchema);
+
 module.exports = {
   BuyerSeller,
   BuyerSellerOTP,
   SellerPost,
   BuyerRentie,
   Buyer,
+  PropertLikes,
 };
