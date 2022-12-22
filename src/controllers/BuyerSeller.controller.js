@@ -118,6 +118,11 @@ const getSellerRenter_POST_ForAdmin = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const ApproveAndReject = catchAsync(async (req, res) => {
+  const data = await buyersellerService.ApproveAndReject(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -132,4 +137,5 @@ module.exports = {
   createAdmin,
   AdminLogin,
   getSellerRenter_POST_ForAdmin,
+  ApproveAndReject,
 };

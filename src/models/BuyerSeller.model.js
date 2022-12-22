@@ -220,6 +220,10 @@ const sellerPostSchema = new mongoose.Schema({
   udsArea: {
     type: String,
   },
+  propStatus: {
+    type: String,
+    default: 'Pending',
+  },
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
@@ -271,6 +275,10 @@ const BuyerRentieSchema = mongoose.Schema({
   },
   PreferenceList: {
     type: String,
+  },
+  propStatus: {
+    type: String,
+    default: 'Pending',
   },
   active: {
     type: Boolean,

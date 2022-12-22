@@ -159,6 +159,15 @@ const getSellerRenter_POST_ForAdmin = async (page) => {
   return { values: data, total: total.length };
 };
 
+const ApproveAndReject = async (id, body) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -173,4 +182,5 @@ module.exports = {
   createAdmin,
   AdminLogin,
   getSellerRenter_POST_ForAdmin,
+  ApproveAndReject,
 };
