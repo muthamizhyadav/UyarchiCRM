@@ -34,7 +34,7 @@ const LoginWithmail = async (body, otp) => {
 const LoginWithmailBuyer = async (body, otp) => {
   let values = { ...body, ...{ Otp: otp, created: moment() } };
   let OTP = await BuyerSellerOTP.create(values);
-  return OTP;
+  return { active: OTP.active, email: OTP.email, created: OTP.created, _id: OTP._id };
 };
 
 const verifyOtp = async (body) => {
