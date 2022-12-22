@@ -136,6 +136,11 @@ const ApproveAndReject = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getApprover_Property = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getApprover_Property(req.params.page);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -152,4 +157,5 @@ module.exports = {
   getSellerRenter_POST_ForAdmin,
   ApproveAndReject,
   LoginWithmailBuyer,
+  getApprover_Property,
 };

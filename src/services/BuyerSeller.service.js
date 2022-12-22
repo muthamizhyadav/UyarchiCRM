@@ -176,6 +176,32 @@ const ApproveAndReject = async (id, body) => {
   return values;
 };
 
+const getApprover_Property = async (page) => {
+  let values = await SellerPost.aggregate([
+    {
+      $match: { propStatus: 'Approved' },
+    },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  let total = await SellerPost.aggregate([
+    {
+      $match: { propStatus: 'Approved' },
+    },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  return { values: values, total: total.length };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -192,4 +218,5 @@ module.exports = {
   getSellerRenter_POST_ForAdmin,
   ApproveAndReject,
   LoginWithmailBuyer,
+  getApprover_Property,
 };
