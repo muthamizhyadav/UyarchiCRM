@@ -18,4 +18,5 @@ router.route('/createBuyer').post(BuyerSellerController.createBuyer);
 router.route('/verifyOtpBuyer').post(BuyerSellerController.verifyOtpBuyer);
 router.route('/createAdmin').post(BuyerSellerController.createAdmin);
 router.route('/AdminLogin').post(BuyerSellerController.AdminLogin);
+router.route('/getSellerRenter/POST/ForAdmin').get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
 module.exports = router;

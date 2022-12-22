@@ -139,6 +139,15 @@ const AdminLogin = async (body) => {
   return values;
 };
 
+const getSellerRenter_POST_ForAdmin = async () => {
+  const data = await SellerPost.aggregate([
+    {
+      $match: { active: true },
+    },
+  ]);
+  return data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -152,4 +161,5 @@ module.exports = {
   verifyOtpBuyer,
   createAdmin,
   AdminLogin,
+  getSellerRenter_POST_ForAdmin,
 };

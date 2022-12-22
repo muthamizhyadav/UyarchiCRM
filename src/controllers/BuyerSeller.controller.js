@@ -112,6 +112,12 @@ const AdminLogin = catchAsync(async (req, res) => {
   const data = await buyersellerService.AdminLogin(req.body);
   res.send(data);
 });
+
+const getSellerRenter_POST_ForAdmin = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getSellerRenter_POST_ForAdmin();
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -125,4 +131,5 @@ module.exports = {
   verifyOtpBuyer,
   createAdmin,
   AdminLogin,
+  getSellerRenter_POST_ForAdmin,
 };
