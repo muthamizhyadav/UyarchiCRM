@@ -208,7 +208,7 @@ const BuyerLike_Property = async (id, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Property Not Found');
   }
   like = await SellerPost.updateMany({ _id: id }, { $push: { like: userId } });
-  return like;
+  return { like: 'Like Submited' };
 };
 
 module.exports = {
