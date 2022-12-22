@@ -141,6 +141,9 @@ const sellerPostSchema = new mongoose.Schema({
   RentPrefer: {
     type: String,
   },
+  like: {
+    type: String,
+  },
   IfCommercial: {
     type: String,
   },

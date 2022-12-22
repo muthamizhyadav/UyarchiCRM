@@ -202,6 +202,15 @@ const getApprover_Property = async (page) => {
   return { values: values, total: total.length };
 };
 
+const BuyerLike_Property = async (id, userId) => {
+  let like = await SellerPost.findById(id);
+  if (!like) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Property Not Found');
+  }
+  like = await SellerPost.updateMany({ _id: id }, { $push: { like: userId } });
+  return like;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -219,4 +228,5 @@ module.exports = {
   ApproveAndReject,
   LoginWithmailBuyer,
   getApprover_Property,
+  BuyerLike_Property,
 };

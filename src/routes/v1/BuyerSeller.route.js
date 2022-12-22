@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BuyerSellerController = require('../../controllers/BuyerSeller.controller');
 const SellerBuyerAuth = require('../../controllers/buyerSellerAuth');
+const BuyerAuth = require('../../controllers/BuyerAuth');
 const sellerBuyrimg = require('../../middlewares/buyrSeller');
 
 router.route('/Register').post(BuyerSellerController.createBuyerSeller);
@@ -22,4 +23,5 @@ router.route('/getSellerRenter/POST/ForAdmin/:page').get(BuyerSellerController.g
 router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject);
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
 router.route('/getApprover/Property/:page').get(BuyerSellerController.getApprover_Property);
+router.route('/BuyerLike/Property/:id').get(BuyerAuth, BuyerSellerController.BuyerLike_Property);
 module.exports = router;

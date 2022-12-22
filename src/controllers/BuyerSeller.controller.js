@@ -141,6 +141,12 @@ const getApprover_Property = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const BuyerLike_Property = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.BuyerLike_Property(req.params.id, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -158,4 +164,5 @@ module.exports = {
   ApproveAndReject,
   LoginWithmailBuyer,
   getApprover_Property,
+  BuyerLike_Property,
 };
