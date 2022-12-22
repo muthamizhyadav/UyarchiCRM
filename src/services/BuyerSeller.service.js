@@ -139,13 +139,24 @@ const AdminLogin = async (body) => {
   return values;
 };
 
-const getSellerRenter_POST_ForAdmin = async () => {
+const getSellerRenter_POST_ForAdmin = async (page) => {
   const data = await SellerPost.aggregate([
     {
       $match: { active: true },
     },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
   ]);
-  return data;
+  const total = await SellerPost.aggregate([
+    {
+      $match: { active: true },
+    },
+  ]);
+  return { values: data, total: total.length };
 };
 
 module.exports = {

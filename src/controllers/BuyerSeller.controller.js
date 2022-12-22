@@ -114,7 +114,7 @@ const AdminLogin = catchAsync(async (req, res) => {
 });
 
 const getSellerRenter_POST_ForAdmin = catchAsync(async (req, res) => {
-  const data = await buyersellerService.getSellerRenter_POST_ForAdmin();
+  const data = await buyersellerService.getSellerRenter_POST_ForAdmin(req.params.page);
   res.send(data);
 });
 
