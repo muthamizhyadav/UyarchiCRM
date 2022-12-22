@@ -29,6 +29,14 @@ const LoginWithmail = async (body, otp) => {
   return OTP;
 };
 
+// Login With Mail For Buyer
+
+const LoginWithmailBuyer = async (body, otp) => {
+  let values = { ...body, ...{ Otp: otp, created: moment() } };
+  let OTP = await BuyerSellerOTP.create(values);
+  return OTP;
+};
+
 const verifyOtp = async (body) => {
   const { email, otp } = body;
   let check = await BuyerSeller.findOne({ email: email });
@@ -183,4 +191,5 @@ module.exports = {
   AdminLogin,
   getSellerRenter_POST_ForAdmin,
   ApproveAndReject,
+  LoginWithmailBuyer,
 };

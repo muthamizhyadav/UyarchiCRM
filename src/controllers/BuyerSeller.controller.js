@@ -59,6 +59,19 @@ const LoginWithmail = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+// login With Mail For Buyer
+
+const LoginWithmailBuyer = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  let val = await Buyer.findOne({ email: email, verified: true });
+  if (!val) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Email Not Registered');
+  }
+  let values = await mailService.sendEmail(email);
+  const data = await buyersellerService.LoginWithmailBuyer(req.body, values.otp);
+  res.send(data);
+});
+
 const createBuyerRentiee = catchAsync(async (req, res) => {
   let userId = req.userId;
   const data = await buyersellerService.createBuyerRentiee(req.body, userId);
@@ -138,4 +151,5 @@ module.exports = {
   AdminLogin,
   getSellerRenter_POST_ForAdmin,
   ApproveAndReject,
+  LoginWithmailBuyer,
 };
