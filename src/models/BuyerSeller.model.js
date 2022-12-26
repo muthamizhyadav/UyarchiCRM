@@ -220,6 +220,13 @@ const sellerPostSchema = new mongoose.Schema({
   noOfFloor: {
     type: Number,
   },
+  propertyExpired: {
+    type: Boolean,
+    default: false,
+  },
+  propertyExpiredDate: {
+    type: Date,
+  },
   udsArea: {
     type: String,
   },
