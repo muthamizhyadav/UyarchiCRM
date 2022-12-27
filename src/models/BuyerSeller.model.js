@@ -208,6 +208,9 @@ const sellerPostSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  expiredDate: {
+    type: String,
+  },
   BHKType: {
     type: String,
   },

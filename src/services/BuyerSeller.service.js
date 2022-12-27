@@ -73,7 +73,13 @@ const createSellerPost = async (body, userId) => {
   let expiredDate = moment().add(6, 'days');
   let values = {
     ...body,
-    ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId, propertyExpiredDate: expiredDate },
+    ...{
+      created: moment(),
+      date: moment().format('YYYY-MM-DD'),
+      userId: userId,
+      propertyExpiredDate: expiredDate,
+      expiredDate: moment().format('YYYY-MM-DD'),
+    },
   };
   const sellerPost = await SellerPost.create(values);
   return sellerPost;
@@ -169,7 +175,6 @@ const getSellerRenter_POST_ForAdmin = async (page) => {
   ]);
   return { values: data, total: total.length };
 };
-
 const ApproveAndReject = async (id, body) => {
   let values = await SellerPost.findById(id);
   if (!values) {
