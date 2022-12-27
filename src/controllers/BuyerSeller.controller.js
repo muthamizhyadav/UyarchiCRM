@@ -147,6 +147,18 @@ const BuyerLike_Property = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const UpdateSellerPost = catchAsync(async (req, res) => {
+  const data = await buyersellerService.UpdateSellerPost(req.params.id, req.body);
+  if (req.files) {
+    data.image = [];
+    req.files.forEach(function (files, index, arr) {
+      data.image.push('images/buyrSeller/' + files.filename);
+    });
+  }
+  await data.save();
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -165,4 +177,5 @@ module.exports = {
   LoginWithmailBuyer,
   getApprover_Property,
   BuyerLike_Property,
+  UpdateSellerPost,
 };

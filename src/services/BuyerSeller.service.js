@@ -78,7 +78,7 @@ const createSellerPost = async (body, userId) => {
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
       propertyExpiredDate: expiredDate,
-      expiredDate: moment().format('YYYY-MM-DD'),
+      expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
   };
   const sellerPost = await SellerPost.create(values);
@@ -223,6 +223,15 @@ const BuyerLike_Property = async (id, userId) => {
   return values;
 };
 
+const UpdateSellerPost = async (id, updatebody) => {
+  let sellerpost = await SellerPost.findById(id);
+  if (!sellerpost) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No Post Available');
+  }
+  sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
+  return sellerpost;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -241,4 +250,5 @@ module.exports = {
   LoginWithmailBuyer,
   getApprover_Property,
   BuyerLike_Property,
+  UpdateSellerPost,
 };
