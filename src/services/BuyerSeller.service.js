@@ -184,9 +184,63 @@ const ApproveAndReject = async (id, body) => {
 };
 
 const getApprover_Property = async (page) => {
+  let today = moment().toDate();
   let values = await SellerPost.aggregate([
     {
       $match: { propStatus: 'Approved' },
+    },
+    {
+      $project: {
+        _id: 1,
+        AdditionalDetails: 1,
+        image: 1,
+        active: 1,
+        propertyExpired: 1,
+        propStatus: 1,
+        HouseOrCommercialType: 1,
+        propertType: 1,
+        ageOfBuilding: 1,
+        BHKType: 1,
+        furnishingStatus: 1,
+        bathRoomCount: 1,
+        landSize: 1,
+        noOfFloor: 1,
+        videos: 1,
+        floorNo: 1,
+        IfCommercial: 1,
+        Type: 1,
+        BuildingName: 1,
+        BuildedSize: 1,
+        buildingDirection: 1,
+        discription: 1,
+        availability: 1,
+        RentPrefer: 1,
+        Address: 1,
+        pineCode: 1,
+        city: 1,
+        locality: 1,
+        parkingFacilities: 1,
+        bathRoomType: 1,
+        balconyCount: 1,
+        roomType: 1,
+        floorType: 1,
+        MonthlyRentFrom: 1,
+        MonthlyRentTo: 1,
+        depositeAmount: 1,
+        periodOfRentFrom: 1,
+        periodOfRentTo: 1,
+        created: 1,
+        date: 1,
+        propertyExpiredDate: 1,
+        expiredDate: 1,
+        status: {
+          $cond: {
+            if: { $gt: [today, '$propertyExpiredDate'] },
+            then: 'Expired',
+            else: 'Pending',
+          },
+        },
+      },
     },
     {
       $skip: 10 * page,
