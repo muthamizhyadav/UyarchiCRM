@@ -125,6 +125,9 @@ const sellerPostSchema = new mongoose.Schema({
   pineCode: {
     type: Number,
   },
+  BuildingName: {
+    type: String,
+  },
   Type: {
     // type like seller render
     type: String,
@@ -132,10 +135,19 @@ const sellerPostSchema = new mongoose.Schema({
   propertType: {
     type: String,
   },
+  availability: {
+    type: String,
+  },
   HouseOrCommercialType: {
     type: String,
   },
-  MonthlyRent: {
+  MonthlyRentFrom: {
+    type: Number,
+  },
+  MonthlyRentTo: {
+    type: Number,
+  },
+  depositeAmount: {
     type: Number,
   },
   RentPrefer: {
@@ -180,8 +192,17 @@ const sellerPostSchema = new mongoose.Schema({
   parkingFacilities: {
     type: String,
   },
-  bathRoom: {
+  bathRoomType: {
     type: String,
+  },
+  bathRoomCount: {
+    type: Number,
+  },
+  balconyCount: {
+    type: String,
+  },
+  AdditionalDetails: {
+    type: Array,
   },
   image: {
     type: Array,
@@ -189,7 +210,13 @@ const sellerPostSchema = new mongoose.Schema({
   videos: {
     type: String,
   },
+  discription: {
+    type: String,
+  },
   landSize: {
+    type: String,
+  },
+  BuildedSize: {
     type: String,
   },
   squareFT: {
@@ -231,6 +258,24 @@ const sellerPostSchema = new mongoose.Schema({
     type: Date,
   },
   udsArea: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  periodOfRentFrom: {
+    type: String,
+  },
+  periodOfRentTo: {
+    type: String,
+  },
+  locality: {
+    type: String,
+  },
+  roomType: {
+    type: String,
+  },
+  floorType: {
     type: String,
   },
   propStatus: {
