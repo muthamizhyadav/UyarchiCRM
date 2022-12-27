@@ -77,8 +77,8 @@ const createSellerPost = async (body, userId) => {
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
-      propertyExpiredDate: expiredDate,
-      expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
+      // propertyExpiredDate: expiredDate,
+      // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
   };
   const sellerPost = await SellerPost.create(values);
