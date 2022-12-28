@@ -199,6 +199,8 @@ const getApprover_Property = async (page, query) => {
   let BHKTypeMatch = { active: true };
   let MonthlyRentFromMatch = { active: true };
   let MonthlyRentToMatch = { active: true };
+  let HouseOrCommercialTypeMatch = { active: true };
+
   if (query.area) {
     cityMatch = { city: { $regex: query.area, $options: 'i' } };
   } else {
@@ -225,11 +227,24 @@ const getApprover_Property = async (page, query) => {
   {
     MonthlyRentFromMatch;
   }
+  if (query.HouseOrCommercialType) {
+    HouseOrCommercialTypeMatch = { HouseOrCommercialType: query.HouseOrCommercialType };
+  } else {
+    HouseOrCommercialTypeMatch;
+  }
   let today = moment().toDate();
   let values = await SellerPost.aggregate([
     {
       $match: {
-        $and: [cityMatch, propertMatch, BHKTypeMatch, MonthlyRentFromMatch, MonthlyRentToMatch, { propStatus: 'Approved' }],
+        $and: [
+          cityMatch,
+          propertMatch,
+          BHKTypeMatch,
+          MonthlyRentFromMatch,
+          MonthlyRentToMatch,
+          HouseOrCommercialTypeMatch,
+          { propStatus: 'Approved' },
+        ],
       },
     },
 
@@ -301,9 +316,18 @@ const getApprover_Property = async (page, query) => {
   ]);
   let total = await SellerPost.aggregate([
     {
-      $match: { $and: [cityMatch, propertMatch, BHKTypeMatch, { propStatus: 'Approved' }] },
+      $match: {
+        $and: [
+          cityMatch,
+          propertMatch,
+          BHKTypeMatch,
+          MonthlyRentFromMatch,
+          MonthlyRentToMatch,
+          HouseOrCommercialTypeMatch,
+          { propStatus: 'Approved' },
+        ],
+      },
     },
-
     {
       $sort: { created: -1 },
     },
