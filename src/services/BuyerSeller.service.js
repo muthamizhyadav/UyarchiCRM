@@ -155,10 +155,15 @@ const AdminLogin = async (body) => {
   return values;
 };
 
-const getSellerRenter_POST_ForAdmin = async (page) => {
+const getSellerRenter_POST_ForAdmin = async (type, page) => {
+  console.log(type)
+  let typeMatch = { active: true };
+  if (type != 'null') {
+    typeMatch = { HouseOrCommercialType: type };
+  }
   const data = await SellerPost.aggregate([
     {
-      $match: { active: true },
+      $match: { $and: [typeMatch] },
     },
     {
       $skip: 10 * page,
@@ -335,7 +340,7 @@ const BuyerLike_Property = async (id, userId) => {
   let values = await PropertLikes.create(data);
   return values;
 };
-
+// update Seller Renter Post
 const UpdateSellerPost = async (id, updatebody) => {
   let sellerpost = await SellerPost.findById(id);
   if (!sellerpost) {
