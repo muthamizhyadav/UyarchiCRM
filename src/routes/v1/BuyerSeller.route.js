@@ -19,7 +19,9 @@ router.route('/createBuyer').post(BuyerSellerController.createBuyer);
 router.route('/verifyOtpBuyer').post(BuyerSellerController.verifyOtpBuyer);
 router.route('/createAdmin').post(BuyerSellerController.createAdmin);
 router.route('/AdminLogin').post(BuyerSellerController.AdminLogin);
-router.route('/getSellerRenter/POST/ForAdmin/:type/:page').get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
+router
+  .route('/getSellerRenter/POST/ForAdmin/:type/:propType/:page')
+  .get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
 router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject);
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
 router.route('/getApprover/Property/:page').get(BuyerSellerController.getApprover_Property);

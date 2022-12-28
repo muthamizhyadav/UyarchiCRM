@@ -155,15 +155,19 @@ const AdminLogin = async (body) => {
   return values;
 };
 
-const getSellerRenter_POST_ForAdmin = async (type, page) => {
-  console.log(type)
+const getSellerRenter_POST_ForAdmin = async (type, propType, page) => {
+  console.log(type);
   let typeMatch = { active: true };
+  let proptypeMatch = { active: true };
   if (type != 'null') {
     typeMatch = { HouseOrCommercialType: type };
   }
+  if (propType != 'null') {
+    proptypeMatch = { Type: propType };
+  }
   const data = await SellerPost.aggregate([
     {
-      $match: { $and: [typeMatch] },
+      $match: { $and: [typeMatch, proptypeMatch] },
     },
     {
       $skip: 10 * page,
