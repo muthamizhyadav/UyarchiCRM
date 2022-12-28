@@ -178,7 +178,7 @@ const getSellerRenter_POST_ForAdmin = async (type, propType, page) => {
   ]);
   const total = await SellerPost.aggregate([
     {
-      $match: { active: true },
+      $match: { $and: [typeMatch, proptypeMatch] },
     },
   ]);
   return { values: data, total: total.length };
