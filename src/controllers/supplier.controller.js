@@ -116,6 +116,11 @@ const getSupplierDetails = catchAsync(async (req, res) => {
   res.send(supplier);
 });
 
+const getMapLocation = catchAsync(async (req, res) => {
+  const supplier = await supplierService.getMapLocation(req.query);
+  res.send(supplier);
+});
+
 module.exports = {
   createSupplierService,
   getAllSupplierService,
@@ -130,4 +135,5 @@ module.exports = {
   updatePasswordByIdSupplierId,
   changePasswordSupplierByIdService,
   getSupplierDetails,
+  getMapLocation,
 };

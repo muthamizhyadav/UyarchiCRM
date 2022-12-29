@@ -5,7 +5,7 @@ const TextLocal = require('../config/OTP');
 const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
 const StreaminData = require('../models/streamingDataCRM.model');
 const bcrypt = require('bcryptjs');
-
+const Axios = require('axios');
 const createSupplier = async (supplierBody) => {
   return supplier.create(supplierBody);
 };
@@ -194,6 +194,13 @@ const getSupplierDetails = async (supplierId, productId, page) => {
   return { value: values, total: total.length };
 };
 
+const getMapLocation = async (query) => {
+  let response = await Axios.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.long}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+  );
+  return response.data;
+};
+
 module.exports = {
   createSupplier,
   getAllSupplier,
@@ -208,4 +215,5 @@ module.exports = {
   updatePasswordByIdSupplierId,
   updateSupplierChangeById,
   getSupplierDetails,
+  getMapLocation,
 };
