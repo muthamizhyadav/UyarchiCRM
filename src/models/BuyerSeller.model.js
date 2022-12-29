@@ -135,6 +135,12 @@ const sellerPostSchema = new mongoose.Schema({
   propertType: {
     type: String,
   },
+  lat: {
+    type: String,
+  },
+  long: {
+    type: String,
+  },
   availability: {
     type: String,
   },
