@@ -456,6 +456,19 @@ const Login = async (body) => {
   return values;
 };
 
+const LoginWithOtp = async (body) => {
+  let verify = await StoreOtp.findOne({ otp: body.otp, active: true });
+  if (!verify) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid OTP');
+  }
+  let values = await Buyer.findOne({ mobile: verify.number, verified: true });
+  if (!values) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Vailable');
+  }
+  verify = await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -480,4 +493,5 @@ module.exports = {
   VerifyOtpRealEstate,
   createPassword,
   Login,
+  LoginWithOtp,
 };
