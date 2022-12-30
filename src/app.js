@@ -175,7 +175,7 @@ app.put('/videoupload/:id', upload, async (req, res) => {
     region: 'ap-south-1',
   });
   let params = {
-    Bucket: 'streamingupload',
+    Bucket: 'realestatevideoupload',
     Key: req.file.originalname,
     Body: req.file.buffer,
   };
