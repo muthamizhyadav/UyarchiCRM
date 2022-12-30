@@ -33,4 +33,5 @@ router
 router.route('/VideoUpload/:id').put(Video.single('video'), BuyerSellerController.VideoUpload);
 router.route('/Send-OTP').post(BuyerSellerController.getOTP);
 router.route('/VerifyOtpRealEstate').post(BuyerSellerController.VerifyOtpRealEstate);
+router.route('/createPassword/:id').put(BuyerSellerController.createPassword);
 module.exports = router;

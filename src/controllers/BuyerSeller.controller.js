@@ -198,6 +198,11 @@ const VerifyOtpRealEstate = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createPassword = catchAsync(async (req, res) => {
+  const data = await buyersellerService.createPassword(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -220,4 +225,5 @@ module.exports = {
   VideoUpload,
   getOTP,
   VerifyOtpRealEstate,
+  createPassword,
 };

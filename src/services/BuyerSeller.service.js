@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
+const bcrypt = require('bcryptjs');
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
@@ -433,6 +434,20 @@ const VerifyOtpRealEstate = async (body) => {
   return values;
 };
 
+// create password
+
+const createPassword = async (id, body) => {
+  let { password, confirmPassword } = body;
+  let values = await Buyer.findById(id);
+  if (!values || values.verified == false) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Verified');
+  }
+  const salt = await bcrypt.genSalt(10);
+  let password1 = await bcrypt.hash(confirmPassword, salt);
+  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: password1 }, { new: true });
+  return data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -455,4 +470,5 @@ module.exports = {
   VideoUpload,
   getOTP,
   VerifyOtpRealEstate,
+  createPassword,
 };
