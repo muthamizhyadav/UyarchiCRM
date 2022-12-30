@@ -427,7 +427,10 @@ const getOTP = async (body) => {
 
 const VerifyOtpRealEstate = async (body) => {
   let verify = await StoreOtp.findOne({ otp: body.otp });
-  return verify;
+  let values = await Buyer.findOne({ mobile: verify.number });
+  console.log(values);
+  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true }, { new: true });
+  return values;
 };
 
 module.exports = {
