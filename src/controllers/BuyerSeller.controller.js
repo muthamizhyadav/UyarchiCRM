@@ -203,6 +203,12 @@ const createPassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const Login = catchAsync(async (req, res) => {
+  const data = await buyersellerService.Login(req.body);
+  const token = await tokenService.generateAuthTokens(data);
+  res.send({ data: data, token: token });
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -226,4 +232,5 @@ module.exports = {
   getOTP,
   VerifyOtpRealEstate,
   createPassword,
+  Login,
 };

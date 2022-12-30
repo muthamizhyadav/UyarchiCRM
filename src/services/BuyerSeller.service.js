@@ -442,10 +442,18 @@ const createPassword = async (id, body) => {
   if (!values || values.verified == false) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Verified');
   }
-  const salt = await bcrypt.genSalt(10);
-  let password1 = await bcrypt.hash(confirmPassword, salt);
-  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: password1 }, { new: true });
+  // const salt = await bcrypt.genSalt(10);
+  // let password1 = await bcrypt.hash(confirmPassword, salt);
+  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: confirmPassword }, { new: true });
   return data;
+};
+
+const Login = async (body) => {
+  let values = await Buyer.findOne({ userName: body.userName, password: body.password });
+  if (!values) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'UserNot Available');
+  }
+  return values;
 };
 
 module.exports = {
@@ -471,4 +479,5 @@ module.exports = {
   getOTP,
   VerifyOtpRealEstate,
   createPassword,
+  Login,
 };

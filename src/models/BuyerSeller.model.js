@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
+const bcrypt = require('bcryptjs');
 
 // seller and buyer register Schema
 
@@ -16,7 +17,6 @@ const BuyerSchema = new mongoose.Schema({
   },
   mobile: {
     type: Number,
-
   },
   verified: {
     type: Boolean,
@@ -82,6 +82,18 @@ const BuyerSellerSchema = new mongoose.Schema({
 
 const BuyerSeller = mongoose.model('buyer', BuyerSellerSchema);
 
+BuyerSchema.methods.isPasswordMatch = async function (password) {
+  const user = this;
+  return bcrypt.compare(password, user.password);
+};
+
+BuyerSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+});
 // seller and buyer Otp Schema
 
 const BuyerSellerOTPSchema = new mongoose.Schema({
