@@ -1,4 +1,3 @@
-const { boolean } = require('joi');
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
 
@@ -14,13 +13,10 @@ const BuyerSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
   },
   mobile: {
     type: Number,
-    required: true,
-    unique: true,
+
   },
   verified: {
     type: Boolean,
@@ -56,12 +52,12 @@ const BuyerSellerSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   mobile: {
     type: Number,
     required: true,
-    unique: true,
+    // unique: true,
   },
   verified: {
     type: Boolean,

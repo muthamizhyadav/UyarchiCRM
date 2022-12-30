@@ -102,14 +102,14 @@ const AutoMatches_ForBuyer_rentiee = catchAsync(async (req, res) => {
 const createBuyer = catchAsync(async (req, res) => {
   const { email, mobile } = req.body;
   const checkemail = await Buyer.findOne({ email: email });
-  if (checkemail) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
-  }
-  const checkmobile = await Buyer.findOne({ mobile: mobile });
-  if (checkmobile) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
-  }
-  let values = await mailService.sendEmail(req.body.email);
+  // if (checkemail) {
+  //   throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
+  // }
+  // const checkmobile = await Buyer.findOne({ mobile: mobile });
+  // if (checkmobile) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
+  // }
+  let values = await mailService.sendEmail(req.body.email, req.body.mobile);
   const data = await buyersellerService.createBuyer(req.body, values.otp);
   res.send(data);
 });
@@ -185,7 +185,7 @@ const VideoUpload = catchAsync(async (req, res) => {
   //   res.send({ res: 200, message: 'Success', data: data });
   // });
   // console.log(req.body);
-  res.send({message:"sucess"});
+  res.send({ message: 'sucess' });
 });
 
 module.exports = {

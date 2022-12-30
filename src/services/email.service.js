@@ -32,10 +32,11 @@ const generateOTP = () => {
 //   await transport.sendMail(msg);
 // };
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, mobile, subject, text) => {
   subject = "Don't share your otp";
   let otp = generateOTP();
-  text = `Thank you For Register With Uyarchi, Your Otp : ${otp}`;
+  let link = `http://localhost:42000/verify-mail?mobile=${mobile}`;
+  text = `Thank you For Register With Uyarchi, Click the Link To Verify Your Email : ${link}`;
   let msg = { from: config.email.from, to, subject, text, otp };
   await transport.sendMail(msg);
   return msg;
