@@ -4,7 +4,7 @@ const BuyerSellerController = require('../../controllers/BuyerSeller.controller'
 const SellerBuyerAuth = require('../../controllers/buyerSellerAuth');
 const BuyerAuth = require('../../controllers/BuyerAuth');
 const sellerBuyrimg = require('../../middlewares/buyrSeller');
-
+const Video = require('../../middlewares/videoUpload');
 router.route('/Register').post(BuyerSellerController.createBuyerSeller);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
 router
@@ -26,5 +26,8 @@ router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
 router.route('/getApprover/Property/:page').get(BuyerSellerController.getApprover_Property);
 router.route('/BuyerLike/Property/:id').get(BuyerAuth, BuyerSellerController.BuyerLike_Property);
-router.route('/Update/Seller/Post/:id').put(sellerBuyrimg.array('image'), BuyerSellerController.UpdateSellerPost);
+router
+  .route('/Update/Seller/Post/:id')
+  .put(sellerBuyrimg.fields([{ name: 'image' }]), BuyerSellerController.UpdateSellerPost);
+router.route('/VideoUpload/:id').put(Video.single('video'), BuyerSellerController.VideoUpload);
 module.exports = router;

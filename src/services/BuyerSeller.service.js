@@ -414,6 +414,11 @@ const UpdateSellerPost = async (id, updatebody) => {
   return sellerpost;
 };
 
+const VideoUpload = async (id) => {
+  let values = await SellerPost.findById(id);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -433,4 +438,5 @@ module.exports = {
   getApprover_Property,
   BuyerLike_Property,
   UpdateSellerPost,
+  VideoUpload,
 };

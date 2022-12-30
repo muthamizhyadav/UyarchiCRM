@@ -5,6 +5,8 @@ const buyersellerService = require('../services/BuyerSeller.service');
 const mailService = require('../services/email.service');
 const { BuyerSeller, BuyerSellerOTP, Buyer } = require('../models/BuyerSeller.model');
 const tokenService = require('../services/token.service');
+const fs = require('fs');
+const AWS = require('aws-sdk');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile } = req.body;
@@ -151,12 +153,39 @@ const UpdateSellerPost = catchAsync(async (req, res) => {
   const data = await buyersellerService.UpdateSellerPost(req.params.id, req.body);
   if (req.files) {
     data.image = [];
-    req.files.forEach(function (files, index, arr) {
-      data.image.push('images/buyrSeller/' + files.filename);
-    });
+    if (req.files.image !== null) {
+      req.files.image.map((e) => {
+        data.image.push('images/buyrSeller/' + e.filename);
+      });
+    }
   }
   await data.save();
   res.send(data);
+});
+
+const VideoUpload = catchAsync(async (req, res) => {
+  // const data = await buyersellerService.VideoUpload(req.params.id, req.body);
+  // AWS.config.update({
+  //   accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+  //   secretAccessKey: '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',
+  //   region: 'ap-south-1',
+  // });
+  // const s3 = new AWS.S3();
+  // console.log(req.file)
+  // const fileContent = Buffer.from(req.file.data.data, 'binary');
+  // const params = {
+  //   Bucket: 'streamingupload',
+  //   Key: req.files.data.name,
+  //   Body: fileContent,
+  // };
+  // s3.upload(params, (err, data) => {
+  //   if (err) {
+  //     throw err;
+  //   }
+  //   res.send({ res: 200, message: 'Success', data: data });
+  // });
+  // console.log(req.body);
+  res.send({message:"sucess"});
 });
 
 module.exports = {
@@ -178,4 +207,5 @@ module.exports = {
   getApprover_Property,
   BuyerLike_Property,
   UpdateSellerPost,
+  VideoUpload,
 };

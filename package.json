@@ -51,7 +51,7 @@
   "dependencies": {
     "agora": "^0.0.2",
     "agora-access-token": "^2.0.4",
-    "aws-sdk": "^2.1274.0",
+    "aws-sdk": "^2.1285.0",
     "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",

@@ -1213,10 +1213,10 @@
   "resolved" "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   "version" "1.0.5"
 
-"aws-sdk@^2.1274.0":
-  "integrity" "sha512-s6Dg2ymytzvwTeA5ZhPvw8KkWbPEBXF/B5wmJK0QfBZwDCW3xRsfvYGTJC0w2M2hYrZOzjPYICsOspcAK333Cg=="
-  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1274.0.tgz"
-  "version" "2.1274.0"
+"aws-sdk@^2.1285.0":
+  "integrity" "sha512-nuoHXeyaJ3926NRfJCR2czcnToYDFvGFmhRSihgqxo0IgY4djFy7lZ+SdhqVODNal/Fd25SRQnTrYtYoRkgbkg=="
+  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1285.0.tgz"
+  "version" "2.1285.0"
   dependencies:
     "buffer" "4.9.2"
     "events" "1.1.1"
