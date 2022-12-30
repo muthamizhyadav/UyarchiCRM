@@ -3,6 +3,8 @@ const { BuyerSeller, BuyerSellerOTP, SellerPost, BuyerRentie, Buyer, PropertLike
 const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
+const OTP = require('../config/textLocal');
+const StoreOtp = require('../models/RealEstate.Otp.model');
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
@@ -418,6 +420,15 @@ const VideoUpload = async (id) => {
   let values = await SellerPost.findById(id);
   return values;
 };
+// Otp Send
+const getOTP = async (body) => {
+  return await OTP.Otp(body);
+};
+
+const VerifyOtpRealEstate = async (body) => {
+  let verify = await StoreOtp.findOne({ otp: body.otp });
+  return verify;
+};
 
 module.exports = {
   createBuyerSeller,
@@ -439,4 +450,6 @@ module.exports = {
   BuyerLike_Property,
   UpdateSellerPost,
   VideoUpload,
+  getOTP,
+  VerifyOtpRealEstate,
 };

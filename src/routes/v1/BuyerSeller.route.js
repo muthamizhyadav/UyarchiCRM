@@ -5,6 +5,7 @@ const SellerBuyerAuth = require('../../controllers/buyerSellerAuth');
 const BuyerAuth = require('../../controllers/BuyerAuth');
 const sellerBuyrimg = require('../../middlewares/buyrSeller');
 const Video = require('../../middlewares/videoUpload');
+const { BuyerSeller } = require('../../models/BuyerSeller.model');
 router.route('/Register').post(BuyerSellerController.createBuyerSeller);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
 router
@@ -30,4 +31,6 @@ router
   .route('/Update/Seller/Post/:id')
   .put(sellerBuyrimg.fields([{ name: 'image' }]), BuyerSellerController.UpdateSellerPost);
 router.route('/VideoUpload/:id').put(Video.single('video'), BuyerSellerController.VideoUpload);
+router.route('/Send-OTP').post(BuyerSellerController.getOTP);
+router.route('/VerifyOtpRealEstate').post(BuyerSellerController.VerifyOtpRealEstate);
 module.exports = router;

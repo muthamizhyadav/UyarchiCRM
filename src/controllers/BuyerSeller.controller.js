@@ -188,6 +188,16 @@ const VideoUpload = catchAsync(async (req, res) => {
   res.send({ message: 'sucess' });
 });
 
+const getOTP = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getOTP(req.body);
+  res.send(data);
+});
+
+const VerifyOtpRealEstate = catchAsync(async (req, res) => {
+  const data = await buyersellerService.VerifyOtpRealEstate(req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -208,4 +218,6 @@ module.exports = {
   BuyerLike_Property,
   UpdateSellerPost,
   VideoUpload,
+  getOTP,
+  VerifyOtpRealEstate,
 };
