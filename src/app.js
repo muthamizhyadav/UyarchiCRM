@@ -26,6 +26,7 @@ const fileUpload = require('express-fileupload');
 const AWS = require('aws-sdk');
 var bodyParser = require('body-parser');
 const { SellerPost } = require('./models/BuyerSeller.model');
+const multer = require('multer');
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
@@ -68,6 +69,7 @@ const { SellerPost } = require('./models/BuyerSeller.model');
 // });
 // });
 // Socket Message Api's
+// app.use(fileUpload());
 app.use(express.static('public'));
 // const server = http.createServer(app);
 const io = require('socket.io')(httpServer, {
@@ -144,7 +146,7 @@ app.use(compression());
 // enable cors
 app.use(cors());
 app.options('*', cors());
-app.use(fileUpload());
+
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
@@ -152,39 +154,71 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
-app.put('/videoupload/:id', async (req, res) => {
-  console.log(req.params.id);
+// multer
+const storage = multer.memoryStorage({
+  destination: function (req, res, callback) {
+    callback(null, '');
+  },
+});
+const upload = multer({ storage }).single('video');
+
+app.put('/videoupload/:id', upload, async (req, res) => {
   let values = await SellerPost.findById(req.params.id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
   }
-  AWS.config.update({
+  let video = req.file.originalname.split('.');
+  const fileType = video[video.length - 1];
+  const s3 = new AWS.S3({
     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
     secretAccessKey: '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',
     region: 'ap-south-1',
   });
-  const s3 = new AWS.S3();
-  const fileContent = req.files.video.data;
-  console.log(fileContent);
-
-  const params = {
+  let params = {
     Bucket: 'streamingupload',
-    Key: req.files.video.name,
-    Body: fileContent,
+    Key: req.file.originalname,
+    Body: req.file.buffer,
   };
   s3.upload(params, async (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).send(err);
     }
     values = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { videos: data.Location }, { new: true });
-    console.log(data.Location);
     res.send(values);
-    // res.send({
-    //   response_code: 200,
-    //   response_message: 'Sucsess',
-    //   response_data: data,
-    // });
   });
+
+  // let values = await SellerPost.findById(req.params.id);
+  // if (!values) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
+  // }
+  // AWS.config.update({
+  //   accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+  //   secretAccessKey: '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',
+  //   region: 'ap-south-1',
+  // });
+  // const s3 = new AWS.S3();
+  // console.log(req.files);
+  // const fileContent = req.files.video.data;
+  // console.log(fileContent);
+  // const params = {
+  //   Bucket: 'streamingupload',
+  //   Key: req.files.video.name,
+  //   Body: fileContent,
+  // };
+  // s3.upload(params, async (err, data) => {
+  //   if (err) {
+  //     throw err;
+  //   }
+  //   values = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { videos: data.Location }, { new: true });
+  //   console.log(data.Location);
+  //   res.send(values);
+  // res.send({
+  //   response_code: 200,
+  //   response_message: 'Sucsess',
+  //   response_data: data,
+  // });
+  // });
+  // res.send({ message: 'working' });
 });
 // v1 api routes
 app.use('/v1', routes);
