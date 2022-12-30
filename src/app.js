@@ -176,7 +176,7 @@ app.put('/videoupload/:id', upload, async (req, res) => {
   });
   let params = {
     Bucket: 'realestatevideoupload',
-    Key: req.file.originalname,
+    Key: Date.now(),
     Body: req.file.buffer,
   };
   s3.upload(params, async (err, data) => {
