@@ -167,8 +167,8 @@ app.put('/videoupload/:id', upload, async (req, res) => {
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
   }
-  let video = req.file.originalname.split('.');
-  const fileType = video[video.length - 1];
+  // let video = req.file.originalname.split('.');
+  // const fileType = video[video.length - 1];
   const s3 = new AWS.S3({
     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
     secretAccessKey: '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',
