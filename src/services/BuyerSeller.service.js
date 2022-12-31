@@ -195,8 +195,8 @@ const ApproveAndReject = async (id, body) => {
   return values;
 };
 
-const getApprover_Property = async (page, query) => {
-  console.log(query);
+const getApprover_Property = async (page, query, userId) => {
+  console.log(userId);
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -250,7 +250,16 @@ const getApprover_Property = async (page, query) => {
         ],
       },
     },
-
+    {
+      $addFields: {
+        sssss: '$intrestedUsers.userId',
+      },
+    },
+    {
+      $addFields: {
+        aaaa: { $in: ['$sssss', [userId]] },
+      },
+    },
     {
       $sort: { created: -1 },
     },
@@ -298,6 +307,9 @@ const getApprover_Property = async (page, query) => {
         date: 1,
         propertyExpiredDate: 1,
         expiredDate: 1,
+        likes: 1,
+        sssss: 1,
+        aaaa: 1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -475,19 +487,22 @@ const giveInterest = async (id, userId) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
   let post = await SellerPost.findById(id);
-  let matchValue = await SellerPost.findOne({ intrestedUsers: { $elemMatch: { userId: userId } } });
+  let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { userId } } });
+  console.log(matchValue);
   if (!matchValue) {
     post = await SellerPost.findByIdAndUpdate(
       { _id: post._id },
       { $push: { intrestedUsers: { userId: userId } } },
       { new: true }
     );
+    await post.save();
   } else {
     post = await SellerPost.findByIdAndUpdate(
       { _id: post._id },
       { $pull: { intrestedUsers: { userId: userId } } },
       { new: true }
     );
+    await post.save();
   }
 
   return post;

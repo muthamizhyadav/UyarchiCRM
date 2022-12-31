@@ -139,7 +139,8 @@ const ApproveAndReject = catchAsync(async (req, res) => {
 });
 
 const getApprover_Property = catchAsync(async (req, res) => {
-  const data = await buyersellerService.getApprover_Property(req.params.page, req.query);
+  let userId = req.userId;
+  const data = await buyersellerService.getApprover_Property(req.params.page, req.query, userId);
   res.send(data);
 });
 
