@@ -36,4 +36,5 @@ router.route('/VerifyOtpRealEstate').post(BuyerSellerController.VerifyOtpRealEst
 router.route('/createPassword/:id').put(BuyerSellerController.createPassword);
 router.route('/Login/verified').post(BuyerSellerController.Login);
 router.route('/LoginWithOtp').post(BuyerSellerController.LoginWithOtp);
+router.route('/giveInterest/:id').get(BuyerAuth, BuyerSellerController.giveInterest);
 module.exports = router;

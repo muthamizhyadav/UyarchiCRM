@@ -215,6 +215,12 @@ const LoginWithOtp = catchAsync(async (req, res) => {
   res.send({ data: data, token: token });
 });
 
+const giveInterest = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.giveInterest(req.params.id, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -240,4 +246,5 @@ module.exports = {
   createPassword,
   Login,
   LoginWithOtp,
+  giveInterest,
 };

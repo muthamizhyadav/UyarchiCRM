@@ -167,6 +167,7 @@ const sellerPostSchema = new mongoose.Schema({
   RentPrefer: {
     type: String,
   },
+  intrestedUsers: [],
   like: {
     type: String,
   },

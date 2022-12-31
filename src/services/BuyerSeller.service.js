@@ -469,6 +469,20 @@ const LoginWithOtp = async (body) => {
   return values;
 };
 
+const giveInterest = async (id, userId) => {
+  let users = await Buyer.findById(userId);
+  if (!users) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
+  }
+  let post = await SellerPost.findById(id);
+  post = await SellerPost.findByIdAndUpdate(
+    { _id: post._id },
+    { $push: { intrestedUsers: { userId: userId } } },
+    { new: true }
+  );
+  return post;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -494,4 +508,5 @@ module.exports = {
   createPassword,
   Login,
   LoginWithOtp,
+  giveInterest,
 };

@@ -4,8 +4,9 @@ const urlencodeed = require('rawurlencode');
 const saveOtp = require('./storeOtp');
 
 const Otp = async (bodydata) => {
+  let number = parseInt(bodydata.number);
   var sender = 'txtlcl';
-  const contact = bodydata.number;
+  const contact = number;
   numbers = '91' + contact;
   apiKey = urlencode('NTgzOTZiMzY3MTQ4MzI0ODU1NmI0NDZhNDQ3NTQ5NmY=');
   sender = urlencode('UYARBZ');
