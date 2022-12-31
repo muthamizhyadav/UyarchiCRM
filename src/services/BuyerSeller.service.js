@@ -475,11 +475,21 @@ const giveInterest = async (id, userId) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
   let post = await SellerPost.findById(id);
-  post = await SellerPost.findByIdAndUpdate(
-    { _id: post._id },
-    { $push: { intrestedUsers: { userId: userId } } },
-    { new: true }
-  );
+  let matchValue = await SellerPost.findOne({ intrestedUsers: { $elemMatch: { userId: userId } } });
+  if (!matchValue) {
+    post = await SellerPost.findByIdAndUpdate(
+      { _id: post._id },
+      { $push: { intrestedUsers: { userId: userId } } },
+      { new: true }
+    );
+  } else {
+    post = await SellerPost.findByIdAndUpdate(
+      { _id: post._id },
+      { $pull: { intrestedUsers: { userId: userId } } },
+      { new: true }
+    );
+  }
+
   return post;
 };
 
