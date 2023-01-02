@@ -196,9 +196,7 @@ const ApproveAndReject = async (id, body) => {
 };
 
 const getApprover_Property = async (page, query, userId) => {
-  console.log(userId);
   let value = [userId];
-  console.log(value);
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -237,7 +235,6 @@ const getApprover_Property = async (page, query, userId) => {
   } else {
     HouseOrCommercialTypeMatch;
   }
-  let usersss = [userId];
   let today = moment().toDate();
   let values = await SellerPost.aggregate([
     {
@@ -253,12 +250,6 @@ const getApprover_Property = async (page, query, userId) => {
         ],
       },
     },
-    {
-      $addFields: { dddddd: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] } } },
-    },
-    // {
-    //   $addFields: { d: { $match: { $elemMatch: { intrestedUsers: { userId } } } } },
-    // },
     {
       $sort: { created: -1 },
     },
@@ -309,8 +300,6 @@ const getApprover_Property = async (page, query, userId) => {
         propertyExpiredDate: 1,
         expiredDate: 1,
         intrestedUsers: 1,
-        active: { $in: ['$intrestedUsers', [userId]] },
-        dddddd: 1,
         // liked: {
         //   $cond: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] }, then: true, else: false },
         // },
