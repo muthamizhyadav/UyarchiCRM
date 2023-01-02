@@ -6,6 +6,7 @@ const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 
+const Axios = require('axios');
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
@@ -312,6 +313,56 @@ const getApprover_Property = async (page, query, userId) => {
       },
     },
     {
+      $project: {
+        status: 1,
+        videos: 1,
+        floorNo: 1,
+        IfCommercial: 1,
+        Type: 1,
+        BuildingName: 1,
+        BuildedSize: 1,
+        buildingDirection: 1,
+        discription: 1,
+        availability: 1,
+        RentPrefer: 1,
+        Address: 1,
+        pineCode: 1,
+        city: 1,
+        locality: 1,
+        parkingFacilities: 1,
+        bathRoomType: 1,
+        balconyCount: 1,
+        roomType: 1,
+        floorType: 1,
+        MonthlyRentFrom: 1,
+        MonthlyRentTo: 1,
+        depositeAmount: 1,
+        periodOfRentFrom: 1,
+        periodOfRentTo: 1,
+        created: 1,
+        date: 1,
+        userId: 1,
+        propertyExpiredDate: 1,
+        expiredDate: 1,
+        intrestedUsers: 1,
+        _id: 1,
+        AdditionalDetails: 1,
+        image: 1,
+        active: 1,
+        propertyExpired: 1,
+        propStatus: 1,
+        HouseOrCommercialType: 1,
+        propertType: 1,
+        ageOfBuilding: 1,
+        BHKType: 1,
+        furnishingStatus: 1,
+        bathRoomCount: 1,
+        landSize: 1,
+        noOfFloor: 1,
+        IntrestedStatus: { $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } },
+      },
+    },
+    {
       $match: { status: { $eq: 'Pending' } },
     },
     {
@@ -392,6 +443,12 @@ const getApprover_Property = async (page, query, userId) => {
       },
     },
     {
+      $project: {
+        status: 1,
+        IntrestedStatus: { $cond: { if: { $eq: [true, ['$IntrestedStatus']] }, then: true, else: false } },
+      },
+    },
+    {
       $match: { status: { $eq: 'Pending' } },
     },
   ]);
@@ -452,7 +509,6 @@ const OTPVerify = async (body) => {
 const VerifyOtpRealEstate = async (body) => {
   let verify = await StoreOtp.findOne({ otp: body.otp });
   let values = await Buyer.findOne({ mobile: verify.number });
-  console.log(values);
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true }, { new: true });
   return values;
 };
@@ -503,6 +559,7 @@ const LoginWithOtp = async (body) => {
 
 const giveInterest = async (id, userId) => {
   let users = await Buyer.findById(userId);
+  console.log(userId);
   if (!users) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
@@ -564,6 +621,13 @@ const AdminLoginFlow = async (body) => {
   return values;
 };
 
+const getCoordinatesByAddress = async (location) => {
+  let response = await Axios.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+  );
+  return response.data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -597,4 +661,5 @@ module.exports = {
   updatePassword,
   createAdminLogin,
   AdminLoginFlow,
+  getCoordinatesByAddress,
 };

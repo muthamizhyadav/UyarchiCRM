@@ -256,6 +256,11 @@ const AdminLoginFlow = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getCoordinatesByAddress = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getCoordinatesByAddress(req.query.address);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -289,4 +294,5 @@ module.exports = {
   updatePassword,
   createAdminLogin,
   AdminLoginFlow,
+  getCoordinatesByAddress,
 };

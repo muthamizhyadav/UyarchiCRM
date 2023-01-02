@@ -45,4 +45,5 @@ router.route('/OTPVerify').post(BuyerSellerController.OTPVerify);
 router.route('/updatePassword/:id').put(BuyerSellerController.updatePassword);
 router.route('/createAdminLogin').post(BuyerSellerController.createAdminLogin);
 router.route('/AdminLoginFlow').post(BuyerSellerController.AdminLoginFlow);
+router.route('/getCoordinatesByAddress').get(BuyerSellerController.getCoordinatesByAddress);
 module.exports = router;
