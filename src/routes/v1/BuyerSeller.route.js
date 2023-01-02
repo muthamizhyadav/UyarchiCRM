@@ -38,4 +38,7 @@ router.route('/Login/verified').post(BuyerSellerController.Login);
 router.route('/LoginWithOtp').post(BuyerSellerController.LoginWithOtp);
 router.route('/giveInterest/:id').get(BuyerAuth, BuyerSellerController.giveInterest);
 router.route('/getIntrestedUsersByProperty/:id').get(BuyerSellerController.getIntrestedUsersByProperty);
+router
+  .route('/getPostedProperty/For/IndividualSeller/:page')
+  .get(BuyerAuth, BuyerSellerController.getPostedProperty_For_IndividualSeller);
 module.exports = router;

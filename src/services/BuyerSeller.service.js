@@ -503,6 +503,26 @@ const getIntrestedUsersByProperty = async (id) => {
   return users;
 };
 
+const getPostedProperty_For_IndividualSeller = async (id, page) => {
+  let values = await SellerPost.aggregate([
+    {
+      $match: { userId: id },
+    },
+    {
+      $skip: page * 10,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  let total = await SellerPost.aggregate([
+    {
+      $match: { userId: id },
+    },
+  ]);
+  return { values: values, total: total.length };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -530,4 +550,5 @@ module.exports = {
   LoginWithOtp,
   giveInterest,
   getIntrestedUsersByProperty,
+  getPostedProperty_For_IndividualSeller,
 };

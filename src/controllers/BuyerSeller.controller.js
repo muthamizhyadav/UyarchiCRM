@@ -227,6 +227,12 @@ const getIntrestedUsersByProperty = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getPostedProperty_For_IndividualSeller = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getPostedProperty_For_IndividualSeller(userId, req.params.page);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -254,4 +260,5 @@ module.exports = {
   LoginWithOtp,
   giveInterest,
   getIntrestedUsersByProperty,
+  getPostedProperty_For_IndividualSeller,
 };
