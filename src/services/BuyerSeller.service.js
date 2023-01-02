@@ -197,6 +197,8 @@ const ApproveAndReject = async (id, body) => {
 
 const getApprover_Property = async (page, query, userId) => {
   console.log(userId);
+  let value = [userId];
+  console.log(value);
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -235,6 +237,7 @@ const getApprover_Property = async (page, query, userId) => {
   } else {
     HouseOrCommercialTypeMatch;
   }
+  let usersss = [userId];
   let today = moment().toDate();
   let values = await SellerPost.aggregate([
     {
@@ -251,15 +254,11 @@ const getApprover_Property = async (page, query, userId) => {
       },
     },
     {
-      $addFields: {
-        sssss: '$intrestedUsers.userId',
-      },
+      $addFields: { dddddd: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] } } },
     },
-    {
-      $addFields: {
-        aaaa: { $in: ['$sssss', [userId]] },
-      },
-    },
+    // {
+    //   $addFields: { d: { $match: { $elemMatch: { intrestedUsers: { userId } } } } },
+    // },
     {
       $sort: { created: -1 },
     },
@@ -279,6 +278,7 @@ const getApprover_Property = async (page, query, userId) => {
         bathRoomCount: 1,
         landSize: 1,
         noOfFloor: 1,
+        IntrestedStatus: { $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } },
         videos: 1,
         floorNo: 1,
         IfCommercial: 1,
@@ -305,11 +305,15 @@ const getApprover_Property = async (page, query, userId) => {
         periodOfRentTo: 1,
         created: 1,
         date: 1,
+        userId: 1,
         propertyExpiredDate: 1,
         expiredDate: 1,
-        likes: 1,
-        sssss: 1,
-        aaaa: 1,
+        intrestedUsers: 1,
+        active: { $in: ['$intrestedUsers', [userId]] },
+        dddddd: 1,
+        // liked: {
+        //   $cond: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] }, then: true, else: false },
+        // },
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -487,21 +491,13 @@ const giveInterest = async (id, userId) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
   let post = await SellerPost.findById(id);
-  let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { userId } } });
+  let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { $eq: userId } } });
   console.log(matchValue);
   if (!matchValue) {
-    post = await SellerPost.findByIdAndUpdate(
-      { _id: post._id },
-      { $push: { intrestedUsers: { userId: userId } } },
-      { new: true }
-    );
+    post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $push: { intrestedUsers: userId } }, { new: true });
     await post.save();
   } else {
-    post = await SellerPost.findByIdAndUpdate(
-      { _id: post._id },
-      { $pull: { intrestedUsers: { userId: userId } } },
-      { new: true }
-    );
+    post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $pull: { intrestedUsers: userId } }, { new: true });
     await post.save();
   }
 
