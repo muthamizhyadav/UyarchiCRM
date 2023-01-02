@@ -33,6 +33,7 @@ const generateOTP = () => {
 // };
 
 const sendEmail = async (to, mobile, subject, text) => {
+  console.log(mobile);
   subject = "Don't share your otp";
   let otp = generateOTP();
   let link = `http://localhost:4200/#/verify-mail?mobile=${mobile}`;

@@ -18,7 +18,7 @@ const createBuyerSeller = catchAsync(async (req, res) => {
   if (checkmobile) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
   }
-  let values = await mailService.sendEmail(req.body.email);
+  let values = await mailService.sendEmail(req.body.email, mobile);
   const data = await buyersellerService.createBuyerSeller(req.body, values.otp);
   res.send(data);
 });
