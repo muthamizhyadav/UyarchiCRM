@@ -5,8 +5,6 @@ const buyersellerService = require('../services/BuyerSeller.service');
 const mailService = require('../services/email.service');
 const { BuyerSeller, BuyerSellerOTP, Buyer } = require('../models/BuyerSeller.model');
 const tokenService = require('../services/token.service');
-const fs = require('fs');
-const AWS = require('aws-sdk');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile } = req.body;
@@ -233,6 +231,21 @@ const getPostedProperty_For_IndividualSeller = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getOtpWithRegisterNumber = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getOtpWithRegisterNumber(req.body);
+  res.send(data);
+});
+
+const OTPVerify = catchAsync(async (req, res) => {
+  const data = await buyersellerService.OTPVerify(req.body);
+  res.send(data);
+});
+
+const updatePassword = catchAsync(async (req, res) => {
+  const data = await buyersellerService.updatePassword(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -261,4 +274,7 @@ module.exports = {
   giveInterest,
   getIntrestedUsersByProperty,
   getPostedProperty_For_IndividualSeller,
+  getOtpWithRegisterNumber,
+  OTPVerify,
+  updatePassword,
 };

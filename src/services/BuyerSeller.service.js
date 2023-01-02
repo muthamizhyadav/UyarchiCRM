@@ -5,7 +5,7 @@ const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
-const bcrypt = require('bcryptjs');
+
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
@@ -196,7 +196,6 @@ const ApproveAndReject = async (id, body) => {
 };
 
 const getApprover_Property = async (page, query, userId) => {
-  let value = [userId];
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -431,12 +430,40 @@ const getOTP = async (body) => {
   return await OTP.Otp(body);
 };
 
+const getOtpWithRegisterNumber = async (body) => {
+  let value = await Buyer.findOne({ mobile: body.number });
+  if (!value) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Number Not Registered');
+  }
+  return await OTP.Otp(body);
+};
+
+const OTPVerify = async (body) => {
+  let values = await StoreOtp.findOne({ otp: body.otp, active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_GATEWAY, 'Invalid OTP');
+  }
+  // await StoreOtp.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
+  let value = await Buyer.findOne({ mobile: values.number });
+  let value1 = { _id: value._id, userName: value.userName, mobile: value.mobile, email: value.email };
+  return { Message: 'otp verified successfully message', value: value1 };
+};
+
 const VerifyOtpRealEstate = async (body) => {
   let verify = await StoreOtp.findOne({ otp: body.otp });
   let values = await Buyer.findOne({ mobile: verify.number });
   console.log(values);
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true }, { new: true });
   return values;
+};
+
+const updatePassword = async (id, body) => {
+  let users = await Buyer.findById(id);
+  if (!users) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Not Found');
+  }
+  users = await Buyer.findByIdAndUpdate({ _id: id }, { password: body.password }, { new: true });
+  return { Message: 'Password Updated SuccessFully' };
 };
 
 // create password
@@ -551,4 +578,7 @@ module.exports = {
   giveInterest,
   getIntrestedUsersByProperty,
   getPostedProperty_For_IndividualSeller,
+  getOtpWithRegisterNumber,
+  OTPVerify,
+  updatePassword,
 };

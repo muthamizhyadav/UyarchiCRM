@@ -5,6 +5,7 @@ const saveOtp = require('./storeOtp');
 
 const Otp = async (bodydata) => {
   let number = parseInt(bodydata.number);
+  let numbers;
   var sender = 'txtlcl';
   const contact = number;
   numbers = '91' + contact;

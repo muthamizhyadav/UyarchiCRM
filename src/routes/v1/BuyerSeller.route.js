@@ -5,7 +5,6 @@ const SellerBuyerAuth = require('../../controllers/buyerSellerAuth');
 const BuyerAuth = require('../../controllers/BuyerAuth');
 const sellerBuyrimg = require('../../middlewares/buyrSeller');
 const Video = require('../../middlewares/videoUpload');
-const { BuyerSeller } = require('../../models/BuyerSeller.model');
 router.route('/Register').post(BuyerSellerController.createBuyerSeller);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
 router
@@ -41,4 +40,7 @@ router.route('/getIntrestedUsersByProperty/:id').get(BuyerSellerController.getIn
 router
   .route('/getPostedProperty/For/IndividualSeller/:page')
   .get(BuyerAuth, BuyerSellerController.getPostedProperty_For_IndividualSeller);
+router.route('/getOtpWithRegisterNumber').post(BuyerSellerController.getOtpWithRegisterNumber);
+router.route('/OTPVerify').post(BuyerSellerController.OTPVerify);
+router.route('/updatePassword/:id').put(BuyerSellerController.updatePassword);
 module.exports = router;
