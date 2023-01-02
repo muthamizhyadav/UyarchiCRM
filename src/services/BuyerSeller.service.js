@@ -493,6 +493,16 @@ const giveInterest = async (id, userId) => {
   return post;
 };
 
+const getIntrestedUsersByProperty = async (id) => {
+  let users = [];
+  let values = await SellerPost.findById(id);
+  for (let i = 0; i < values.intrestedUsers.length; i++) {
+    let ff = await Buyer.findById(values.intrestedUsers[i]);
+    users.push(ff);
+  }
+  return users;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -519,4 +529,5 @@ module.exports = {
   Login,
   LoginWithOtp,
   giveInterest,
+  getIntrestedUsersByProperty,
 };

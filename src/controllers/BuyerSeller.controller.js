@@ -222,6 +222,11 @@ const giveInterest = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getIntrestedUsersByProperty = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getIntrestedUsersByProperty(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -248,4 +253,5 @@ module.exports = {
   Login,
   LoginWithOtp,
   giveInterest,
+  getIntrestedUsersByProperty,
 };
