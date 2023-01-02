@@ -483,7 +483,7 @@ const createPassword = async (id, body) => {
 const Login = async (body) => {
   let values = await Buyer.findOne({ userName: body.userName, password: body.password });
   if (!values) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'UserNot Available');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
   }
   return values;
 };
@@ -550,6 +550,20 @@ const getPostedProperty_For_IndividualSeller = async (id, page) => {
   return { values: values, total: total.length };
 };
 
+const createAdminLogin = async (body) => {
+  let data = { ...body, ...{ created: moment() } };
+  let values = await Admin.create(data);
+  return values;
+};
+
+const AdminLoginFlow = async (body) => {
+  let values = await Admin.find({ userName: body.userName, password: body.password });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND);
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -581,4 +595,6 @@ module.exports = {
   getOtpWithRegisterNumber,
   OTPVerify,
   updatePassword,
+  createAdminLogin,
+  AdminLoginFlow,
 };

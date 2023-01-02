@@ -246,6 +246,16 @@ const updatePassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createAdminLogin = catchAsync(async (req, res) => {
+  const data = await buyersellerService.createAdminLogin(req.body);
+  res.send(data);
+});
+
+const AdminLoginFlow = catchAsync(async (req, res) => {
+  const data = await buyersellerService.AdminLoginFlow(req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -277,4 +287,6 @@ module.exports = {
   getOtpWithRegisterNumber,
   OTPVerify,
   updatePassword,
+  createAdminLogin,
+  AdminLoginFlow,
 };

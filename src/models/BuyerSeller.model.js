@@ -392,6 +392,25 @@ const PropertLikesSchema = new mongoose.Schema({
 
 const PropertLikes = mongoose.model('propertylikes', PropertLikesSchema);
 
+const AdminSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  userName: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+const Admin = mongoose.model('AdminSchema', AdminSchema);
+
 module.exports = {
   BuyerSeller,
   BuyerSellerOTP,
@@ -399,4 +418,5 @@ module.exports = {
   BuyerRentie,
   Buyer,
   PropertLikes,
+  Admin,
 };
