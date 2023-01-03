@@ -10,6 +10,12 @@ const createAdminPlane = async (body) => {
   return data;
 };
 
+const GetAll_Planes = async () => {
+  let data = await AdminPlan.find();
+  return data;
+};
+
 module.exports = {
   createAdminPlane,
+  GetAll_Planes,
 };

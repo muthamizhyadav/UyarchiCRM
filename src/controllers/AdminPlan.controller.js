@@ -8,6 +8,12 @@ const createAdminPlane = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const GetAll_Planes = catchAsync(async (req, res) => {
+  const data = await AdminPlanService.GetAll_Planes();
+  res.send(data);
+});
+
 module.exports = {
   createAdminPlane,
+  GetAll_Planes,
 };
