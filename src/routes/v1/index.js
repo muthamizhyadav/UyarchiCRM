@@ -21,6 +21,7 @@ const RecipientOrderRoute = require('./recipients.order.route');
 const RecipientsPaymentRoute = require('./recipients.payment.route');
 const BuyerSellerRoute = require('./BuyerSeller.route');
 const AdminPlanRoute = require('./AdminPlan.route');
+const UserPlanRoute = require('./userPlan.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -31,6 +32,10 @@ const defaultRoutes = [
   {
     path: '/BuyerSeller',
     route: BuyerSellerRoute,
+  },
+  {
+    path: '/userPlan',
+    route: UserPlanRoute,
   },
   {
     path: '/AdminPlan',
