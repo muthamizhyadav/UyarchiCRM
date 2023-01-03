@@ -4,6 +4,8 @@ const usersPlan = require('../models/usersPlane.model');
 const moment = require('moment');
 
 const createUserPlan = async (body, id) => {
+    let sds = moment().add(5, 'minutes')
+    console.log(sds.toDate())
   let values = { ...body, ...{ created: moment(), userId: id } };
   let findByUsers = await usersPlan.findOne({ userId: id, active: true });
   if (findByUsers) {
