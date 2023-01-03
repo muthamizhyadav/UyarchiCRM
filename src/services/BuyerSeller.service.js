@@ -9,7 +9,7 @@ const StoreOtp = require('../models/RealEstate.Otp.model');
 const Axios = require('axios');
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2 } };
   let values1 = { Otp: otp, email: email, mobile: mobile };
   const buyerSeller = await BuyerSeller.create(values);
   await BuyerSellerOTP.create(values1);

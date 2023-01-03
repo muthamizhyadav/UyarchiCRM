@@ -34,6 +34,9 @@ const BuyerSchema = new mongoose.Schema({
   date: {
     type: String,
   },
+  plane: {
+    type: Number,
+  },
   password: {
     type: String,
   },
