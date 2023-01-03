@@ -7,7 +7,7 @@ const { BuyerSeller, BuyerSellerOTP, Buyer } = require('../models/BuyerSeller.mo
 const tokenService = require('../services/token.service');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
-  const { email, mobile } = req.body;
+  const { email, mobile, Type } = req.body;
   const checkemail = await BuyerSeller.findOne({ email: email });
   if (checkemail) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
@@ -16,7 +16,12 @@ const createBuyerSeller = catchAsync(async (req, res) => {
   if (checkmobile) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
   }
-  let values = await mailService.sendEmail(req.body.email, mobile);
+  let values;
+  if (Type === 'Seller') {
+    values = await mailService.sendEmail(req.body.email, mobile);
+  }
+  values = await mailService.sendEmailSeller(req.body.email, mobile);
+
   const data = await buyersellerService.createBuyerSeller(req.body, values.otp);
   res.send(data);
 });
