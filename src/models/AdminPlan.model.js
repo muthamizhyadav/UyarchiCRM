@@ -25,12 +25,21 @@ const AdminPlanSchema = new mongoose.Schema({
   Type: {
     type: String,
   },
+  offer: {
+    type: String,
+  },
+  PlanRole: {
+    type: String,
+  },
   images: {
     type: Number,
   },
   active: {
     type: Boolean,
     default: true,
+  },
+  ContactNumber: {
+    type: Number,
   },
 });
 
