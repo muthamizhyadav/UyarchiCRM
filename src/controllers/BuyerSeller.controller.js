@@ -261,6 +261,11 @@ const getCoordinatesByAddress = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updatePlanes = catchAsync(async (req, res) => {
+  const data = await buyersellerService.updatePlanes(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -295,4 +300,5 @@ module.exports = {
   createAdminLogin,
   AdminLoginFlow,
   getCoordinatesByAddress,
+  updatePlanes,
 };

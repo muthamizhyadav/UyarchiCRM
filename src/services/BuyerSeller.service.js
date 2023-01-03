@@ -630,6 +630,11 @@ const getCoordinatesByAddress = async (location) => {
   return response.data;
 };
 
+const updatePlanes = async (id, body) => {
+  let values = await Buyer.findById(id);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -664,4 +669,5 @@ module.exports = {
   createAdminLogin,
   AdminLoginFlow,
   getCoordinatesByAddress,
+  updatePlanes,
 };
