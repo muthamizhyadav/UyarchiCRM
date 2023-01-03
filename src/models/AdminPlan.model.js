@@ -22,6 +22,9 @@ const AdminPlanSchema = new mongoose.Schema({
   Amount: {
     type: Number,
   },
+  Type: {
+    type: String,
+  },
   images: {
     type: Number,
   },
