@@ -19,6 +19,9 @@ const AdminPlanSchema = new mongoose.Schema({
   Videos: {
     type: Number,
   },
+  Amount: {
+    type: Number,
+  },
   images: {
     type: Number,
   },
