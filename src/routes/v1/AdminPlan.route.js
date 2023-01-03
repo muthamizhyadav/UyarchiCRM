@@ -5,4 +5,5 @@ const AdminPlanController = require('../../controllers/AdminPlan.controller');
 
 router.route('/').post(AdminPlanController.createAdminPlane);
 router.route('/GetAll_Planes').get(AdminPlanController.GetAll_Planes);
+router.route('/updatePlan/:id').put(AdminPlanController.updatePlan);
 module.exports = router;

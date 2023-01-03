@@ -13,7 +13,13 @@ const GetAll_Planes = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updatePlan = catchAsync(async (req, res) => {
+  const data = await AdminPlanService.updatePlan(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
+  updatePlan,
 };

@@ -11,11 +11,26 @@ const createAdminPlane = async (body) => {
 };
 
 const GetAll_Planes = async () => {
-  let data = await AdminPlan.find();
+  let data = await AdminPlan.find({ active: true });
   return data;
+};
+
+const updatePlan = async (id, body) => {
+  let values = await AdminPlan.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+  if (body.Type === 'disable') {
+    values = await AdminPlan.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+    return values;
+  } else {
+    values = await AdminPlan.findByIdAndUpdate({ _id: id }, { active: true }, { new: true });
+    return values;
+  }
 };
 
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
+  updatePlan,
 };
