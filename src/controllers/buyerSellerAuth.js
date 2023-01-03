@@ -19,10 +19,13 @@ const authorization = async (req, res, next) => {
   try {
     const payload = jwt.verify(token, config.jwt.secret);
     console.log(payload);
-    const userss = await BuyerSeller.findOne({ _id: payload.sub, plane: { $gt: 0 } });
+    const userss = await BuyerSeller.findOne({ _id: payload.sub });
     console.log(userss);
     if (!userss) {
       return res.send(httpStatus.UNAUTHORIZED, 'User Not Available');
+    }
+    if (userss.plane <= 0) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Plane Exceeded');
     }
     req.userId = payload.sub;
     return next();

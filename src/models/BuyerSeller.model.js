@@ -69,6 +69,9 @@ const BuyerSellerSchema = new mongoose.Schema({
   Type: {
     type: String,
   },
+  plane: {
+    type: Number,
+  },
   active: {
     type: String,
   },

@@ -75,12 +75,14 @@ const verifyOtpBuyer = async (body) => {
 
 const createSellerPost = async (body, userId) => {
   let expiredDate = moment().add(6, 'days');
+  let plan = -1;
   let values = {
     ...body,
     ...{
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
+      plan: plan,
       // propertyExpiredDate: expiredDate,
       // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
