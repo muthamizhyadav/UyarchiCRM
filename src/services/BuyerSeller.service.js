@@ -676,6 +676,18 @@ const BuyerSeller_Profile = async (userId) => {
   return userData;
 };
 
+// change password By Loged In users
+
+const updatePasswordByUsers = async (id, body) => {
+  let values = await BuyerSeller.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Available Token Issue');
+  }
+  values = await BuyerSeller.findByIdAndUpdate({ _id: id }, { password: body.confirmNewPassword }, { new: true });
+  let message = { Message: 'Password SuccessFully Updated' };
+  return message;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -713,4 +725,5 @@ module.exports = {
   updatePlanes,
   AddViewed_Data,
   BuyerSeller_Profile,
+  updatePasswordByUsers,
 };

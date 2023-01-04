@@ -49,4 +49,5 @@ router.route('/getCoordinatesByAddress').get(BuyerSellerController.getCoordinate
 router.route('/updatePlanes').put(BuyerSellerController.updatePlanes);
 router.route('/AddViewed_Data/:id').get(BuyerAuth, BuyerSellerController.AddViewed_Data);
 router.route('/BuyerSeller/Profile').get(BuyerAuth, BuyerSellerController.BuyerSeller_Profile);
+router.route('/updatePasswordByUsers').post(BuyerAuth, BuyerSellerController.updatePasswordByUsers);
 module.exports = router;

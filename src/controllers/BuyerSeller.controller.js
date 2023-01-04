@@ -283,6 +283,12 @@ const BuyerSeller_Profile = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updatePasswordByUsers = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.updatePasswordByUsers(userId, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -320,4 +326,5 @@ module.exports = {
   updatePlanes,
   AddViewed_Data,
   BuyerSeller_Profile,
+  updatePasswordByUsers,
 };
