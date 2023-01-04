@@ -75,8 +75,13 @@ const verifyOtpBuyer = async (body) => {
 // create seller Post
 
 const createSellerPost = async (body, userId) => {
-  let expiredDate = moment().add(6, 'days');
-  let userplanes = await userPlane.findOne({ userId: userId, active: true, PostNumber: { $gt: 0 } });
+  let expiredDate = moment().toDate();
+  let userplanes = await userPlane.findOne({
+    userId: userId,
+    active: true,
+    PostNumber: { $gt: 0 },
+    PlanValidate: { $gte: expiredDate },
+  });
   if (!userplanes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Plan Active');
   }
@@ -90,6 +95,9 @@ const createSellerPost = async (body, userId) => {
       // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
   };
+  let reduceplane = userplanes.PostNumber;
+  let total = reduceplane - 1;
+  userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
   const sellerPost = await SellerPost.create(values);
   return sellerPost;
 };
