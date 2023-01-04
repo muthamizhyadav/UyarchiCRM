@@ -5,8 +5,9 @@ const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
-
+const userPlane = require('../models/usersPlane.model');
 const Axios = require('axios');
+
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
   let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2 } };
@@ -75,14 +76,16 @@ const verifyOtpBuyer = async (body) => {
 
 const createSellerPost = async (body, userId) => {
   let expiredDate = moment().add(6, 'days');
-  let plan = -1;
+  let userplanes = await userPlane.findOne({ userId: userId, active: true, PostNumber: { $gt: 0 } });
+  if (!userplanes) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Plan Active');
+  }
   let values = {
     ...body,
     ...{
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
-      plan: plan,
       // propertyExpiredDate: expiredDate,
       // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
