@@ -658,6 +658,24 @@ const AddViewed_Data = async (id, userId) => {
   return values;
 };
 
+const BuyerSeller_Profile = async (userId) => {
+  let values = await BuyerSeller.findById(userId);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Fount Token Issue');
+  }
+  let userData = {
+    verified: values.verified,
+    _id: values._id,
+    userName: values.userName,
+    mobile: values.mobile,
+    email: values.email,
+    Type: values.Type,
+    created: values.created,
+    date: values.date,
+  };
+  return userData;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -694,4 +712,5 @@ module.exports = {
   getCoordinatesByAddress,
   updatePlanes,
   AddViewed_Data,
+  BuyerSeller_Profile,
 };
