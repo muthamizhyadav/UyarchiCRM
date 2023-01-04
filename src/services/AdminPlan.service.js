@@ -11,7 +11,7 @@ const createAdminPlane = async (body) => {
 };
 
 const GetAll_Planes = async () => {
-  let data = await AdminPlan.find({ active: true });
+  let data = await AdminPlan.find();
   return data;
 };
 
