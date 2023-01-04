@@ -249,6 +249,7 @@ const getApprover_Property = async (page, query, userId) => {
     HouseOrCommercialTypeMatch;
   }
   let today = moment().toDate();
+  console.log(userId);
   let values = await SellerPost.aggregate([
     {
       $match: {
@@ -283,6 +284,7 @@ const getApprover_Property = async (page, query, userId) => {
         landSize: 1,
         noOfFloor: 1,
         IntrestedStatus: { $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } },
+        whistListStatus: { $ifNull: [{ $map: { input: '$WhishList', as: 'value', in: { $eq: ['$$value', userId] } } }, []] },
         videos: 1,
         floorNo: 1,
         IfCommercial: 1,
@@ -314,10 +316,6 @@ const getApprover_Property = async (page, query, userId) => {
         expiredDate: 1,
         intrestedUsers: 1,
         WhishList: 1,
-        whistListStatus: { $map: { input: '$WhishList', as: 'value', in: { $eq: ['$$value', userId] } } },
-        // liked: {
-        //   $cond: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] }, then: true, else: false },
-        // },
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -375,8 +373,9 @@ const getApprover_Property = async (page, query, userId) => {
         bathRoomCount: 1,
         landSize: 1,
         noOfFloor: 1,
+        whistListStatus: 1,
         IntrestedStatus: { $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } },
-        whistListStatus: { $cond: { if: { $in: [true, ['$whistListStatus']] }, then: true, else: false } },
+        whistListStatus: { $cond: { if: { $in: [true, '$whistListStatus'] }, then: true, else: false } },
       },
     },
     // {
