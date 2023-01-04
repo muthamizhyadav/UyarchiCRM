@@ -709,6 +709,22 @@ const getIntrestedPropertyByUser = async (id) => {
   return values;
 };
 
+const WhishList = async (propId, id) => {
+  let values = await BuyerSeller.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User  Not Found Token Issues');
+  }
+  let data = await SellerPost.findById(propId);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Available');
+  }
+  let datas = await SellerPost.findOne({ _id: data._id, WhishList: { $in: [id] } });
+  if (!datas) {
+    data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $push: { WhishList: id } }, { new: true });
+  }
+  return data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -748,4 +764,5 @@ module.exports = {
   BuyerSeller_Profile,
   updatePasswordByUsers,
   getIntrestedPropertyByUser,
+  WhishList,
 };

@@ -152,6 +152,9 @@ const sellerPostSchema = new mongoose.Schema({
   propertType: {
     type: String,
   },
+  WhishList: {
+    type: Array,
+  },
   lat: {
     type: String,
   },

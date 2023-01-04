@@ -295,6 +295,12 @@ const getIntrestedPropertyByUser = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const WhishList = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.WhishList(req.params.id, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -334,4 +340,5 @@ module.exports = {
   BuyerSeller_Profile,
   updatePasswordByUsers,
   getIntrestedPropertyByUser,
+  WhishList,
 };
