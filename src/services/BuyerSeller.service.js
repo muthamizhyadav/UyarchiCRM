@@ -313,6 +313,8 @@ const getApprover_Property = async (page, query, userId) => {
         propertyExpiredDate: 1,
         expiredDate: 1,
         intrestedUsers: 1,
+        WhishList: 1,
+        whistListStatus: { $map: { input: '$WhishList', as: 'value', in: { $eq: ['$$value', userId] } } },
         // liked: {
         //   $cond: { if: { $in: ['$intrestedUsers', ['792715a6-a206-49cd-a687-a51a3ff2a217']] }, then: true, else: false },
         // },
@@ -336,6 +338,7 @@ const getApprover_Property = async (page, query, userId) => {
         BuildedSize: 1,
         buildingDirection: 1,
         discription: 1,
+        WhishList: 1,
         availability: 1,
         RentPrefer: 1,
         Address: 1,
@@ -373,6 +376,7 @@ const getApprover_Property = async (page, query, userId) => {
         landSize: 1,
         noOfFloor: 1,
         IntrestedStatus: { $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } },
+        whistListStatus: { $cond: { if: { $in: [true, ['$whistListStatus']] }, then: true, else: false } },
       },
     },
     // {
