@@ -283,7 +283,9 @@ const getApprover_Property = async (page, query, userId) => {
         bathRoomCount: 1,
         landSize: 1,
         noOfFloor: 1,
-        IntrestedStatus: {$ifNull:[{ $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } },[]]},
+        IntrestedStatus: {
+          $ifNull: [{ $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } }, []],
+        },
         whistListStatus: { $ifNull: [{ $map: { input: '$WhishList', as: 'value', in: { $eq: ['$$value', userId] } } }, []] },
         videos: 1,
         floorNo: 1,
@@ -779,6 +781,26 @@ const WhishList = async (propId, id) => {
   return data;
 };
 
+const RemoveWhishList = async (propId, id) => {
+  console.log(id)
+  let values = await BuyerSeller.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User  Not Found Token Issues');
+  }
+  let data = await SellerPost.findById(propId);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Available');
+  }
+  let datas = await SellerPost.findOne({ _id: data._id, WhishList: { $in: [id] } });
+  if (datas) {
+    data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $pull: { WhishList: id } }, { new: true });
+    await data.save();
+  }
+  console.log(data)
+
+  return data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -819,4 +841,5 @@ module.exports = {
   updatePasswordByUsers,
   getIntrestedPropertyByUser,
   WhishList,
+  RemoveWhishList,
 };

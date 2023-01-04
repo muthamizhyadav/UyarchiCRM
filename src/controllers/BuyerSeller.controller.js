@@ -301,6 +301,12 @@ const WhishList = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const RemoveWhishList = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.RemoveWhishList(req.params.id, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -341,4 +347,5 @@ module.exports = {
   updatePasswordByUsers,
   getIntrestedPropertyByUser,
   WhishList,
+  RemoveWhishList,
 };
