@@ -283,7 +283,7 @@ const getApprover_Property = async (page, query, userId) => {
         bathRoomCount: 1,
         landSize: 1,
         noOfFloor: 1,
-        IntrestedStatus: { $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } },
+        IntrestedStatus: {$ifNull:[{ $map: { input: '$intrestedUsers', as: 'value', in: { $eq: ['$$value', userId] } } },[]]},
         whistListStatus: { $ifNull: [{ $map: { input: '$WhishList', as: 'value', in: { $eq: ['$$value', userId] } } }, []] },
         videos: 1,
         floorNo: 1,
