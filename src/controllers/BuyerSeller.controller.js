@@ -271,6 +271,12 @@ const updatePlanes = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const AddViewed_Data = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.AddViewed_Data(req.params.id, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -306,4 +312,5 @@ module.exports = {
   AdminLoginFlow,
   getCoordinatesByAddress,
   updatePlanes,
+  AddViewed_Data,
 };

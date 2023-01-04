@@ -47,4 +47,6 @@ router.route('/createAdminLogin').post(BuyerSellerController.createAdminLogin);
 router.route('/AdminLoginFlow').post(BuyerSellerController.AdminLoginFlow);
 router.route('/getCoordinatesByAddress').get(BuyerSellerController.getCoordinatesByAddress);
 router.route('/updatePlanes').put(BuyerSellerController.updatePlanes);
+router.route('/AddViewed_Data/:id').get(BuyerAuth, BuyerSellerController.AddViewed_Data);
+
 module.exports = router;

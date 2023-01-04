@@ -76,15 +76,15 @@ const verifyOtpBuyer = async (body) => {
 
 const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
-  let userplanes = await userPlane.findOne({
-    userId: userId,
-    active: true,
-    PostNumber: { $gt: 0 },
-    PlanValidate: { $gte: expiredDate },
-  });
-  if (!userplanes) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Plan Active');
-  }
+  // let userplanes = await userPlane.findOne({
+  //   userId: userId,
+  //   active: true,
+  //   PostNumber: { $gt: 0 },
+  //   PlanValidate: { $gte: expiredDate },
+  // });
+  // if (!userplanes) {
+  //   throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Plan Active');
+  // }
   let values = {
     ...body,
     ...{
@@ -95,9 +95,9 @@ const createSellerPost = async (body, userId) => {
       // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
   };
-  let reduceplane = userplanes.PostNumber;
-  let total = reduceplane - 1;
-  userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
+  // let reduceplane = userplanes.PostNumber;
+  // let total = reduceplane - 1;
+  // userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
   const sellerPost = await SellerPost.create(values);
   return sellerPost;
 };
@@ -646,6 +646,18 @@ const updatePlanes = async (id, body) => {
   return values;
 };
 
+const AddViewed_Data = async (id, userId) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
+  }
+  let data = await SellerPost.findOne({ _id: values._id, viewedUsers: { $in: [userId] } });
+  if (!data) {
+    await SellerPost.findByIdAndUpdate({ _id: values._id }, { $push: { viewedUsers: userId } }, { new: true });
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -681,4 +693,5 @@ module.exports = {
   AdminLoginFlow,
   getCoordinatesByAddress,
   updatePlanes,
+  AddViewed_Data,
 };

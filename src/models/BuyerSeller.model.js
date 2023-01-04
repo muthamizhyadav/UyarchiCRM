@@ -146,6 +146,9 @@ const sellerPostSchema = new mongoose.Schema({
     // type like seller render
     type: String,
   },
+  viewedUsers: {
+    type: Array,
+  },
   propertType: {
     type: String,
   },
