@@ -698,6 +698,17 @@ const updatePasswordByUsers = async (id, body) => {
   return message;
 };
 
+const getIntrestedPropertyByUser = async (id) => {
+  let values = await SellerPost.aggregate([
+    {
+      $match: {
+        intrestedUsers: { $in: [id] },
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -736,4 +747,5 @@ module.exports = {
   AddViewed_Data,
   BuyerSeller_Profile,
   updatePasswordByUsers,
+  getIntrestedPropertyByUser,
 };

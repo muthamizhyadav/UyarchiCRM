@@ -289,6 +289,12 @@ const updatePasswordByUsers = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getIntrestedPropertyByUser = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getIntrestedPropertyByUser(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -327,4 +333,5 @@ module.exports = {
   AddViewed_Data,
   BuyerSeller_Profile,
   updatePasswordByUsers,
+  getIntrestedPropertyByUser,
 };

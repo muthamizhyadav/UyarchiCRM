@@ -50,4 +50,5 @@ router.route('/updatePlanes').put(BuyerSellerController.updatePlanes);
 router.route('/AddViewed_Data/:id').get(BuyerAuth, BuyerSellerController.AddViewed_Data);
 router.route('/BuyerSeller/Profile').get(BuyerAuth, BuyerSellerController.BuyerSeller_Profile);
 router.route('/updatePasswordByUsers').post(BuyerAuth, BuyerSellerController.updatePasswordByUsers);
+router.route('/getIntrestedPropertyByUser').get(BuyerAuth, BuyerSellerController.getIntrestedPropertyByUser);
 module.exports = router;
