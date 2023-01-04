@@ -375,9 +375,9 @@ const getApprover_Property = async (page, query, userId) => {
         IntrestedStatus: { $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } },
       },
     },
-    {
-      $match: { status: { $eq: 'Pending' } },
-    },
+    // {
+    //   $match: { status: { $eq: 'Pending' } },
+    // },
     {
       $skip: 10 * page,
     },
@@ -461,9 +461,9 @@ const getApprover_Property = async (page, query, userId) => {
         IntrestedStatus: { $cond: { if: { $eq: [true, ['$IntrestedStatus']] }, then: true, else: false } },
       },
     },
-    {
-      $match: { status: { $eq: 'Pending' } },
-    },
+    // {
+    //   $match: { status: { $eq: 'Pending' } },
+    // },
   ]);
   return { values: values, total: total.length };
 };
