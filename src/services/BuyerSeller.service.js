@@ -595,7 +595,17 @@ const getIntrestedUsersByProperty = async (id) => {
   let values = await SellerPost.findById(id);
   for (let i = 0; i < values.intrestedUsers.length; i++) {
     let ff = await Buyer.findById(values.intrestedUsers[i]);
-    users.push(ff);
+    let data = {
+      verified: ff.verified,
+      _id: ff._id,
+      userName: ff.userName,
+      mobile: ff.mobile,
+      email: ff.email,
+      Type: ff.Type,
+      created: ff.created,
+      date: ff.date,
+    };
+    users.push(data);
   }
   return users;
 };
