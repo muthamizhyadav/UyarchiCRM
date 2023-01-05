@@ -55,4 +55,5 @@ router.route('/WhishList/:id').get(BuyerAuth, BuyerSellerController.WhishList);
 router.route('/RemoveWhishList/:id').get(BuyerAuth, BuyerSellerController.RemoveWhishList);
 router.route('/getWhishListed_Property_By_Buyer').get(BuyerAuth, BuyerSellerController.getWhishListed_Property_By_Buyer);
 router.route('/UpdateSellerPost_As_Raw_Data/:id').put(BuyerSellerController.UpdateSellerPost_As_Raw_Data);
+router.route('/Disable_Seller_Post/:id').get(BuyerSellerController.Disable_Seller_Post);
 module.exports = router;

@@ -827,6 +827,17 @@ const UpdateSellerPost_As_Raw_Data = async (id, body) => {
   return values;
 };
 
+// disable SellerPost By Id
+
+const Disable_Seller_Post = async (id) => {
+  let values = await SellerPost.findOne({ _id: id, active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -870,4 +881,5 @@ module.exports = {
   RemoveWhishList,
   getWhishListed_Property_By_Buyer,
   UpdateSellerPost_As_Raw_Data,
+  Disable_Seller_Post,
 };
