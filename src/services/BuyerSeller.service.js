@@ -801,16 +801,19 @@ const RemoveWhishList = async (propId, id) => {
   return data;
 };
 
+// get Whishlist property for Buyers
+
 const getWhishListed_Property_By_Buyer = async (id) => {
   let values = await BuyerSeller.findById(id);
-  if(!values){
-    throw new ApiError(httpStatus.NOT_FOUND, "User Not Found, Token Issues")
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found, Token Issues');
   }
-  const data = await SellerPost.aggregate([{
-
-  }])
-
-  return values;
+  const data = await SellerPost.aggregate([
+    {
+      $match: { active: true, WhishList: { $in: [id] } },
+    },
+  ]);
+  return data;
 };
 
 module.exports = {
