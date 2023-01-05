@@ -8,11 +8,11 @@ const tokenService = require('../services/token.service');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile, Type } = req.body;
-  const checkemail = await BuyerSeller.findOne({ email: email });
+  const checkemail = await BuyerSeller.findOne({ email: email, Type: body.Type });
   if (checkemail) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
   }
-  const checkmobile = await BuyerSeller.findOne({ mobile: mobile });
+  const checkmobile = await BuyerSeller.findOne({ mobile: mobile, Type: body.Type });
   if (checkmobile) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
   }
