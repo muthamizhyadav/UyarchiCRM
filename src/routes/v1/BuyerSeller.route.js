@@ -53,4 +53,5 @@ router.route('/updatePasswordByUsers').post(BuyerAuth, BuyerSellerController.upd
 router.route('/getIntrestedPropertyByUser').get(BuyerAuth, BuyerSellerController.getIntrestedPropertyByUser);
 router.route('/WhishList/:id').get(BuyerAuth, BuyerSellerController.WhishList);
 router.route('/RemoveWhishList/:id').get(BuyerAuth, BuyerSellerController.RemoveWhishList);
+router.route('/getWhishListed_Property_By_Buyer').get(BuyerAuth, BuyerSellerController.getWhishListed_Property_By_Buyer);
 module.exports = router;

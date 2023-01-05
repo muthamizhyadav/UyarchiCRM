@@ -555,7 +555,7 @@ const createPassword = async (id, body) => {
 };
 
 const Login = async (body) => {
-  let values = await Buyer.findOne({ userName: body.userName, password: body.password });
+  let values = await Buyer.findOne({ email: body.email, password: body.password });
   if (!values) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
   }
@@ -782,7 +782,7 @@ const WhishList = async (propId, id) => {
 };
 
 const RemoveWhishList = async (propId, id) => {
-  console.log(id)
+  console.log(id);
   let values = await BuyerSeller.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User  Not Found Token Issues');
@@ -796,9 +796,21 @@ const RemoveWhishList = async (propId, id) => {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $pull: { WhishList: id } }, { new: true });
     await data.save();
   }
-  console.log(data)
+  console.log(data);
 
   return data;
+};
+
+const getWhishListed_Property_By_Buyer = async (id) => {
+  let values = await BuyerSeller.findById(id);
+  if(!values){
+    throw new ApiError(httpStatus.NOT_FOUND, "User Not Found, Token Issues")
+  }
+  const data = await SellerPost.aggregate([{
+
+  }])
+
+  return values;
 };
 
 module.exports = {
@@ -842,4 +854,5 @@ module.exports = {
   getIntrestedPropertyByUser,
   WhishList,
   RemoveWhishList,
+  getWhishListed_Property_By_Buyer,
 };

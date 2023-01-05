@@ -307,6 +307,12 @@ const RemoveWhishList = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getWhishListed_Property_By_Buyer = catchAsync(async (req, res) => {
+  let userID = req.userId;
+  const data = await buyersellerService.getWhishListed_Property_By_Buyer(userID);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -348,4 +354,5 @@ module.exports = {
   getIntrestedPropertyByUser,
   WhishList,
   RemoveWhishList,
+  getWhishListed_Property_By_Buyer,
 };
