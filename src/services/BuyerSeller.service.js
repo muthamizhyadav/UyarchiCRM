@@ -838,6 +838,14 @@ const Disable_Seller_Post = async (id) => {
   return values;
 };
 
+const getSellerPost = async (id) => {
+  let values = await SellerPost.findOne({ _id: id, active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'SellerPOst Not FOund');
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -882,4 +890,5 @@ module.exports = {
   getWhishListed_Property_By_Buyer,
   UpdateSellerPost_As_Raw_Data,
   Disable_Seller_Post,
+  getSellerPost,
 };

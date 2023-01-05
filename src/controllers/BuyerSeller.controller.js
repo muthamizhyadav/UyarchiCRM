@@ -323,6 +323,11 @@ const Disable_Seller_Post = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSellerPost = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getSellerPost(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -367,4 +372,5 @@ module.exports = {
   getWhishListed_Property_By_Buyer,
   UpdateSellerPost_As_Raw_Data,
   Disable_Seller_Post,
+  getSellerPost,
 };
