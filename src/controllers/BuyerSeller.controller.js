@@ -313,6 +313,11 @@ const getWhishListed_Property_By_Buyer = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const UpdateSellerPost_As_Raw_Data = catchAsync(async (req, res) => {
+  const data = await buyersellerService.UpdateSellerPost_As_Raw_Data(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -355,4 +360,5 @@ module.exports = {
   WhishList,
   RemoveWhishList,
   getWhishListed_Property_By_Buyer,
+  UpdateSellerPost_As_Raw_Data,
 };

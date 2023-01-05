@@ -816,6 +816,17 @@ const getWhishListed_Property_By_Buyer = async (id) => {
   return data;
 };
 
+// update Seller Post Raw Data
+
+const UpdateSellerPost_As_Raw_Data = async (id, body) => {
+  let values = await SellerPost.findOne({ _id: id, active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'POst Not Found');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -858,4 +869,5 @@ module.exports = {
   WhishList,
   RemoveWhishList,
   getWhishListed_Property_By_Buyer,
+  UpdateSellerPost_As_Raw_Data,
 };
