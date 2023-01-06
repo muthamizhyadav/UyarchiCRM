@@ -19,7 +19,7 @@ const createBuyerSeller = async (body, otp) => {
 
 const createBuyer = async (body, otp) => {
   const { email, mobile } = body;
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD') } };
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2 } };
   let values1 = { Otp: otp, email: email, mobile: mobile };
   const buyerSeller = await Buyer.create(values);
   await BuyerSellerOTP.create(values1);
@@ -713,6 +713,8 @@ const updatePlanes = async (id, body) => {
 };
 
 const AddViewed_Data = async (id, userId) => {
+  let users = await Buyer.findById(userId);
+  console.log(users);
   let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
