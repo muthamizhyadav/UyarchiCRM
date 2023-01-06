@@ -796,8 +796,6 @@ const RemoveWhishList = async (propId, id) => {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $pull: { WhishList: id } }, { new: true });
     await data.save();
   }
-  console.log(data);
-
   return data;
 };
 
