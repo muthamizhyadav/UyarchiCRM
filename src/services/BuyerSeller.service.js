@@ -714,7 +714,14 @@ const updatePlanes = async (id, body) => {
 
 const AddViewed_Data = async (id, userId) => {
   let users = await Buyer.findById(userId);
-  console.log(users);
+  if (users.plane <= 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+  }
+  if (users.plane > 0) {
+    let existCount = users.plane;
+    let total = existCount - 1;
+    users = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+  }
   let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
