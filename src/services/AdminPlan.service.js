@@ -37,9 +37,18 @@ const getPlanForBuyer = async () => {
   return values;
 };
 
+const getPlanForAdmin = async () => {
+  let values = await AdminPlan.find({ PlanRole: 'Seller', active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'There Is No Plan');
+  }
+  return values;
+};
+
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
   updatePlan,
   getPlanForBuyer,
+  getPlanForAdmin,
 };
