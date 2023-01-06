@@ -715,6 +715,7 @@ const updatePlanes = async (id, body) => {
 const AddViewed_Data = async (id, userId) => {
   let users = await Buyer.findById(userId);
   if (users.plane <= 0) {
+    let palnes = await userPlane.findOne({});
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
   }
   if (users.plane > 0) {

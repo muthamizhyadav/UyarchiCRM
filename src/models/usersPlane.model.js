@@ -6,45 +6,20 @@ const userPlanSchema = new mongoose.Schema({
     type: String,
     default: v4,
   },
-  planName: {
+  PlanId: {
     type: String,
   },
-  PostNumber: {
-    type: Number,
-  },
-  PlanValidate: {
-    type: Date,
-  },
-  Videos: {
-    type: Number,
+  PayMentMethod: {
+    type: String,
   },
   Amount: {
     type: Number,
   },
-  Type: {
-    type: String,
-  },
-  offer: {
-    type: String,
-  },
-  PlanRole: {
-    type: String,
-  },
-  images: {
-    type: Number,
-  },
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  ContactNumber: {
-    type: Number,
+  created: {
+    type: Date,
   },
   userId: {
     type: String,
-  },
-  created: {
-    type: Date,
   },
 });
 
