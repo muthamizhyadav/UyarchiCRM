@@ -16,9 +16,6 @@ const AdminPlanSchema = new mongoose.Schema({
   PlanValidate: {
     type: Date,
   },
-  Type: {
-    type: String,
-  },
   Videos: {
     type: Number,
   },
