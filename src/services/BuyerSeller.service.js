@@ -716,13 +716,15 @@ const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   if (users.plane <= 0) {
-    let userPlan = await userPlane.findOne({
-      userId: userId,
-      planValidate: { $gte: planValidate },
-      PlanRole: 'Buyer',
-      active: true,
-      ContactNumber: { $gt: 0 },
-    });
+    let userPlan = await userPlane
+      .findOne({
+        userId: userId,
+        planValidate: { $gte: planValidate },
+        PlanRole: 'Buyer',
+        active: true,
+        ContactNumber: { $gt: 0 },
+      })
+      .sort({ created: -1 });
     if (!userPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
