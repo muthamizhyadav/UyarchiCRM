@@ -12,9 +12,9 @@ const createUserPlan = async (body, id) => {
   if (plan.PlanValidate < today) {
     throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Plan Expired');
   }
-  if (plan.Amount !== body.Amount) {
-    throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'In Valid Amount');
-  }
+  // if (plan.Amount !== body.Amount) {
+  //   throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'In Valid Amount');
+  // }
   let data = await usersPlan.create(values);
   return data;
 };
