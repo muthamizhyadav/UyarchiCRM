@@ -713,9 +713,24 @@ const updatePlanes = async (id, body) => {
 };
 
 const AddViewed_Data = async (id, userId) => {
+  let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   if (users.plane <= 0) {
-    let palnes = await userPlane.findOne({});
+    let palnes = await userPlane.aggregate([
+      {
+        $match: { userId },
+      },
+      {
+        $lookup: {
+          from: 'adminplans',
+          localField: 'planId',
+          foreignField: '_id',
+          pipeline: [{ PlanValidate: { $gte: planValidate } }],
+          as: 'plan',
+        },
+      },
+    ]);
+    let plan = palnes[0];
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
   }
   if (users.plane > 0) {

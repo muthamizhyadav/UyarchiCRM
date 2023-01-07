@@ -9,9 +9,31 @@ const userPlanSchema = new mongoose.Schema({
   PlanId: {
     type: String,
   },
+  planName: {
+    type: String,
+  },
+  PostNumber: {
+    type: Number,
+  },
+  Videos: {
+    type: Number,
+  },
+  offer: {
+    type: Number,
+  },
+  PlanRole: {
+    type: String,
+  },
+  ContactNumber: {
+    type: Number,
+  },
   PayMentMethod: {
     type: String,
   },
+  planValidate: {
+    type: String,
+  },
+
   Amount: {
     type: Number,
   },
