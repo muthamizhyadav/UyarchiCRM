@@ -31,7 +31,7 @@ const userPlanSchema = new mongoose.Schema({
     type: String,
   },
   planValidate: {
-    type: String,
+    type: Date,
   },
   Image: {
     type: Number,
