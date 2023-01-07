@@ -24,9 +24,6 @@ const authorization = async (req, res, next) => {
     if (!userss) {
       return res.send(httpStatus.UNAUTHORIZED, 'User Not Available');
     }
-    if (userss.plane <= 0) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, 'Plane Exceeded');
-    }
     req.userId = payload.sub;
     return next();
   } catch {
