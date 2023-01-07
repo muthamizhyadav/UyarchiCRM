@@ -106,8 +106,8 @@ const createSellerPost = async (body, userId) => {
   // let reduceplane = userplanes.PostNumber;
   // let total = reduceplane - 1;
   // userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
-  // const sellerPost = await SellerPost.create(values);
-  return Sellers;
+  const sellerPost = await SellerPost.create(values);
+  return values;
 };
 
 // create BuyerRentiee
