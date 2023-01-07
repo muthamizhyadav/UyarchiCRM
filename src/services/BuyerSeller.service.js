@@ -724,7 +724,6 @@ const AddViewed_Data = async (id, userId) => {
         active: true,
         ContactNumber: { $gt: 0 },
       })
-      .sort({ created: -1 });
     if (!userPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
