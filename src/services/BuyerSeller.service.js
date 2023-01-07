@@ -88,28 +88,19 @@ const createSellerPost = async (body, userId) => {
     if (!userplanes) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
+    let existplane = parseInt(userplanes.PostNumber);
+    let totals = existplane - 1;
+    userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: totals }, { new: true });
   }
   let plancount = parseInt(Sellers.plane);
   let total = plancount - 1;
   await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
-
-  // let userplanes = await userPlane.findOne({
-  //   userId: userId,
-  //   active: true,
-  //   PostNumber: { $gt: 0 },
-  //   PlanValidate: { $gte: expiredDate },
-  // });
-  // if (!userplanes) {
-  //   throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Plan Active');
-  // }
   let values = {
     ...body,
     ...{
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
-      // propertyExpiredDate: expiredDate,
-      // expiredDate: moment().add(6, 'days').format('YYYY-MM-DD'),
     },
   };
   // let reduceplane = userplanes.PostNumber;
