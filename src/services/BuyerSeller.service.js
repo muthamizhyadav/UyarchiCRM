@@ -76,6 +76,23 @@ const verifyOtpBuyer = async (body) => {
 
 const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
+  let Sellers = await Buyer.findById(userId);
+  if (Sellers.plane <= 0) {
+    let userplanes = await userPlane.findOne({
+      userId: userId,
+      planValidate: { $gt: expiredDate },
+      PlanRole: 'Seller',
+      PostNumber: { $gt: 0 },
+    });
+    console.log(userplanes);
+    if (!userplanes) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+    }
+  }
+  let plancount = parseInt(Sellers.plane);
+  let total = plancount - 1;
+  await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+
   // let userplanes = await userPlane.findOne({
   //   userId: userId,
   //   active: true,
@@ -98,8 +115,8 @@ const createSellerPost = async (body, userId) => {
   // let reduceplane = userplanes.PostNumber;
   // let total = reduceplane - 1;
   // userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
-  const sellerPost = await SellerPost.create(values);
-  return sellerPost;
+  // const sellerPost = await SellerPost.create(values);
+  return Sellers;
 };
 
 // create BuyerRentiee
