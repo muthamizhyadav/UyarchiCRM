@@ -45,6 +45,10 @@ const userPlanSchema = new mongoose.Schema({
   userId: {
     type: String,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const userPlan = mongoose.model('userplan', userPlanSchema);

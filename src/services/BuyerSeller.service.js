@@ -716,22 +716,22 @@ const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   if (users.plane <= 0) {
-    let palnes = await userPlane.aggregate([
-      {
-        $match: { userId },
-      },
-      {
-        $lookup: {
-          from: 'adminplans',
-          localField: 'planId',
-          foreignField: '_id',
-          pipeline: [{ PlanValidate: { $gte: planValidate } }],
-          as: 'plan',
-        },
-      },
-    ]);
-    let plan = palnes[0];
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+    let userPlan = await userPlane.findOne({
+      userId: userId,
+      planValidate: { $gte: planValidate },
+      PlanRole: 'Buyer',
+      active: true,
+      ContactNumber: { $gt: 0 },
+    });
+    if (!userPlan) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+    }
+    let exist = parseInt(userPlan.ContactNumber);
+    let total = exist - 1;
+    let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
+    if (plans.ContactNumber === 0) {
+      await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+    }
   }
   if (users.plane > 0) {
     let existCount = users.plane;
