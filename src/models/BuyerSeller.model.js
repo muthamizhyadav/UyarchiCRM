@@ -180,6 +180,9 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   intrestedUsers: [],
+  visitUsers: {
+    type: Array,
+  },
   like: {
     type: String,
   },

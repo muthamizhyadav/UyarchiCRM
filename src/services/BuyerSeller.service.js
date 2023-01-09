@@ -584,7 +584,6 @@ const LoginWithOtp = async (body) => {
 
 const giveInterest = async (id, userId) => {
   let users = await Buyer.findById(userId);
-  console.log(userId);
   if (users.plane <= 0) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
   }
@@ -593,7 +592,6 @@ const giveInterest = async (id, userId) => {
   }
   let post = await SellerPost.findById(id);
   let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { $eq: userId } } });
-  console.log(matchValue);
   if (!matchValue) {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $push: { intrestedUsers: userId } }, { new: true });
     await post.save();
@@ -878,6 +876,16 @@ const getSellerPost = async (id) => {
   }
   return values;
 };
+//visitUsers
+const getProperty_And_Shedule_Visite = async (id, date) => {
+  let data = await SellerPost.findById(id);
+  for (let i = 0; i < data.intrestedUsers.length; i++) {
+    let users = await Buyer.findById(data.intrestedUsers[i]);
+    let userData = { userId: users._id, visitDateTime: date.date, userName: users.userName };
+    await SellerPost.updateMany({ _id: id }, { $push: { visitUsers: userData } }, { new: true });
+  }
+  return { Message: 'Visite Time Send Successfully' };
+};
 
 module.exports = {
   createBuyerSeller,
@@ -924,4 +932,5 @@ module.exports = {
   UpdateSellerPost_As_Raw_Data,
   Disable_Seller_Post,
   getSellerPost,
+  getProperty_And_Shedule_Visite,
 };

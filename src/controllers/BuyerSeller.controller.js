@@ -8,7 +8,7 @@ const tokenService = require('../services/token.service');
 
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile, Type } = req.body;
-  const checkemail = await BuyerSeller.findOne({ email: email, Type:Type });
+  const checkemail = await BuyerSeller.findOne({ email: email, Type: Type });
   if (checkemail) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
   }
@@ -328,6 +328,11 @@ const getSellerPost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getProperty_And_Shedule_Visite = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getProperty_And_Shedule_Visite(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -373,4 +378,5 @@ module.exports = {
   UpdateSellerPost_As_Raw_Data,
   Disable_Seller_Post,
   getSellerPost,
+  getProperty_And_Shedule_Visite,
 };
