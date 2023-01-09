@@ -337,16 +337,28 @@ const BuyerRentieSchema = mongoose.Schema({
   PrefferedState: {
     type: String,
   },
+  prefferedLocation: {
+    type: String,
+  },
+  bathroomCount: {
+    type: String,
+  },
   PrefferedCities: {
     type: String,
   },
   Area: {
     type: String,
   },
+  Locality: {
+    type: String,
+  },
   BHKType: {
     type: String,
   },
   userId: {
+    type: String,
+  },
+  availability: {
     type: String,
   },
   FromPrice: {
@@ -369,6 +381,9 @@ const BuyerRentieSchema = mongoose.Schema({
     default: 'Pending',
   },
   visit: {
+    type: String,
+  },
+  facingDirection: {
     type: String,
   },
   active: {

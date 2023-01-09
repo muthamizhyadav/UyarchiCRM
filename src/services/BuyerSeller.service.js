@@ -113,7 +113,21 @@ const createSellerPost = async (body, userId) => {
 // create BuyerRentiee
 
 const createBuyerRentiee = async (body, userId) => {
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
+  let bodyData = {
+    Type: body.Type.toLowerCase(),
+    TyoesOfProperty: body.TyoesOfProperty.toLowerCase(),
+    HouseOrCommercialType: body.HouseOrCommercialType.toLowerCase(),
+    availability: body.availability.toLowerCase(),
+    PrefferedCities: body.PrefferedCities.toLowerCase(),
+    Locality: body.Locality.toLowerCase(),
+    facingDirection: body.facingDirection.toLowerCase(),
+    ParkingPreference: body.ParkingPreference.toLowerCase(),
+    FurnishingStatus: body.FurnishingStatus.toLowerCase(),
+    bathroomCount: body.bathroomCount,
+    FromPrice: body.FromPrice,
+    ToPrice: body.ToPrice,
+  };
+  let values = { ...bodyData, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
   let BR = await BuyerRentie.create(values);
   return BR;
 };
