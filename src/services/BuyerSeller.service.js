@@ -886,14 +886,13 @@ const getSellerPost = async (id) => {
   return values;
 };
 //visitUsers
-const getProperty_And_Shedule_Visite = async (id, date) => {
+const getProperty_And_Shedule_Visite = async (id, body) => {
   let data = await SellerPost.findById(id);
-  for (let i = 0; i < data.intrestedUsers.length; i++) {
-    let users = await Buyer.findById(data.intrestedUsers[i]);
-    let userData = { userId: users._id, visitDateTime: date.date, userName: users.userName };
-    await SellerPost.updateMany({ _id: id }, { $push: { visitUsers: userData } }, { new: true });
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Available');
   }
-  return { Message: 'Visite Time Send Successfully' };
+  data = await SellerPost.findByIdAndUpdate({ _id: id }, { visit: body.date }, { new: true });
+  return data;
 };
 
 module.exports = {

@@ -180,9 +180,6 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   intrestedUsers: [],
-  visitUsers: {
-    type: Array,
-  },
   like: {
     type: String,
   },
@@ -214,6 +211,9 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   landMark: {
+    type: String,
+  },
+  visit: {
     type: String,
   },
   furnishingStatus: {
@@ -367,6 +367,9 @@ const BuyerRentieSchema = mongoose.Schema({
   propStatus: {
     type: String,
     default: 'Pending',
+  },
+  visit: {
+    type: String,
   },
   active: {
     type: Boolean,
