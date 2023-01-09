@@ -949,6 +949,18 @@ const getProperty_And_Shedule_Visite = async (id, body) => {
   return data;
 };
 
+const userPlane_Details = async (userId) => {
+  let currentDate = moment().toDate();
+  let values = await userPlane.findOne({
+    active: true,
+    planValidate: { $gte: currentDate },
+    PlanRole: 'Buyer',
+    ContactNumber: { $gt: 0 },
+    userId: userId,
+  });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -995,4 +1007,5 @@ module.exports = {
   Disable_Seller_Post,
   getSellerPost,
   getProperty_And_Shedule_Visite,
+  userPlane_Details,
 };

@@ -333,6 +333,13 @@ const getProperty_And_Shedule_Visite = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const userPlane_Details = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  console.log(userId);
+  const data = await buyersellerService.userPlane_Details(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -379,4 +386,5 @@ module.exports = {
   Disable_Seller_Post,
   getSellerPost,
   getProperty_And_Shedule_Visite,
+  userPlane_Details,
 };
