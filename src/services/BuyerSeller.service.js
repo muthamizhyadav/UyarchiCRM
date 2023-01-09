@@ -84,7 +84,6 @@ const createSellerPost = async (body, userId) => {
       PlanRole: 'Seller',
       PostNumber: { $gt: 0 },
     });
-    console.log(userplanes);
     if (!userplanes) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
@@ -586,6 +585,9 @@ const LoginWithOtp = async (body) => {
 const giveInterest = async (id, userId) => {
   let users = await Buyer.findById(userId);
   console.log(userId);
+  if (users.plane <= 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
+  }
   if (!users) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
@@ -600,7 +602,7 @@ const giveInterest = async (id, userId) => {
     await post.save();
   }
 
-  return post;
+  return users;
 };
 
 const getIntrestedUsersByProperty = async (id) => {
