@@ -958,6 +958,9 @@ const userPlane_Details = async (userId) => {
     ContactNumber: { $gt: 0 },
     userId: userId,
   });
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+  }
   return values;
 };
 
