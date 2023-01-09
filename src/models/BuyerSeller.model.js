@@ -214,7 +214,7 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   visit: {
-    type: String,
+    type: Date,
   },
   furnishingStatus: {
     type: String,
