@@ -959,10 +959,30 @@ const userPlane_Details = async (userId) => {
     ContactNumber: { $gt: 0 },
     userId: userId,
   });
+  let plan = await AdminPlan.findById(values.PlanId);
+  if (!plan) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Missing');
+  }
+  console.log(plan);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
   }
-  return values;
+  let data = {
+    _id: values._id,
+    active: values.active,
+    Amount: values.Amount,
+    PayMentMethod: values.PayMentMethod,
+    PlanId: values.PlanId,
+    planName: values.planName,
+    ContactNumber: values.ContactNumber,
+    offer: values.offer,
+    PlanRole: values.PlanRole,
+    planValidate: values.planValidate,
+    created: values.created,
+    userId: values.userId,
+    totalContactNumber: plan.ContactNumber,
+  };
+  return data;
 };
 
 // sellers
