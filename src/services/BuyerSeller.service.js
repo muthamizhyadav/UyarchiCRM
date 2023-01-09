@@ -853,6 +853,7 @@ const getIntrestedPropertyByUser = async (id) => {
         date: 1,
         userId: 1,
         visit: 1,
+        status: { $gt: ['$visit', dates] },
         dates: dates,
       },
     },
