@@ -6,6 +6,7 @@ const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
+const AdminPlan = require('../models/AdminPlan.model');
 const Axios = require('axios');
 
 const createBuyerSeller = async (body, otp) => {
@@ -975,10 +976,27 @@ const userPlane_DetailsForSellers = async (userId) => {
     PostNumber: { $gt: 0 },
     userId: userId,
   });
+  let plan = await AdminPlan.findById(values.PlanId);
+  console.log(plan);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
   }
-  return values;
+  let data = {
+    active: values.active,
+    _id: values._id,
+    Amount: values.Amount,
+    PayMentMethod: values.PayMentMethod,
+    PlanId: values.PlanId,
+    planName: values.planName,
+    PostNumber: values.PostNumber,
+    Videos: values.Videos,
+    PlanRole: values.PlanRole,
+    planValidate: values.planValidate,
+    created: values.created,
+    userId: values.userId,
+    TotalPostNumber: plan.PostNumber,
+  };
+  return data;
 };
 
 module.exports = {
