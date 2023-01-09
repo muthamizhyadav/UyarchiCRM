@@ -358,6 +358,9 @@ const BuyerRentieSchema = mongoose.Schema({
   userId: {
     type: String,
   },
+  bathRoomType: {
+    type: String,
+  },
   availability: {
     type: String,
   },
