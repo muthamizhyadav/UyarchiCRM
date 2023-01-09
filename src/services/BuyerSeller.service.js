@@ -948,7 +948,7 @@ const getProperty_And_Shedule_Visite = async (id, body) => {
   data = await SellerPost.findByIdAndUpdate({ _id: id }, { visit: body.date }, { new: true });
   return data;
 };
-
+// Buyers
 const userPlane_Details = async (userId) => {
   let currentDate = moment().toDate();
   let values = await userPlane.findOne({
@@ -956,6 +956,23 @@ const userPlane_Details = async (userId) => {
     planValidate: { $gte: currentDate },
     PlanRole: 'Buyer',
     ContactNumber: { $gt: 0 },
+    userId: userId,
+  });
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+  }
+  return values;
+};
+
+// sellers
+
+const userPlane_DetailsForSellers = async (userId) => {
+  let currentDate = moment().toDate();
+  let values = await userPlane.findOne({
+    active: true,
+    planValidate: { $gte: currentDate },
+    PlanRole: 'Seller',
+    PostNumber: { $gt: 0 },
     userId: userId,
   });
   if (!values) {
@@ -1011,4 +1028,5 @@ module.exports = {
   getSellerPost,
   getProperty_And_Shedule_Visite,
   userPlane_Details,
+  userPlane_DetailsForSellers,
 };

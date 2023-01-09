@@ -59,4 +59,5 @@ router.route('/Disable_Seller_Post/:id').get(BuyerSellerController.Disable_Selle
 router.route('/getSellerPost/:id').get(BuyerSellerController.getSellerPost);
 router.route('/getProperty_And_Shedule_Visite/:id').put(BuyerSellerController.getProperty_And_Shedule_Visite);
 router.route('/userPlane_Details').get(BuyerAuth, BuyerSellerController.userPlane_Details);
+router.route('/userPlane_DetailsForSellers').get(BuyerAuth, BuyerSellerController.userPlane_DetailsForSellers);
 module.exports = router;
