@@ -733,9 +733,9 @@ const createAdminLogin = async (body) => {
 };
 
 const AdminLoginFlow = async (body) => {
-  let values = await Admin.find({ userName: body.userName, password: body.password });
+  let values = await Admin.findOne({ userName: body.userName, password: body.password });
   if (!values) {
-    throw new ApiError(httpStatus.NOT_FOUND);
+    throw new ApiError(httpStatus.NOT_FOUND, "Admin Not Found");
   }
   return values;
 };
