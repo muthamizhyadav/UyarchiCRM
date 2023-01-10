@@ -1140,10 +1140,25 @@ const userPlane_DetailsForSellers = async (userId) => {
 
 const getAccepUserByProperty = async (id) => {
   let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
+  }
   let users = [];
-  for (let i = 0; i < values.Accept.length; i++) {}
+  for (let i = 0; i < values.Accept.length; i++) {
+    let userData = await Buyer.findById(values.Accept[i]);
+    if (userData) {
+      const data = {
+        _id: userData._id,
+        userName: userData.userName,
+        mobile: userData.mobile,
+        email: userData.email,
+        Type: userData.Type,
+      };
+      users.push(data);
+    }
+  }
 
-  return values;
+  return users;
 };
 
 module.exports = {
