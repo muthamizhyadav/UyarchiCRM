@@ -157,6 +157,9 @@ const sellerPostSchema = new mongoose.Schema({
   maintainenceCost: {
     type: Number,
   },
+  ifMaintenence: {
+    type: String,
+  },
   viewedUsers: {
     type: Array,
   },
@@ -313,6 +316,9 @@ const sellerPostSchema = new mongoose.Schema({
   locality: {
     type: String,
   },
+  MaintenanceStatus: {
+    type: String,
+  },
   roomType: {
     type: String,
   },
@@ -341,6 +347,9 @@ const BuyerRentieSchema = mongoose.Schema({
   },
   maintainenceCost: {
     type: Number,
+  },
+  ifMaintenence: {
+    type: String,
   },
   HouseOrCommercialType: {
     type: String,
