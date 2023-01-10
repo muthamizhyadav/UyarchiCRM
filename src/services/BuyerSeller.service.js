@@ -1070,7 +1070,9 @@ const userPlane_Details = async (userId) => {
       userId: userId,
     })
     .sort({ created: -1 });
-  console.log(values);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'there is No Plan');
+  }
   let plan = await AdminPlan.findById(values.PlanId);
   if (!plan) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Missing');
@@ -1101,14 +1103,19 @@ const userPlane_Details = async (userId) => {
 
 const userPlane_DetailsForSellers = async (userId) => {
   let currentDate = moment().toDate();
-  let values = await userPlane.findOne({
-    active: true,
-    planValidate: { $gte: currentDate },
-    PlanRole: 'Seller',
-    PostNumber: { $gt: 0 },
-    userId: userId,
-  });
+  let values = await userPlane
+    .findOne({
+      active: true,
+      // planValidate: { $gte: currentDate },
+      PlanRole: 'Seller',
+      // PostNumber: { $gt: 0 },
+      userId: userId,
+    })
+    .sort({ created: -1 });
   let plan = await AdminPlan.findById(values.PlanId);
+  if (!plan) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'There is No Plan');
+  }
   console.log(plan);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
