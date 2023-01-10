@@ -707,8 +707,8 @@ const getPostedProperty_For_IndividualSeller = async (id, page) => {
         Accept: 1,
         viwersCount: { $size: '$viewedUsers' },
         intrestedCount: { $size: '$intrestedUsers' },
-        // AcceptCount: { $size: '$Accept' },
-        // IgnoreCount: { $size: '$Ignore' },
+        AcceptCount: { $size: '$Accept' },
+        IgnoreCount: { $size: '$Ignore' },
       },
     },
     {
@@ -735,7 +735,7 @@ const createAdminLogin = async (body) => {
 const AdminLoginFlow = async (body) => {
   let values = await Admin.findOne({ userName: body.userName, password: body.password });
   if (!values) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Admin Not Found");
+    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not Found');
   }
   return values;
 };
