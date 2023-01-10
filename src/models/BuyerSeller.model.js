@@ -154,6 +154,9 @@ const sellerPostSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  maintainenceCost: {
+    type: Number,
+  },
   viewedUsers: {
     type: Array,
   },
@@ -335,6 +338,9 @@ const BuyerRentieSchema = mongoose.Schema({
   },
   TyoesOfProperty: {
     type: String,
+  },
+  maintainenceCost: {
+    type: Number,
   },
   HouseOrCommercialType: {
     type: String,
