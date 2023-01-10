@@ -150,6 +150,32 @@ const DisplayAvailable_HouseOr_Flat = async (query) => {
 const AutoMatches_ForBuyer_rentiee = async (userId) => {
   console.log(userId);
   let data = await BuyerRentie.findOne({ userId: userId });
+  let Type;
+  let HouseOrCommercialType;
+  if (data.Type == 'rentiee') {
+    Type = 'rent';
+  }
+  if (data.Type == 'buyer') {
+    Type = 'rent';
+  }
+  if (data.HouseOrCommercialType === 'residential') {
+    HouseOrCommercialType = 'residential';
+  }
+  if (data.HouseOrCommercialType === 'commercial') {
+    HouseOrCommercialType = 'commercial';
+  }
+  console.log(Type);
+  console.log(HouseOrCommercialType);
+
+  let values = await SellerPost.aggregate([
+    {
+      $match: {
+        Type: Type,
+        HouseOrCommercialType: HouseOrCommercialType,
+        MonthlyRentFrom: { $gte: data.FromPrice, $lte: data.ToPrice },
+      },
+    },
+  ]);
   // let values = await BuyerRentie.aggregate([
   //   { $match: { userId: { $eq: userId } } },
   //   {
@@ -161,7 +187,7 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
   //     },
   //   },
   // ]);
-  return data;
+  return values;
 };
 
 // create Admin Register
