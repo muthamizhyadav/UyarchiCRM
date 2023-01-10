@@ -77,6 +77,7 @@ const verifyOtpBuyer = async (body) => {
 
 const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
+  let postValidate = moment().add(body.validity, 'minutes').toDate();
   let Sellers = await Buyer.findById(userId);
   if (Sellers.plane <= 0) {
     let userplanes = await userPlane.findOne({
@@ -102,6 +103,7 @@ const createSellerPost = async (body, userId) => {
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
+      propertyExpiredDate: postValidate,
     },
   };
   // let reduceplane = userplanes.PostNumber;
