@@ -1157,7 +1157,28 @@ const getAccepUserByProperty = async (id) => {
       users.push(data);
     }
   }
+  return users;
+};
 
+const getIgnoreUserByProperty = async (id) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
+  }
+  let users = [];
+  for (let i = 0; i < values.Ignore.length; i++) {
+    let userData = await Buyer.findById(values.Ignore[i]);
+    if (userData) {
+      const data = {
+        _id: userData._id,
+        userName: userData.userName,
+        mobile: userData.mobile,
+        email: userData.email,
+        Type: userData.Type,
+      };
+      users.push(data);
+    }
+  }
   return users;
 };
 
@@ -1211,4 +1232,5 @@ module.exports = {
   userPlane_DetailsForSellers,
   AcceptIgnore,
   getAccepUserByProperty,
+  getIgnoreUserByProperty,
 };
