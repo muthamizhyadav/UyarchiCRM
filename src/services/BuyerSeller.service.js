@@ -96,7 +96,6 @@ const createSellerPost = async (body, userId) => {
   let plancount = parseInt(Sellers.plane);
   let total = plancount - 1;
   await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
-  let datas = { HouseOrCommercialType: body.HouseOrCommercialType.toLowerCase(), BuildingName: body };
   let values = {
     ...body,
     ...{
@@ -116,23 +115,7 @@ const createSellerPost = async (body, userId) => {
 // create BuyerRentiee
 
 const createBuyerRentiee = async (body, userId) => {
-  let bodyData = {
-    Type: body.Type.toLowerCase(),
-    TyoesOfProperty: body.TyoesOfProperty.toLowerCase(),
-    HouseOrCommercialType: body.HouseOrCommercialType.toLowerCase(),
-    availability: body.availability.toLowerCase(),
-    PrefferedCities: body.PrefferedCities.toLowerCase(),
-    Locality: body.Locality.toLowerCase(),
-    facingDirection: body.facingDirection.toLowerCase(),
-    ParkingPreference: body.ParkingPreference,
-    FurnishingStatus: body.FurnishingStatus.toLowerCase(),
-    bathRoomType: body.bathRoomType.toLowerCase(),
-    bathroomCount: body.bathroomCount,
-    FromPrice: body.FromPrice,
-    BHKType: body.BHKType,
-    ToPrice: body.ToPrice,
-  };
-  let values = { ...bodyData, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
   let BR = await BuyerRentie.create(values);
   return BR;
 };
