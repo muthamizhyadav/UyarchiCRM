@@ -352,6 +352,11 @@ const AcceptIgnore = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAccepUserByProperty = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getAccepUserByProperty(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -401,4 +406,5 @@ module.exports = {
   userPlane_Details,
   userPlane_DetailsForSellers,
   AcceptIgnore,
+  getAccepUserByProperty,
 };

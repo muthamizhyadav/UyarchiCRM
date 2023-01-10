@@ -630,19 +630,24 @@ const giveInterest = async (id, userId) => {
 const getIntrestedUsersByProperty = async (id) => {
   let users = [];
   let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'post Not Available');
+  }
   for (let i = 0; i < values.intrestedUsers.length; i++) {
     let ff = await Buyer.findById(values.intrestedUsers[i]);
-    let data = {
-      verified: ff.verified,
-      _id: ff._id,
-      userName: ff.userName,
-      mobile: ff.mobile,
-      email: ff.email,
-      Type: ff.Type,
-      created: ff.created,
-      date: ff.date,
-    };
-    users.push(data);
+    if (ff) {
+      let data = {
+        verified: ff.verified,
+        _id: ff._id,
+        userName: ff.userName,
+        mobile: ff.mobile,
+        email: ff.email,
+        Type: ff.Type,
+        created: ff.created,
+        date: ff.date,
+      };
+      users.push(data);
+    }
   }
   return users;
 };
@@ -1120,6 +1125,11 @@ const userPlane_DetailsForSellers = async (userId) => {
   return data;
 };
 
+const getAccepUserByProperty = async (id) => {
+  let values = await SellerPost.findById(id);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1169,4 +1179,5 @@ module.exports = {
   userPlane_Details,
   userPlane_DetailsForSellers,
   AcceptIgnore,
+  getAccepUserByProperty,
 };
