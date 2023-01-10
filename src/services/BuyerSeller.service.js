@@ -704,8 +704,11 @@ const getPostedProperty_For_IndividualSeller = async (id, page) => {
         date: 1,
         userId: 1,
         videos: 1,
+        Accept: 1,
         viwersCount: { $size: '$viewedUsers' },
         intrestedCount: { $size: '$intrestedUsers' },
+        // AcceptCount: { $size: '$Accept' },
+        // IgnoreCount: { $size: '$Ignore' },
       },
     },
     {
@@ -1058,13 +1061,16 @@ const getProperty_And_Shedule_Visite = async (id, body) => {
 // Buyers
 const userPlane_Details = async (userId) => {
   let currentDate = moment().toDate();
-  let values = await userPlane.findOne({
-    active: true,
-    planValidate: { $gte: currentDate },
-    PlanRole: 'Buyer',
-    ContactNumber: { $gt: 0 },
-    userId: userId,
-  });
+  let values = await userPlane
+    .findOne({
+      active: true,
+      // planValidate: { $gte: currentDate },
+      PlanRole: 'Buyer',
+      // ContactNumber: { $gt: 0 },
+      userId: userId,
+    })
+    .sort({ created: -1 });
+  console.log(values);
   let plan = await AdminPlan.findById(values.PlanId);
   if (!plan) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Missing');
@@ -1078,7 +1084,7 @@ const userPlane_Details = async (userId) => {
     active: values.active,
     Amount: values.Amount,
     PayMentMethod: values.PayMentMethod,
-    PlanId: values.PlanId,
+    PlanId: values._id,
     planName: values.planName,
     ContactNumber: values.ContactNumber,
     offer: values.offer,
@@ -1127,6 +1133,9 @@ const userPlane_DetailsForSellers = async (userId) => {
 
 const getAccepUserByProperty = async (id) => {
   let values = await SellerPost.findById(id);
+  let users = [];
+  for (let i = 0; i < values.Accept.length; i++) {}
+
   return values;
 };
 
