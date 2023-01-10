@@ -80,12 +80,14 @@ const createSellerPost = async (body, userId) => {
   let postValidate = moment().add(body.validity, 'minutes').toDate();
   let Sellers = await Buyer.findById(userId);
   if (Sellers.plane <= 0) {
-    let userplanes = await userPlane.findOne({
-      userId: userId,
-      planValidate: { $gt: expiredDate },
-      PlanRole: 'Seller',
-      PostNumber: { $gt: 0 },
-    });
+    let userplanes = await userPlane
+      .findOne({
+        userId: userId,
+        planValidate: { $gt: expiredDate },
+        PlanRole: 'Seller',
+        PostNumber: { $gt: 0 },
+      })
+      .sort({ created: -1 });
     if (!userplanes) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
