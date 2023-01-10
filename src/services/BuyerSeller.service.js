@@ -910,6 +910,29 @@ const RemoveWhishList = async (propId, id) => {
   return data;
 };
 
+const AcceptIgnore = async (propId, body, userId) => {
+  let values = await SellerPost.findById(propId);
+  let datas;
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Match');
+  }
+  if (body.type === 'Accept') {
+    values = await SellerPost.findOne({ _id: propId, Accept: { $in: [userId] } });
+    console.log(values);
+    if (!values) {
+      values = await SellerPost.findByIdAndUpdate({ _id: propId }, { $push: { Accept: userId } }, { new: true });
+    }
+  }
+  if (body.type === 'Ignore') {
+    values = await SellerPost.findOne({ _id: propId, Ignore: { $in: [userId] } });
+    console.log(values);
+    if (!values) {
+      values = await SellerPost.findByIdAndUpdate({ _id: propId }, { $push: { Ignore: userId } }, { new: true });
+    }
+  }
+  return values;
+};
+
 // get Whishlist property for Buyers
 
 const getWhishListed_Property_By_Buyer = async (id) => {
@@ -1081,4 +1104,5 @@ module.exports = {
   getProperty_And_Shedule_Visite,
   userPlane_Details,
   userPlane_DetailsForSellers,
+  AcceptIgnore,
 };

@@ -346,6 +346,12 @@ const userPlane_DetailsForSellers = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const AcceptIgnore = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.AcceptIgnore(req.params.id, req.body, userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -394,4 +400,5 @@ module.exports = {
   getProperty_And_Shedule_Visite,
   userPlane_Details,
   userPlane_DetailsForSellers,
+  AcceptIgnore,
 };
