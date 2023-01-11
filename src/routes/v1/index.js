@@ -22,6 +22,7 @@ const RecipientsPaymentRoute = require('./recipients.payment.route');
 const BuyerSellerRoute = require('./BuyerSeller.route');
 const AdminPlanRoute = require('./AdminPlan.route');
 const UserPlanRoute = require('./userPlan.route');
+const propertVisitRoute = require('./propertyVisit.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -40,6 +41,10 @@ const defaultRoutes = [
   {
     path: '/AdminPlan',
     route: AdminPlanRoute,
+  },
+  {
+    path: '/propertyVisit',
+    route: propertVisitRoute,
   },
   {
     path: '/message',
