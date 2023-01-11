@@ -10,6 +10,13 @@ const createuserPlan = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getLatestUserPlan = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await userPlanService.getLatestUserPlan(userId);
+  res.send(data);
+});
+
 module.exports = {
   createuserPlan,
+  getLatestUserPlan,
 };

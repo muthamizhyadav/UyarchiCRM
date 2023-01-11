@@ -164,8 +164,6 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
   if (data.HouseOrCommercialType === 'commercial') {
     HouseOrCommercialType = 'commercial';
   }
-  console.log(Type);
-  console.log(HouseOrCommercialType);
 
   let values = await SellerPost.aggregate([
     {

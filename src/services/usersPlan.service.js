@@ -14,4 +14,9 @@ const createUserPlan = async (body, id) => {
   return data;
 };
 
-module.exports = { createUserPlan };
+const getLatestUserPlan = async (userId) => {
+  const data = await usersPlan.findOne({ userId: userId }).sort({ created: -1 });
+  return data;
+};
+
+module.exports = { createUserPlan, getLatestUserPlan };
