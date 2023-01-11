@@ -620,17 +620,6 @@ const LoginWithOtp = async (body) => {
 const giveInterest = async (id, userId) => {
   let users = await Buyer.findById(userId);
   let today = moment().toDate();
-  if (users.plane <= 0) {
-    let userPlan = await userPlane.findOne({
-      userId: userId,
-      planValidate: { $gt: today },
-      ContactNumber: { $gt: 0 },
-      active: true,
-    });
-    if (!userPlan) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
-    }
-  }
   if (!users) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
