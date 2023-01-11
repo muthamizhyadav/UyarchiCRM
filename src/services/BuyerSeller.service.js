@@ -1208,11 +1208,11 @@ const getIgnoreUserByProperty = async (id) => {
 };
 
 const GetBuyerPost = async (userId) => {
-  let values = await BuyerRentie.findOne({ userId: userId });
+  let values = await BuyerRentie.findOne({ userId: userId, active: true });
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Buyer Post Not Available');
   }
-  console.log(values)
+  console.log(values);
   return values;
 };
 
