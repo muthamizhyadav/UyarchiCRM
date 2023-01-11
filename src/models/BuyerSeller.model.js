@@ -78,6 +78,9 @@ const BuyerSellerSchema = new mongoose.Schema({
   created: {
     type: Date,
   },
+  ownerType: {
+    type: String,
+  },
   date: {
     type: String,
   },
