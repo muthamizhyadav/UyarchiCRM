@@ -634,7 +634,10 @@ const giveInterest = async (id, userId) => {
   if (!users) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Must be Logged In');
   }
-  let post = await SellerPost.findById(id);
+  let post = await SellerPost.findOne({ _id: id, viewedUsers: { $elemMatch: { $eq: userId } } });
+  if (!post) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Used In this Property');
+  }
   let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { $eq: userId } } });
   if (!matchValue) {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $push: { intrestedUsers: userId } }, { new: true });
