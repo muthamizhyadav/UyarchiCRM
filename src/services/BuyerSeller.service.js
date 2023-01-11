@@ -174,7 +174,7 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
       $match: {
         Type: Type,
         HouseOrCommercialType: HouseOrCommercialType,
-        MonthlyRentFrom: { $gte: data.FromPrice, $lte: data.ToPrice },
+        MonthlyRentFrom: { $lte: data.ToPrice },
         city: data.PrefferedCities,
       },
     },
