@@ -368,6 +368,14 @@ const GetBuyerPost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+// map api neighbour
+
+const neighbour_api = catchAsync(async (req, res) => {
+   const {lat,long,type,radius} = req.query
+  const data = await buyersellerService.neighbour_api(lat,long,type,radius);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -420,4 +428,5 @@ module.exports = {
   getAccepUserByProperty,
   getIgnoreUserByProperty,
   GetBuyerPost,
+  neighbour_api,
 };

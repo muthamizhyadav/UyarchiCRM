@@ -1208,6 +1208,17 @@ const GetBuyerPost = async (userId) => {
   return values;
 };
 
+
+// map api neighbour 
+const neighbour_api = async (lat,long,type,radius) => {
+  // console.log(location,type,radius)
+  let response = await Axios.get(
+    `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=${type}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+  );
+
+  return response.data;
+}
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1260,4 +1271,5 @@ module.exports = {
   getAccepUserByProperty,
   getIgnoreUserByProperty,
   GetBuyerPost,
+  neighbour_api,
 };
