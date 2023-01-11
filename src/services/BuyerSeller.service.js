@@ -1207,6 +1207,15 @@ const getIgnoreUserByProperty = async (id) => {
   return users;
 };
 
+const GetBuyerPost = async (userId) => {
+  let values = await BuyerRentie.findOne({ userId: userId });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Buyer Post Not Available');
+  }
+  console.log(values)
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1258,4 +1267,5 @@ module.exports = {
   AcceptIgnore,
   getAccepUserByProperty,
   getIgnoreUserByProperty,
+  GetBuyerPost,
 };

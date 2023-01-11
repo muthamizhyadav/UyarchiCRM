@@ -63,4 +63,5 @@ router.route('/userPlane_DetailsForSellers').get(BuyerAuth, BuyerSellerControlle
 router.route('/AcceptIgnore/:id').put(BuyerAuth, BuyerSellerController.AcceptIgnore);
 router.route('/getAccepUserByProperty/:id').get(BuyerSellerController.getAccepUserByProperty);
 router.route('/getIgnoreUserByProperty/:id').get(BuyerSellerController.getIgnoreUserByProperty);
+router.route('/GetBuyerPost').get(BuyerAuth, BuyerSellerController.GetBuyerPost);
 module.exports = router;
