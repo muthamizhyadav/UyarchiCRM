@@ -782,17 +782,22 @@ const AddViewed_Data = async (id, userId) => {
     if (!userPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
-    let exist = parseInt(userPlan.ContactNumber);
-    let total = exist - 1;
-    let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
-    if (plans.ContactNumber === 0) {
-      await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+    let property = await SellerPost.findOne({ _id: values._id, viewedUsers: { $in: [userId] } });
+    if (!property) {
+      let exist = parseInt(userPlan.ContactNumber);
+      let total = exist - 1;
+      let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
+      if (plans.ContactNumber === 0) {
+        await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+      }
     }
   }
   if (users.plane > 0) {
-    let existCount = users.plane;
-    let total = existCount - 1;
-    users = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+    if (!property) {
+      let existCount = users.plane;
+      let total = existCount - 1;
+      users = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+    }
   }
   let values = await SellerPost.findById(id);
   if (!values) {
