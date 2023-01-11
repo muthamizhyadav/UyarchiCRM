@@ -789,7 +789,7 @@ const AddViewed_Data = async (id, userId) => {
     if (!userPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
-    let property = await SellerPost.findOne({ _id: values._id, viewedUsers: { $in: [userId] } });
+    let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
     if (!property) {
       let exist = parseInt(userPlan.ContactNumber);
       let total = exist - 1;
