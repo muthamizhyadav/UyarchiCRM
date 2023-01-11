@@ -150,6 +150,10 @@ const DisplayAvailable_HouseOr_Flat = async (query) => {
 const AutoMatches_ForBuyer_rentiee = async (userId) => {
   console.log(userId);
   let data = await BuyerRentie.findOne({ userId: userId });
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Buyer Post Not Found');
+  }
+  console.log(data);
   let Type;
   let HouseOrCommercialType;
   if (data.Type == 'rentiee') {
