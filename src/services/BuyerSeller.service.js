@@ -717,6 +717,7 @@ const getPostedProperty_For_IndividualSeller = async (id, page) => {
         userId: 1,
         videos: 1,
         Accept: 1,
+        active: 1,
         viwersCount: { $size: '$viewedUsers' },
         intrestedCount: { $size: '$intrestedUsers' },
         AcceptCount: { $size: '$Accept' },
