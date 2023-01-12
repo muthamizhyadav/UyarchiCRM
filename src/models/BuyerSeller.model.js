@@ -26,7 +26,8 @@ const BuyerSchema = new mongoose.Schema({
     type: String,
   },
   active: {
-    type: String,
+    type: Boolean,
+    default: true,
   },
   created: {
     type: Date,
@@ -73,7 +74,8 @@ const BuyerSellerSchema = new mongoose.Schema({
     type: Number,
   },
   active: {
-    type: String,
+    type: Boolean,
+    default: true,
   },
   created: {
     type: Date,
