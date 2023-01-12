@@ -9,6 +9,13 @@ const createPropertyVisit = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getVisit_PropertyBy_Buyer = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await propertVisitService.getVisit_PropertyBy_Buyer(userId);
+  res.send(data);
+});
+
 module.exports = {
   createPropertyVisit,
+  getVisit_PropertyBy_Buyer,
 };
