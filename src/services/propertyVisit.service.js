@@ -47,7 +47,7 @@ const getVisit_PropertyBy_Buyer = async (userId) => {
       },
     },
   ]);
-  return values[0];
+  return values.length == 0 ? [] : values[0];
 };
 
 module.exports = {
