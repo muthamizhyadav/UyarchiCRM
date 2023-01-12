@@ -13,7 +13,7 @@ const propertVisitSchema = new mongoose.Schema({
     type: String,
   },
   visitDate_Time: {
-    type: String,
+    type: Date,
   },
   created: {
     type: Date,
