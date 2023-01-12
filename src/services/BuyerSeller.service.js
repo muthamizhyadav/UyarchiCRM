@@ -651,6 +651,12 @@ const getIntrestedUsersByProperty = async (id) => {
   }
   for (let i = 0; i < values.intrestedUsers.length; i++) {
     let ff = await Buyer.findById(values.intrestedUsers[i]);
+    let accept = await SellerPost.findOne({ Accept: { $elemMatch: { $eq: ff._id } } });
+    console.log(accept);
+    let acceptStatus = true;
+    if (!accept) {
+      acceptStatus = false;
+    }
     if (ff) {
       let data = {
         verified: ff.verified,
@@ -661,6 +667,7 @@ const getIntrestedUsersByProperty = async (id) => {
         Type: ff.Type,
         created: ff.created,
         date: ff.date,
+        acceptStatus: acceptStatus,
       };
       users.push(data);
     }
