@@ -12,7 +12,7 @@ const SavedSearchSchema = new mongoose.Schema({
   location: {
     type: String,
   },
-  houseType: {
+  BHKType: {
     type: String,
   },
   propertyType: {
@@ -27,4 +27,18 @@ const SavedSearchSchema = new mongoose.Schema({
   parkingAvailability: {
     type: String,
   },
+  created: {
+    type: Date,
+  },
+  userId: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+const SavedSearch = mongoose.model('savedSearch', SavedSearchSchema);
+
+module.exports = SavedSearch;

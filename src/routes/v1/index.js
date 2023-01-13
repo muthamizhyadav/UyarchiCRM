@@ -23,6 +23,7 @@ const BuyerSellerRoute = require('./BuyerSeller.route');
 const AdminPlanRoute = require('./AdminPlan.route');
 const UserPlanRoute = require('./userPlan.route');
 const propertVisitRoute = require('./propertyVisit.route');
+const savedSearch = require('./saved.search.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -33,6 +34,10 @@ const defaultRoutes = [
   {
     path: '/BuyerSeller',
     route: BuyerSellerRoute,
+  },
+  {
+    path: '/search',
+    route: savedSearch,
   },
   {
     path: '/userPlan',
