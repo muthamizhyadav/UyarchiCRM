@@ -10,6 +10,13 @@ const CreateSavedSearch = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSavedSearch = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SavedSearchService.getSavedSearch(userId);
+  res.send(data);
+});
+
 module.exports = {
   CreateSavedSearch,
+  getSavedSearch,
 };

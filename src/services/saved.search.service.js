@@ -9,6 +9,13 @@ const CreateSavedSearch = async (body, userId) => {
   return data;
 };
 
+const getSavedSearch = async (userId) => {
+  console.log(userId);
+  const data = await SavedSearch.find({ userId: userId });
+  return data;
+};
+
 module.exports = {
   CreateSavedSearch,
+  getSavedSearch,
 };
