@@ -15,6 +15,9 @@ const SavedSearchSchema = new mongoose.Schema({
   BHKType: {
     type: String,
   },
+  subType: {
+    type: String,
+  },
   propertyType: {
     type: String,
   },

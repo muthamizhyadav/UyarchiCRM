@@ -10,7 +10,6 @@ const CreateSavedSearch = async (body, userId) => {
 };
 
 const getSavedSearch = async (userId) => {
-  console.log(userId);
   const data = await SavedSearch.find({ userId: userId });
   return data;
 };
