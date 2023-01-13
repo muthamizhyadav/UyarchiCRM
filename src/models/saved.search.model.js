@@ -9,5 +9,22 @@ const SavedSearchSchema = new mongoose.Schema({
   Title: {
     type: String,
   },
-  
+  location: {
+    type: String,
+  },
+  houseType: {
+    type: String,
+  },
+  propertyType: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  furnishingStatus: {
+    type: String,
+  },
+  parkingAvailability: {
+    type: String,
+  },
 });
