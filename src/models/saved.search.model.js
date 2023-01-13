@@ -24,6 +24,9 @@ const SavedSearchSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  buildingType: {
+    type: String,
+  },
   furnishingStatus: {
     type: String,
   },
