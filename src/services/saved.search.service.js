@@ -14,7 +14,16 @@ const getSavedSearch = async (userId) => {
   return data;
 };
 
+const getSavedSearchById = async (id) => {
+  const data = await SavedSearch.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Search Not Found');
+  }
+  return data;
+};
+
 module.exports = {
   CreateSavedSearch,
   getSavedSearch,
+  getSavedSearchById,
 };

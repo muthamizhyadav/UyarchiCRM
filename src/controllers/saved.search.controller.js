@@ -16,7 +16,13 @@ const getSavedSearch = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSavedSearchById = catchAsync(async (req, res) => {
+  const data = await SavedSearchService.getSavedSearchById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   CreateSavedSearch,
   getSavedSearch,
+  getSavedSearchById,
 };
