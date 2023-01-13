@@ -1230,6 +1230,15 @@ const neighbour_api = async (lat, long, type, radius) => {
   return response.data;
 };
 
+const DeActive_UserAccount = async (userId) => {
+  let users = await BuyerSeller.findOne({ _id: userId });
+  if (!users) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User May De-Activate OR User Not Found');
+  }
+  users = await BuyerSeller.findByIdAndUpdate({ _id: userId }, { active: false }, { new: true });
+  return users;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1283,4 +1292,5 @@ module.exports = {
   getIgnoreUserByProperty,
   GetBuyerPost,
   neighbour_api,
+  DeActive_UserAccount,
 };

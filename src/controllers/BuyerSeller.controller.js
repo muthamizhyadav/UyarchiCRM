@@ -371,8 +371,14 @@ const GetBuyerPost = catchAsync(async (req, res) => {
 // map api neighbour
 
 const neighbour_api = catchAsync(async (req, res) => {
-   const {lat,long,type,radius} = req.query
-  const data = await buyersellerService.neighbour_api(lat,long,type,radius);
+  const { lat, long, type, radius } = req.query;
+  const data = await buyersellerService.neighbour_api(lat, long, type, radius);
+  res.send(data);
+});
+
+const DeActive_UserAccount = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.DeActive_UserAccount(userId);
   res.send(data);
 });
 
@@ -429,4 +435,5 @@ module.exports = {
   getIgnoreUserByProperty,
   GetBuyerPost,
   neighbour_api,
+  DeActive_UserAccount,
 };
