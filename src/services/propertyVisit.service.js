@@ -87,6 +87,7 @@ const getVisit_PropertyBy_Buyer = async (userId) => {
         date: '$property.date',
         userId: '$property.userId',
         propertyExpiredDate: '$property.propertyExpiredDate',
+        visitDate_Time: 1,
       },
     },
     {
@@ -142,6 +143,7 @@ const getVisit_PropertyBy_Buyer = async (userId) => {
         IgnoreStatus: { $cond: { if: { $in: [true, '$IgnoreStatus'] }, then: true, else: false } },
         noOfFloor: 1,
         floorNo: 1,
+        visitDate_Time: 1,
       },
     },
   ]);
