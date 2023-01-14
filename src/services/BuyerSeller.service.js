@@ -607,7 +607,7 @@ const createPassword = async (id, body) => {
   }
   // const salt = await bcrypt.genSalt(10);
   // let password1 = await bcrypt.hash(confirmPassword, salt);
-  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: confirmPassword }, { new: true });
+  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: confirmPassword, active:true }, { new: true });
   return data;
 };
 
