@@ -35,9 +35,9 @@ const Activate_DeActivatedUsers = catchAsync(async (req, res) => {
   }
   let mail;
   if (values.Type === 'Seller') {
-    mail = await mailService.sendEmail(email, number);
+    mail = await mailService.sendEmailSeller(email, number);
   }
-  mail = await mailService.sendEmailSeller(email, number);
+  mail = await mailService.sendEmail(email, number);
   const data = await buyersellerService.Activate_DeActivatedUsers(req.body);
   res.send({ Message: 'Verification Mail Send....' });
 });
