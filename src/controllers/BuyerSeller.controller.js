@@ -30,11 +30,16 @@ const createBuyerSeller = catchAsync(async (req, res) => {
 const Activate_DeActivatedUsers = catchAsync(async (req, res) => {
   const { email, number } = req.body;
   let values = await Buyer.findOne({ active: false, email: email, mobile: number });
-  if(!values){
-    throw new ApiError(httpStatus.BAD_REQUEST, "User Not Exist OR User Not ")
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Exist OR User Not De-Activated');
   }
+  let mail;
+  if (values.Type === 'Seller') {
+    mail = await mailService.sendEmail(email, number);
+  }
+  mail = await mailService.sendEmailSeller(email, number);
   const data = await buyersellerService.Activate_DeActivatedUsers(req.body);
-  res.send(values);
+  res.send({ Message: 'Verification Mail Send....' });
 });
 
 const verifyOtp = catchAsync(async (req, res) => {

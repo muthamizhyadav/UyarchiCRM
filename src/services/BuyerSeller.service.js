@@ -68,7 +68,7 @@ const verifyOtpBuyer = async (body) => {
   if (!otpCheck) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
   }
-  check = await Buyer.findByIdAndUpdate({ _id: check._id }, { verified: true }, { new: true });
+  check = await Buyer.findByIdAndUpdate({ _id: check._id }, { verified: true, active: true }, { new: true });
   otpCheck = await BuyerSellerOTP.findByIdAndUpdate({ _id: otpCheck._id }, { active: false }, { new: true });
   return check;
 };
