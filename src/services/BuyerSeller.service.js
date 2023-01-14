@@ -607,12 +607,16 @@ const createPassword = async (id, body) => {
   }
   // const salt = await bcrypt.genSalt(10);
   // let password1 = await bcrypt.hash(confirmPassword, salt);
-  const data = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: confirmPassword, active:true }, { new: true });
+  const data = await Buyer.findByIdAndUpdate(
+    { _id: values._id },
+    { password: confirmPassword, active: true },
+    { new: true }
+  );
   return data;
 };
 
 const Login = async (body) => {
-  let values = await Buyer.findOne({ email: body.email, password: body.password });
+  let values = await Buyer.findOne({ email: body.email, password: body.password, active:true });
   if (!values) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
   }
