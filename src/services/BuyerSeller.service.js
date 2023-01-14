@@ -258,6 +258,7 @@ const getApprover_Property = async (page, query, userId) => {
   let MonthlyRentFromMatch = { active: true };
   let MonthlyRentToMatch = { active: true };
   let HouseOrCommercialTypeMatch = { active: true };
+  let typeMatch = { active: true };
 
   if (query.area) {
     cityMatch = { city: { $regex: query.area, $options: 'i' } };
@@ -290,6 +291,13 @@ const getApprover_Property = async (page, query, userId) => {
   } else {
     HouseOrCommercialTypeMatch;
   }
+
+  if (query.Type) {
+    typeMatch = { Type: query.Type };
+  } else {
+    typeMatch;
+  }
+
   let today = moment().toDate();
   console.log(userId);
   let values = await SellerPost.aggregate([
@@ -302,6 +310,7 @@ const getApprover_Property = async (page, query, userId) => {
           MonthlyRentFromMatch,
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
+          typeMatch,
           { propStatus: 'Approved' },
         ],
       },
@@ -446,6 +455,7 @@ const getApprover_Property = async (page, query, userId) => {
           MonthlyRentFromMatch,
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
+          typeMatch,
           { propStatus: 'Approved' },
         ],
       },
