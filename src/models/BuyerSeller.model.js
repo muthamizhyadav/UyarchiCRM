@@ -173,6 +173,7 @@ const sellerPostSchema = new mongoose.Schema({
   },
   WhishList: {
     type: Array,
+    default: [],
   },
   lat: {
     type: String,
