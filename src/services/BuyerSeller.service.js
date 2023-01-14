@@ -1254,9 +1254,9 @@ const changePassword = async (userId, body) => {
   const { oldPassword, newPassword } = body;
   let values = await Buyer.findOne({ _id: userId, password: oldPassword });
   if (!values) {
-    throw new new ApiError(httpStatus.BAD_REQUEST, 'Old PassWord Incorrect');
+    throw  new ApiError(httpStatus.BAD_REQUEST, 'Old PassWord Incorrect');
   }
-  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { password: newPassword }, { new: true });
+  values = await Buyer.findByIdAndUpdate({ _id: userId }, { password: newPassword }, { new: true });
 
   return { Message: 'Password Updated SuccessFully' };
 };
