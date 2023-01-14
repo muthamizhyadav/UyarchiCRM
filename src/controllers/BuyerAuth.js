@@ -21,7 +21,7 @@ const authorization = async (req, res, next) => {
     console.log(payload);
     const userss = await Buyer.findOne({ _id: payload.sub, active: true });
     if (!userss) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Un Authorized User")
+      return res.send(httpStatus.UNAUTHORIZED, 'User Not Available');
     }
     req.userId = payload.sub;
     return next();

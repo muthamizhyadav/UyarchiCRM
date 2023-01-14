@@ -30,8 +30,11 @@ const createBuyerSeller = catchAsync(async (req, res) => {
 const Activate_DeActivatedUsers = catchAsync(async (req, res) => {
   const { email, number } = req.body;
   let values = await Buyer.findOne({ active: false, email: email, mobile: number });
+  if(!values){
+    throw new ApiError(httpStatus.BAD_REQUEST, "User Not Exist OR User Not ")
+  }
   const data = await buyersellerService.Activate_DeActivatedUsers(req.body);
-  res.send(data);
+  res.send(values);
 });
 
 const verifyOtp = catchAsync(async (req, res) => {
