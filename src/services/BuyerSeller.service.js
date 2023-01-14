@@ -1247,7 +1247,7 @@ const DeActive_UserAccount = async (userId) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User May De-Activate OR User Not Found');
   }
   users = await BuyerSeller.findByIdAndUpdate({ _id: userId }, { active: false }, { new: true });
-  return users;
+  return { message: `${users.userName} Account De-Activated` };
 };
 
 module.exports = {
