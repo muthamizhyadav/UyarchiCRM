@@ -183,7 +183,7 @@ app.put('/videoupload/:id', upload, async (req, res) => {
     if (err) {
       res.status(500).send(err);
     }
-    values = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { videos: data.Location }, { new: true });
+    values = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { $push: { videos: data.Location } }, { new: true });
     res.send(values);
   });
 

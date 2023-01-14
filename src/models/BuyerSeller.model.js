@@ -257,7 +257,7 @@ const sellerPostSchema = new mongoose.Schema({
     type: Array,
   },
   videos: {
-    type: String,
+    type: Array,
   },
   discription: {
     type: String,

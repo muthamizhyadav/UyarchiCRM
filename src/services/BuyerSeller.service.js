@@ -275,6 +275,7 @@ const getApprover_Property = async (page, query, userId) => {
   } else {
     BHKTypeMatch;
   }
+  console.log(query.MonthlyRentFrom);
   if (query.MonthlyRentFrom) {
     let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
     console.log(MonthlyRentFrom);
