@@ -1261,6 +1261,10 @@ const changePassword = async (userId, body) => {
   return { Message: 'Password Updated SuccessFully' };
 };
 
+const Activate_DeActivatedUsers = async (body) => {
+  return body;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1316,4 +1320,5 @@ module.exports = {
   neighbour_api,
   DeActive_UserAccount,
   changePassword,
+  Activate_DeActivatedUsers,
 };

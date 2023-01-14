@@ -66,6 +66,7 @@ router.route('/getIgnoreUserByProperty/:id').get(BuyerSellerController.getIgnore
 router.route('/GetBuyerPost').get(BuyerAuth, BuyerSellerController.GetBuyerPost);
 router.route('/DeActive_UserAccount').get(BuyerAuth, BuyerSellerController.DeActive_UserAccount);
 router.route('/changePassword').post(BuyerAuth, BuyerSellerController.changePassword);
+router.route('/activate/deActivatedusers').post(BuyerSellerController.Activate_DeActivatedUsers);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 module.exports = router;

@@ -26,6 +26,14 @@ const createBuyerSeller = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+// Active De-Activated users
+const Activate_DeActivatedUsers = catchAsync(async (req, res) => {
+  const { email, number } = req.body;
+  let values = await Buyer.findOne({ active: false, email: email, mobile: number });
+  const data = await buyersellerService.Activate_DeActivatedUsers(req.body);
+  res.send(data);
+});
+
 const verifyOtp = catchAsync(async (req, res) => {
   const data = await buyersellerService.verifyOtp(req.body);
   const tokens = await tokenService.generateAuthTokens(data);
@@ -443,4 +451,5 @@ module.exports = {
   neighbour_api,
   DeActive_UserAccount,
   changePassword,
+  Activate_DeActivatedUsers,
 };
