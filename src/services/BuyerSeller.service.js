@@ -546,45 +546,46 @@ const BuyerLike_Property = async (id, userId) => {
 // update Seller Renter Post
 const UpdateSellerPost = async (id, updatebody, imageCount, userId) => {
   let today = moment().toDate();
-  console.log(imageCount);
+  let commingCount = imageCount;
   let sellerpost = await SellerPost.findById(id);
   if (!sellerpost) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No Post Available');
   }
-  // let users = await Buyer.findById(userId);
-  // if (users.plane > 0) {
-  //   let userDefault = users.plane;
-  //   if (userDefault > imageCount) {
-  //     throw new ApiError(httpStatus.BAD_REQUEST, `Only ${users.plane} Available`);
-  //   }
-  //   let userplanCount = parseInt(users.plane);
-  //   let imageCount = parseInt(imageCount);
-  //   let total = userplanCount - imageCount;
-  //   await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
-  //   sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
-  // }
-
-  let paidPlane = await userPlane
-    .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
-    .sort({ created: -1 });
-  if (!paidPlane) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
-  }
-  if (paidPlane) {
-    if (!paidPlane.Image > 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+  let users = await Buyer.findById(userId);
+  if (users.plane > 0) {
+    let userDefault = users.plane;
+    console.log(commingCount, 'kjfshsdkfjh');
+    if (commingCount > userDefault) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Only ${users.plane} Image Available in Free plan`);
     }
-    let currentPlanImageLimit = paidPlane.Image;
-    if (imageCount > currentPlanImageLimit) {
-      throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentPlanImageLimit} images Available In plan`);
-    }
-    let plan = await userPlane.findById(paidPlane._id);
-    console.log(plan);
-    let currentPlanImage = paidPlane.Image;
-    let uploadImageCount = imageCount;
-    let total = currentPlanImage - uploadImageCount;
-    await userPlane.findByIdAndUpdate({ _id: plan._id }, { Image: total }, { new: true });
+    let userplanCount = parseInt(users.plane);
+    let imgCount = parseInt(commingCount);
+    let total = userplanCount - imgCount;
+    await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
     sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
+  } else {
+    let paidPlane = await userPlane
+      .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
+      .sort({ created: -1 });
+    if (!paidPlane) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
+    }
+    if (paidPlane) {
+      if (!paidPlane.Image > 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+      }
+      let currentPlanImageLimit = paidPlane.Image;
+      if (imageCount > currentPlanImageLimit) {
+        throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentPlanImageLimit} images Available In plan`);
+      }
+      let plan = await userPlane.findById(paidPlane._id);
+      console.log(plan);
+      let currentPlanImage = paidPlane.Image;
+      let uploadImageCount = imageCount;
+      let total = currentPlanImage - uploadImageCount;
+      await userPlane.findByIdAndUpdate({ _id: plan._id }, { Image: total }, { new: true });
+      sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
+    }
   }
 
   return sellerpost;
