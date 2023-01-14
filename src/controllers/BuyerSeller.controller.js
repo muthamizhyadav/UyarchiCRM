@@ -382,6 +382,12 @@ const DeActive_UserAccount = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.changePassword(userId, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -436,4 +442,5 @@ module.exports = {
   GetBuyerPost,
   neighbour_api,
   DeActive_UserAccount,
+  changePassword,
 };
