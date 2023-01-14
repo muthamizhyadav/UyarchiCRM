@@ -584,7 +584,7 @@ const OTPVerify = async (body) => {
 const VerifyOtpRealEstate = async (body) => {
   let verify = await StoreOtp.findOne({ otp: body.otp });
   let values = await Buyer.findOne({ mobile: verify.number });
-  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true, active:true }, { new: true });
+  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true, active: true }, { new: true });
   return values;
 };
 
@@ -616,7 +616,7 @@ const createPassword = async (id, body) => {
 };
 
 const Login = async (body) => {
-  let values = await Buyer.findOne({ email: body.email, password: body.password, active:true });
+  let values = await Buyer.findOne({ email: body.email, password: body.password, active: true, Type: body.Type });
   if (!values) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
   }
